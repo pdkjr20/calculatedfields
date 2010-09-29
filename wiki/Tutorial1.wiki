@@ -50,3 +50,7 @@ In settings page of plugin you can select your calculation row and push button C
 Or you can go to Daily activity view or Activity reports. Select activities for your calculation. And run action *Edit -> Calculated Fields -> Calculate Values*<br>
 After this plugin will calculate all expressions in your configuration that are active. But only for selected activities.
 
+  * Now if you want to go further. You can add custom field Adjusted Distance in Daily Activity or in Activity Reports. Make reports on it. Or you can add it to shown charts.<br>
+For example here I made chart from my custom field Avg. HR/min Active:<br>
+
+<img src="http://img827.imageshack.us/img827/1083/chartj.png"/>
