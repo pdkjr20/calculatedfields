@@ -4,6 +4,8 @@
     using System.ComponentModel;
     using System.Drawing;
 
+    using Data;
+
     using Resources;
 
     using ZoneFiveSoftware.Common.Data;
@@ -71,7 +73,7 @@
         {
             get
             {
-                return null;
+                return CommonResources.Images.Delete16;
             }
         }
 
@@ -141,23 +143,7 @@
 
         public void Run(Rectangle rectButton)
         {
-            if ((this.Activities != null) && (this.Activities.Count > 0))
-            {
-                foreach (IActivity activity in this.Activities)
-                {
-                    ICustomDataFieldObjectType type = CustomDataFieldDefinitions.StandardObjectType(typeof(IActivity));
-
-                    foreach (
-                        ICustomDataFieldDefinition definition in
-                            CalculatedFields.GetLogBook().CustomDataFieldDefinitions)
-                    {
-                        if (definition.ObjectType == type && GlobalSettings.calculatedFieldsRows.Exists((o) => (o.CustomField == definition.Name && o.Active == "Y")))
-                        {
-                            activity.SetCustomDataValue(definition, null);
-                        }
-                    }
-                }
-            }
+            Evaluator.ClearCalculations(this.Activities, null);
         }
 
         #endregion

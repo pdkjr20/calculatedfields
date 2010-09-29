@@ -7,6 +7,44 @@
     using System.Windows.Forms;
     using System.Xml;
 
+    [Serializable]
+    public class DataTrackPoint
+    {
+        float hr;
+        float pace;
+        float speed;
+        float elevation;
+        float grade;
+        float cadence;
+        float power;
+        float elapsed;
+
+        public float HR { get { return hr; } set { hr = value; } }
+        public float Pace { get { return pace; } set { pace = value; } }
+        public float Speed { get { return speed; } set { speed = value; } }
+        public float Elevation { get { return elevation; } set { elevation = value; } }
+        public float Grade { get { return grade; } set { grade = value; } }
+        public float Cadence { get { return cadence; } set { cadence = value; } }
+        public float Power { get { return power; } set { power = value; } }
+        public float Elapsed { get { return elapsed; } set { elapsed = value; } }
+
+        public DataTrackPoint()
+        {
+        }
+
+        public DataTrackPoint(float hr, float pace, float speed, float elevation, float grade, float cadence, float power, float elapsed)
+        {
+            HR = hr;
+            Pace = pace;
+            Speed = speed;
+            Elevation = elevation;
+            Grade = grade;
+            Cadence = cadence;
+            Power = power;
+            Elapsed = elapsed;
+        }
+    }
+
     public class CalculatedFieldsRow: IComparable<CalculatedFieldsRow>
     {
         public string ID { get; set; }
@@ -86,6 +124,7 @@
         public static List<NestedFieldsRow> nestedFieldsRows = new List<NestedFieldsRow>();
 
         public static bool runAfterImport;
+        public static bool calculateFutureAfterImport;
 
         private static readonly string path;
 
@@ -122,7 +161,8 @@
             try
             {
                 document.Load(reader);
-                runAfterImport = Boolean.Parse(document.ChildNodes[0].Attributes["RunAfterImport"].Value);
+                runAfterImport = (document.ChildNodes[0].Attributes["RunAfterImport"] != null) ? Boolean.Parse(document.ChildNodes[0].Attributes["RunAfterImport"].Value) : false;
+                calculateFutureAfterImport = (document.ChildNodes[0].Attributes["CalculateFutureAfterImport"] != null) ? Boolean.Parse(document.ChildNodes[0].Attributes["CalculateFutureAfterImport"].Value) : false;
 
                 XmlNodeList rowsNode = document.ChildNodes[0].FirstChild.ChildNodes;
 
@@ -161,6 +201,7 @@
             var document = new XmlDocument();
             XmlElement calculatedFieldsElement = document.CreateElement("CalculatedFields");
             calculatedFieldsElement.SetAttribute("RunAfterImport", runAfterImport.ToString());
+            calculatedFieldsElement.SetAttribute("CalculateFutureAfterImport", calculateFutureAfterImport.ToString());
             document.AppendChild(calculatedFieldsElement);
 
             XmlElement rowsElement = document.CreateElement("Rows");

@@ -79,7 +79,7 @@ namespace CalculatedFields.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Calculate calculated fields.
+        ///   Looks up a localized string similar to Calculate values.
         /// </summary>
         internal static string Edit_CalculatedFieldsAction_Text {
             get {
@@ -97,7 +97,7 @@ namespace CalculatedFields.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Clear calculated fields.
+        ///   Looks up a localized string similar to Clear calculated values.
         /// </summary>
         internal static string Edit_ClearFieldsAction_Text {
             get {

@@ -1,5 +1,6 @@
 ﻿namespace CalculatedFields.Import
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
 
@@ -49,6 +50,31 @@
                 }
 
                 GlobalSettings.LoadSettings();
+
+                if (GlobalSettings.calculateFutureAfterImport)
+                {
+                    DateTime oldestActivity = DateTime.MaxValue;
+
+                    foreach (IActivity activity in activities)
+                    {
+                        if (activity.StartTime < oldestActivity)
+                        {
+                            oldestActivity = activity.StartTime;
+                        }
+                    }
+
+                    foreach (IActivity activity in CalculatedFields.GetLogBook().Activities)
+                    {
+                        if (activity.StartTime >= oldestActivity)
+                        {
+                            if (!activities.Contains(activity))
+                            {
+                                activities.Add(activity);
+                            }
+                        }
+                    }
+                }
+
                 Evaluator.Calculate(activities, null, false);
             }
         }

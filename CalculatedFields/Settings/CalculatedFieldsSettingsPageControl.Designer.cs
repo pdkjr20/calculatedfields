@@ -28,13 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.checkBoxAfterImport = new System.Windows.Forms.CheckBox();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageStandardExpressions = new System.Windows.Forms.TabPage();
+            this.labelForAllActivities = new System.Windows.Forms.Label();
+            this.buttonClearSelected = new System.Windows.Forms.Button();
             this.buttonTestSelected = new System.Windows.Forms.Button();
             this.buttonCalculateSelected = new System.Windows.Forms.Button();
             this.labelCondition = new System.Windows.Forms.Label();
             this.textBoxCondition = new System.Windows.Forms.TextBox();
+            this.contextMenuStripFields = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.stripActivity = new System.Windows.Forms.ToolStripMenuItem();
+            this.stripActive = new System.Windows.Forms.ToolStripMenuItem();
+            this.stripRest = new System.Windows.Forms.ToolStripMenuItem();
+            this.stripSplits = new System.Windows.Forms.ToolStripMenuItem();
+            this.stripTrails = new System.Windows.Forms.ToolStripMenuItem();
+            this.stripAthlete = new System.Windows.Forms.ToolStripMenuItem();
+            this.stripAggregate = new System.Windows.Forms.ToolStripMenuItem();
+            this.stripCustom = new System.Windows.Forms.ToolStripMenuItem();
+            this.stripNested = new System.Windows.Forms.ToolStripMenuItem();
+            this.stripFormulas = new System.Windows.Forms.ToolStripMenuItem();
             this.checkBoxActive = new System.Windows.Forms.CheckBox();
             this.treeListCalculatedFields = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.buttonUpdate = new System.Windows.Forms.Button();
@@ -54,8 +68,10 @@
             this.buttonAddNested = new System.Windows.Forms.Button();
             this.textBoxNestedExpression = new System.Windows.Forms.TextBox();
             this.labelTrailsIntegration = new System.Windows.Forms.Label();
+            this.checkBoxAfterImportFuture = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.tabPageStandardExpressions.SuspendLayout();
+            this.contextMenuStripFields.SuspendLayout();
             this.tabPageNestedExpressions.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -82,6 +98,8 @@
             // 
             // tabPageStandardExpressions
             // 
+            this.tabPageStandardExpressions.Controls.Add(this.labelForAllActivities);
+            this.tabPageStandardExpressions.Controls.Add(this.buttonClearSelected);
             this.tabPageStandardExpressions.Controls.Add(this.buttonTestSelected);
             this.tabPageStandardExpressions.Controls.Add(this.buttonCalculateSelected);
             this.tabPageStandardExpressions.Controls.Add(this.labelCondition);
@@ -103,23 +121,48 @@
             this.tabPageStandardExpressions.Text = "Standard Expressions";
             this.tabPageStandardExpressions.UseVisualStyleBackColor = true;
             // 
+            // labelForAllActivities
+            // 
+            this.labelForAllActivities.AutoSize = true;
+            this.labelForAllActivities.Location = new System.Drawing.Point(541, 16);
+            this.labelForAllActivities.Name = "labelForAllActivities";
+            this.labelForAllActivities.Size = new System.Drawing.Size(97, 13);
+            this.labelForAllActivities.TabIndex = 17;
+            this.labelForAllActivities.Text = "For all activities do:";
+            // 
+            // buttonClearSelected
+            // 
+            this.buttonClearSelected.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonClearSelected.Location = new System.Drawing.Point(644, 11);
+            this.buttonClearSelected.Name = "buttonClearSelected";
+            this.buttonClearSelected.Size = new System.Drawing.Size(148, 23);
+            this.buttonClearSelected.TabIndex = 16;
+            this.buttonClearSelected.Text = "Clear calculated values";
+            this.buttonClearSelected.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonClearSelected.UseVisualStyleBackColor = true;
+            this.buttonClearSelected.Click += new System.EventHandler(this.buttonClearSelected_Click);
+            // 
             // buttonTestSelected
             // 
-            this.buttonTestSelected.Location = new System.Drawing.Point(581, 11);
+            this.buttonTestSelected.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonTestSelected.Location = new System.Drawing.Point(520, 40);
             this.buttonTestSelected.Name = "buttonTestSelected";
-            this.buttonTestSelected.Size = new System.Drawing.Size(211, 23);
+            this.buttonTestSelected.Size = new System.Drawing.Size(118, 23);
             this.buttonTestSelected.TabIndex = 15;
             this.buttonTestSelected.Text = "Test selected rows";
+            this.buttonTestSelected.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonTestSelected.UseVisualStyleBackColor = true;
             this.buttonTestSelected.Click += new System.EventHandler(this.buttonTestSelected_Click);
             // 
             // buttonCalculateSelected
             // 
-            this.buttonCalculateSelected.Location = new System.Drawing.Point(581, 40);
+            this.buttonCalculateSelected.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonCalculateSelected.Location = new System.Drawing.Point(644, 40);
             this.buttonCalculateSelected.Name = "buttonCalculateSelected";
-            this.buttonCalculateSelected.Size = new System.Drawing.Size(211, 23);
+            this.buttonCalculateSelected.Size = new System.Drawing.Size(148, 23);
             this.buttonCalculateSelected.TabIndex = 14;
-            this.buttonCalculateSelected.Text = "Calculate selected rows for all activities";
+            this.buttonCalculateSelected.Text = "Calculate selected rows";
+            this.buttonCalculateSelected.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonCalculateSelected.UseVisualStyleBackColor = true;
             this.buttonCalculateSelected.Click += new System.EventHandler(this.buttonCalculateSelected_Click);
             // 
@@ -134,10 +177,88 @@
             // 
             // textBoxCondition
             // 
+            this.textBoxCondition.ContextMenuStrip = this.contextMenuStripFields;
             this.textBoxCondition.Location = new System.Drawing.Point(70, 96);
             this.textBoxCondition.Name = "textBoxCondition";
             this.textBoxCondition.Size = new System.Drawing.Size(722, 20);
             this.textBoxCondition.TabIndex = 12;
+            // 
+            // contextMenuStripFields
+            // 
+            this.contextMenuStripFields.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.stripActivity,
+            this.stripActive,
+            this.stripRest,
+            this.stripSplits,
+            this.stripTrails,
+            this.stripAthlete,
+            this.stripAggregate,
+            this.stripCustom,
+            this.stripNested,
+            this.stripFormulas});
+            this.contextMenuStripFields.Name = "contextMenuStripFields";
+            this.contextMenuStripFields.Size = new System.Drawing.Size(175, 224);
+            this.contextMenuStripFields.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripFields_Opening);
+            // 
+            // stripActivity
+            // 
+            this.stripActivity.Name = "stripActivity";
+            this.stripActivity.Size = new System.Drawing.Size(174, 22);
+            this.stripActivity.Text = "Activity";
+            // 
+            // stripActive
+            // 
+            this.stripActive.Name = "stripActive";
+            this.stripActive.Size = new System.Drawing.Size(174, 22);
+            this.stripActive.Text = "Active";
+            // 
+            // stripRest
+            // 
+            this.stripRest.Name = "stripRest";
+            this.stripRest.Size = new System.Drawing.Size(174, 22);
+            this.stripRest.Text = "Rest";
+            // 
+            // stripSplits
+            // 
+            this.stripSplits.Name = "stripSplits";
+            this.stripSplits.Size = new System.Drawing.Size(174, 22);
+            this.stripSplits.Text = "Splits";
+            // 
+            // stripTrails
+            // 
+            this.stripTrails.Name = "stripTrails";
+            this.stripTrails.Size = new System.Drawing.Size(174, 22);
+            this.stripTrails.Text = "Trails";
+            // 
+            // stripAthlete
+            // 
+            this.stripAthlete.Name = "stripAthlete";
+            this.stripAthlete.Size = new System.Drawing.Size(174, 22);
+            this.stripAthlete.Text = "Athlete";
+            // 
+            // stripAggregate
+            // 
+            this.stripAggregate.Name = "stripAggregate";
+            this.stripAggregate.Size = new System.Drawing.Size(174, 22);
+            this.stripAggregate.Text = "Aggregate";
+            // 
+            // stripCustom
+            // 
+            this.stripCustom.Name = "stripCustom";
+            this.stripCustom.Size = new System.Drawing.Size(174, 22);
+            this.stripCustom.Text = "Custom Fields";
+            // 
+            // stripNested
+            // 
+            this.stripNested.Name = "stripNested";
+            this.stripNested.Size = new System.Drawing.Size(174, 22);
+            this.stripNested.Text = "Nested Expressions";
+            // 
+            // stripFormulas
+            // 
+            this.stripFormulas.Name = "stripFormulas";
+            this.stripFormulas.Size = new System.Drawing.Size(174, 22);
+            this.stripFormulas.Text = "Formulas";
             // 
             // checkBoxActive
             // 
@@ -234,6 +355,7 @@
             // 
             // textBoxExpression
             // 
+            this.textBoxExpression.ContextMenuStrip = this.contextMenuStripFields;
             this.textBoxExpression.Location = new System.Drawing.Point(70, 69);
             this.textBoxExpression.Name = "textBoxExpression";
             this.textBoxExpression.Size = new System.Drawing.Size(722, 20);
@@ -360,6 +482,7 @@
             // 
             // textBoxNestedExpression
             // 
+            this.textBoxNestedExpression.ContextMenuStrip = this.contextMenuStripFields;
             this.textBoxNestedExpression.Location = new System.Drawing.Point(70, 69);
             this.textBoxNestedExpression.Name = "textBoxNestedExpression";
             this.textBoxNestedExpression.Size = new System.Drawing.Size(722, 20);
@@ -377,10 +500,22 @@
             this.labelTrailsIntegration.Text = "Integration with Trails plugin is disabled";
             this.labelTrailsIntegration.Visible = false;
             // 
+            // checkBoxAfterImportFuture
+            // 
+            this.checkBoxAfterImportFuture.AutoSize = true;
+            this.checkBoxAfterImportFuture.Location = new System.Drawing.Point(255, 3);
+            this.checkBoxAfterImportFuture.Name = "checkBoxAfterImportFuture";
+            this.checkBoxAfterImportFuture.Size = new System.Drawing.Size(203, 17);
+            this.checkBoxAfterImportFuture.TabIndex = 11;
+            this.checkBoxAfterImportFuture.Text = "Recalculate future activities on import";
+            this.checkBoxAfterImportFuture.UseVisualStyleBackColor = true;
+            this.checkBoxAfterImportFuture.CheckedChanged += new System.EventHandler(this.checkBoxAfterImportFuture_CheckedChanged);
+            // 
             // CalculatedFieldsSettingsPageControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.checkBoxAfterImportFuture);
             this.Controls.Add(this.labelTrailsIntegration);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.checkBoxAfterImport);
@@ -389,6 +524,7 @@
             this.tabControl.ResumeLayout(false);
             this.tabPageStandardExpressions.ResumeLayout(false);
             this.tabPageStandardExpressions.PerformLayout();
+            this.contextMenuStripFields.ResumeLayout(false);
             this.tabPageNestedExpressions.ResumeLayout(false);
             this.tabPageNestedExpressions.PerformLayout();
             this.ResumeLayout(false);
@@ -424,5 +560,19 @@
         private System.Windows.Forms.TextBox textBoxCondition;
         private System.Windows.Forms.Button buttonCalculateSelected;
         private System.Windows.Forms.Button buttonTestSelected;
+        private System.Windows.Forms.Label labelForAllActivities;
+        private System.Windows.Forms.Button buttonClearSelected;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripFields;
+        private System.Windows.Forms.ToolStripMenuItem stripActivity;
+        private System.Windows.Forms.ToolStripMenuItem stripSplits;
+        private System.Windows.Forms.ToolStripMenuItem stripTrails;
+        private System.Windows.Forms.ToolStripMenuItem stripCustom;
+        private System.Windows.Forms.ToolStripMenuItem stripAthlete;
+        private System.Windows.Forms.ToolStripMenuItem stripNested;
+        private System.Windows.Forms.ToolStripMenuItem stripActive;
+        private System.Windows.Forms.ToolStripMenuItem stripRest;
+        private System.Windows.Forms.ToolStripMenuItem stripFormulas;
+        private System.Windows.Forms.ToolStripMenuItem stripAggregate;
+        private System.Windows.Forms.CheckBox checkBoxAfterImportFuture;
     }
 }
