@@ -72,7 +72,7 @@
         {
             get
             {
-                return null;
+                return CommonResources.Images.Calculator16;
             }
         }
 

@@ -124,13 +124,13 @@
     <value>Calculated Fields</value>
   </data>
   <data name="Edit_CalculatedFieldsAction_Text" xml:space="preserve">
-    <value>Calculate calculated fields</value>
+    <value>Calculate values</value>
   </data>
   <data name="Edit_CalculatedFieldsMenu" xml:space="preserve">
     <value>Calculated Fields</value>
   </data>
   <data name="Edit_ClearFieldsAction_Text" xml:space="preserve">
-    <value>Clear calculated fields</value>
+    <value>Clear calculated values</value>
   </data>
   <data name="ProgressFormTitle" xml:space="preserve">
     <value>Calculating Fields</value>
