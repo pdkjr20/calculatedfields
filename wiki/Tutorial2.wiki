@@ -1,4 +1,4 @@
-#summary Creating conditioned calculation
+#summary Creating conditional calculations
 
 = Introduction =
 
