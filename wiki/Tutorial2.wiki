@@ -1,8 +1,9 @@
-#summary One-sentence summary of this page.
+#summary Creating conditioned calculation
 
 = Introduction =
 
-Add your content here.
+In this tutorial we will create new calculated field *Distance in miles*<br>
+And we will calculate this field only for activities that are longer then 5 kilometers
 
 
 = Details =
