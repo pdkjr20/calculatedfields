@@ -1,0 +1,23 @@
+This tutorial will help you step by step to create your first formula with *Calculated Fields* plugin
+
+= Introduction =
+
+In this tutorial we will create new custom field *Adjusted Distance*.<br>
+We will calculate *special* distance that will be adjusted by 3%.<br><br>
+For example some users know that their GPS is constantly showing distance shorter by 3% than in reality.<br>
+So they want to see adjusted distance in Sporttracks.
+
+
+= Details =
+
+  * First download this plugin from plugin catalogue or from this page in Downloads tab<br><br>
+  * Now we will create new custom field in ST
+Go to Logbook -> Properties -> Activity (because we want to create custom field that will be shown on activity)<br>
+Here click button *Add Data Field*.<br>
+Set name to *Adjusted Distance*<br>
+Set type to *Number*. We want to see distance as number right? This is important for charting too. We can't create create charts on custom field with type text<br>
+Set decimal places as you want. I want to see 2 decimal places.<br>
+Set summary method to *Sum*. I want to see sum of distances in activity reports when I group by week. Or just in summary row.<br><br>
+
+Ok your configuration may looks like this:
+
