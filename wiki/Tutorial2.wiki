@@ -3,12 +3,35 @@
 = Introduction =
 
 In this tutorial we will create new calculated field *Distance in miles*<br>
-And we will calculate this field only for activities that are longer then 5 kilometers
+And we will calculate this field only for activities that have average heart rate bigger than 120
 
+= Steps =
 
-= Details =
+  * At first create new custom field *Distance in miles*. Set type to number, decimal places to 2, summarize to sum
+  * Now go to settings page of Calculated Fields plugin
+  * In *Calculated Custom Field* combobox pick *Distance in miles*
+  * Right click on expression and choose Activity -> Distance. Now we will edit expression.
+Because now it will only calculate distance in meters. (all of the data provided by plugins are in meters or in seconds. It's important to give users raw date, unchanged by units conversion. Because you are the ones, that can do anything with them)<br>
+Ok if we want to see it in miles, we need to divide distance by 1609.344.
+So result expression will look like this: *{{{ {DISTANCE}/1609.344 }}}*<br><br>
+  * Ok but we wanted to calculate value only if distance is bigger that 5000m ...<br>
+Let's do it:
+  * Right click on *Condition* textbox. Pick Activity -> AVGHR
+Now we will edit condition to this: *{{{ {AVGGR} > 120 }}}*<br>
+Because we wanted to make calculation only if average hr is bigger than 120.
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+  * Now click *Add* button and we are done. You can go to activity reports, select activities and run *Edit -> Calculated Fields -> Calculate Values*.<br>
+Or you can just select your new row in configuration and push button Calculate selected rows. And plugin will calculate your new field for all activities.
+  * If you want you can push button *Test selected* rows. This will do calculation for 30 activities. But values will be not written in your logbook. So it's a nice help for testing of your calculations. If no error will be shown, you are probably ok.<br>
+
+Here is screenshot of configuration for your check if something gets wrong:
+<img>http://img706.imageshack.us/img706/3269/distanceinmiles.png</img>
+
+Here are some more examples of conditions:<br>
+  * Calculate only if distance is not 0:*{{{ {DISTANCE} != 0 }}}*
+  * Calculate only if distance is 0:*{{{ {DISTANCE} == 0 }}}*
+  * Calculate only if category of activity contains word Running:*{{{ {Category}.Contains("Running") }}}*
+  * Calculate only if distance is not 0 AND average hr is greater than 120:*{{{ {DISTANCE} != 0 && {AVGHR} > 120} }}}*
+  * Calculate only if distance is not 0 AND average hr is greater than 120:*{{{ {DISTANCE} != 0 && {AVGHR} > 120} }}}*
+  * Calculate only if Trimp is bigger or equal as 100 OR Trimp is smaller than 200(Note that Trimp is custom field created by Training Load plugin):*{{{ {TRIMP} >= 100 || {TRIMP} < 200 }}}*
+  * Calculate only if you have a word *Regeneration* in Notes on activity:*{{{ {NOTES}.Contains("Regeneration") }}}*
