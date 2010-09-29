@@ -1,3 +1,4 @@
+#summary Creating your first calculated field
 This tutorial will help you step by step to create your first formula with *Calculated Fields* plugin
 
 = Introduction =
