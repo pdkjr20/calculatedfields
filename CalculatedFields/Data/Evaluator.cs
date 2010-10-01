@@ -269,7 +269,7 @@
                 //throw new Exception(serializedDataTrack);
 
                 tempModuleSource = "namespace ns{" + "using System;" + "using System.Text.RegularExpressions;" +
-                              "using System.Collections.Generic;using System.Xml;using System.Xml.Serialization;using System.IO;using System.Linq;" + //using DataTrackPoint;" +
+                              "using System.Collections.Generic;using System.Xml;using System.Xml.Serialization;using System.IO;using System.Linq;using System.Globalization;" + //using DataTrackPoint;" +
                               "class CF{" +
                               "public static object Evaluate(){" +
                               "List<DataTrackPoint> DATATRACK = new List<DataTrackPoint>();";
@@ -277,7 +277,7 @@
                 string dataInit = "";
                 foreach (var point in dataTrack)
                 {
-                    dataInit += "DATATRACK.Add(new DataTrackPoint(" + point.HR + "f," + point.Pace + "f," + point.Speed + "f," + point.Elevation + "f," + point.Grade + "f," + point.Cadence + "f," + point.Power + "f,"+ point.Elapsed + "f));";
+                    dataInit += "DATATRACK.Add(new DataTrackPoint(" + point.HR.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Pace.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Speed.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Elevation.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Grade.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Cadence.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Power.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Elapsed.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f));";
                 }
                 
                 tempModuleSource += dataInit;
