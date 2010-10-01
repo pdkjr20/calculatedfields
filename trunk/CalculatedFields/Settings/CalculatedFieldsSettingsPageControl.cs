@@ -327,7 +327,7 @@
                         textBoxCondition.Text = "{CATEGORY}.Contains(\"Race\") || {CATEGORY}.Contains(\"Trail\")";
                         break;
                     case "Condition for Category is Race AND Distance is greater than 7000m":
-                        textBoxCondition.Text = "{CATEGORY}.Contains(\"Race\") && {CATEGORY} > 7000";
+                        textBoxCondition.Text = "{CATEGORY}.Contains(\"Race\") && {DISTANCE} > 7000";
                         break;
                     case "Avg pace for Trail with name Pernek":
                         result = "{TRAILAVGPACE(Pernek,1)}";
