@@ -285,7 +285,7 @@
                               //"List<DataTrackPoint> DATATRACK = (List<DataTrackPoint>)(new XmlSerializer(typeof(List<DataTrackPoint>)).Deserialize(new StringReader(" + "xml.Replace(\"'\", \"\"\")" + ")));" +
 
                               tempModuleSource +=                                    
-                              "return " + expression + ";} }" +
+                              "if (DATATRACK.Count() != 0) return " + expression + "; else return null;} }" +
                               "public class DataTrackPoint {" +
                               "float hr;float pace;float speed;float elevation;float power;float grade;float cadence;float elapsed;" +
                               "public float HR { get{return hr;} set{hr = value;} }public float Pace { get{return pace;} set{pace = value;} }public float Speed { get{return speed;} set{speed = value;} }public float Elevation { get{return elevation;} set{elevation = value;} }public float Power { get{return power;} set{power = value;} }public float Grade { get{return grade;} set{grade = value;} }public float Cadence { get{return cadence;} set{cadence = value;} } public float Elapsed { get{return elapsed;} set{elapsed = value;} }" +
@@ -333,8 +333,17 @@
             }
             else
             {
+                object result;
                 MethodInfo methodInfo = cr.CompiledAssembly.GetType("ns.CF").GetMethod("Evaluate");
-                object result = methodInfo.Invoke(null, null);
+
+                try
+                {
+                    result = methodInfo.Invoke(null, null);
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message + "\n\n" + e.InnerException.Message);
+                }
 
                 if (cacheEnabled && !expression.Contains("DATATRACK"))
                 {
@@ -573,9 +582,49 @@
 
             ActivityInfo activityInfoInstance = ActivityInfoCache.Instance.GetInfo(activity);
 
-            DateTime startTime = activityInfoInstance.SmoothedSpeedTrack.StartTime;
+            uint totalElapsed = 0;
+            DateTime startTime = DateTime.MaxValue;
 
-            for (int i = 0; i <= activityInfoInstance.SmoothedSpeedTrack.TotalElapsedSeconds * 1000; i += 1000)
+            if (activityInfoInstance.SmoothedSpeedTrack.TotalElapsedSeconds != 0)
+            {
+                totalElapsed = activityInfoInstance.SmoothedSpeedTrack.TotalElapsedSeconds * 1000;
+                startTime = activityInfoInstance.SmoothedSpeedTrack.StartTime;
+            }
+            else if (activityInfoInstance.SmoothedHeartRateTrack.TotalElapsedSeconds != 0)
+            {
+                totalElapsed = activityInfoInstance.SmoothedHeartRateTrack.TotalElapsedSeconds * 1000;
+                startTime = activityInfoInstance.SmoothedHeartRateTrack.StartTime;
+            }
+            else if (activityInfoInstance.SmoothedPowerTrack.TotalElapsedSeconds != 0)
+            {
+                totalElapsed = activityInfoInstance.SmoothedPowerTrack.TotalElapsedSeconds * 1000;
+                startTime = activityInfoInstance.SmoothedPowerTrack.StartTime;
+            }
+            else if (activityInfoInstance.SmoothedGradeTrack.TotalElapsedSeconds != 0)
+            {
+                totalElapsed = activityInfoInstance.SmoothedGradeTrack.TotalElapsedSeconds * 1000;
+                startTime = activityInfoInstance.SmoothedGradeTrack.StartTime;
+            }
+            else if (activityInfoInstance.SmoothedElevationTrack.TotalElapsedSeconds != 0)
+            {
+                totalElapsed = activityInfoInstance.SmoothedElevationTrack.TotalElapsedSeconds * 1000;
+                startTime = activityInfoInstance.SmoothedElevationTrack.StartTime;
+            }
+            else if (activityInfoInstance.SmoothedCadenceTrack.TotalElapsedSeconds != 0)
+            {
+                totalElapsed = activityInfoInstance.SmoothedCadenceTrack.TotalElapsedSeconds * 1000;
+                startTime = activityInfoInstance.SmoothedCadenceTrack.StartTime;
+            }
+
+
+            //throw new Exception(totalElapsed.ToString());
+            if (totalElapsed == 0)
+            {
+                return dataTrack;
+            }
+
+            float pauseShift = 0;
+            for (int i = 0; i <= totalElapsed; i += 1000)
             {
                 bool notPaused = true;
                 DateTime adjustedTime = startTime.AddMilliseconds(i);
@@ -585,6 +634,7 @@
                     if (adjustedTime >= timer.Lower && adjustedTime <= timer.Upper)
                     {
                         notPaused = false;
+                        pauseShift += 1000;
                         break;
                     }
                 }
@@ -626,11 +676,10 @@
                         power = interpolatedValue.Value;
                     }
 
-                    dataTrack.Add(new DataTrackPoint(hr, pace, speed, elevation, grade, cadence, power, i/1000));
+                    dataTrack.Add(new DataTrackPoint(hr, pace, speed, elevation, grade, cadence, power, (i - pauseShift)/1000));
                 }
             }
 
-            //throw new Exception(dataTrack.Max(o => o.HR) + "-" + dataTrack.Average(o => o.Pace) + "-" + dataTrack.Average(o => o.Speed));
             return dataTrack;
         }
 
