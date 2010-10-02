@@ -62,15 +62,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Zone Five Software\SportTracks 3\Common.Visuals.dll</HintPath>
     </Reference>
+    <Reference Include="ITrailResult">
+      <HintPath>..\ITrailResult\ITrailResult\bin\Release\ITrailResult.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="TrailsPlugin, Version=0.2.123.24084, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\trails\bin\ST3.0Debug\TrailsPlugin.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\Evaluator.cs" />

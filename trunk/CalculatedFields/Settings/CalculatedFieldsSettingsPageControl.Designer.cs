@@ -498,7 +498,6 @@
             this.labelTrailsIntegration.Size = new System.Drawing.Size(190, 13);
             this.labelTrailsIntegration.TabIndex = 10;
             this.labelTrailsIntegration.Text = "Integration with Trails plugin is disabled";
-            this.labelTrailsIntegration.Visible = false;
             // 
             // checkBoxAfterImportFuture
             // 

@@ -7,8 +7,6 @@
 
     using Data;
 
-    using TrailsPlugin.Data;
-
     using ZoneFiveSoftware.Common.Data.Fitness;
     using ZoneFiveSoftware.Common.Data.Fitness.CustomData;
     using ZoneFiveSoftware.Common.Visuals;
@@ -82,11 +80,11 @@
             treeListNestedExpressions.RowData = GlobalSettings.nestedFieldsRows;
             treeListNestedExpressions.ThemeChanged(visualTheme);
 
-            /*if (Trails.TestIntegration())
+            if (Trails.TestIntegration())
             {
                 labelTrailsIntegration.Text = "Integration with Trails plugin is enabled";
                 labelTrailsIntegration.ForeColor = Color.Black;
-            }*/
+            }
 
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("EQUIPMENT"));
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("CATEGORY"));
