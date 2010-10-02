@@ -16,8 +16,6 @@
 
     using Microsoft.CSharp;
 
-    using TrailsPlugin.Data;
-
     using UI;
 
     using ZoneFiveSoftware.Common.Data.Fitness;
@@ -25,10 +23,13 @@
     using ZoneFiveSoftware.Common.Data.GPS;
     using ZoneFiveSoftware.Common.Data;
 
+    using TrailsPlugin.Integration;
+
     internal static class Evaluator
     {
         #region Constants and Fields
 
+        private static uint dataTrackElement = 1000;
         private static bool cacheEnabled = true;
         private static Dictionary<string, object> expressionsCache = new Dictionary<string, object>();
 
@@ -363,7 +364,7 @@
             string fieldValue = "";
             string nestedExpressionsHistory = "";
 
-            Dictionary<string, IList<TrailResult>> trails = null;
+            Dictionary<string, List<ITrailResult>> trails = null;
 
             string history = "";
 
@@ -624,7 +625,7 @@
             }
 
             float pauseShift = 0;
-            for (int i = 0; i <= totalElapsed; i += 1000)
+            for (uint i = 0; i <= totalElapsed; i += dataTrackElement)
             {
                 bool notPaused = true;
                 DateTime adjustedTime = startTime.AddMilliseconds(i);
@@ -634,7 +635,7 @@
                     if (adjustedTime >= timer.Lower && adjustedTime <= timer.Upper)
                     {
                         notPaused = false;
-                        pauseShift += 1000;
+                        pauseShift += dataTrackElement;
                         break;
                     }
                 }
@@ -645,33 +646,33 @@
                     ITimeValueEntry<float> interpolatedValue;
 
                     interpolatedValue = activityInfoInstance.SmoothedHeartRateTrack.GetInterpolatedValue(adjustedTime);
-                    if (activityInfoInstance.SmoothedHeartRateTrack != null && interpolatedValue != null)
+                    if (interpolatedValue != null)
                     {
                         hr = interpolatedValue.Value;
                     }
                     interpolatedValue = activityInfoInstance.SmoothedSpeedTrack.GetInterpolatedValue(adjustedTime);
-                    if (activityInfoInstance.SmoothedSpeedTrack != null && interpolatedValue != null)
+                    if (interpolatedValue != null)
                     {
                         pace = 60 / (interpolatedValue.Value * 3.6f);
                         speed = interpolatedValue.Value * 3.6f;
                     }
                     interpolatedValue = activityInfoInstance.SmoothedElevationTrack.GetInterpolatedValue(adjustedTime);
-                    if (activityInfoInstance.SmoothedElevationTrack != null && interpolatedValue != null)
+                    if (interpolatedValue != null)
                     {
                         elevation = interpolatedValue.Value;
                     }
                     interpolatedValue = activityInfoInstance.SmoothedGradeTrack.GetInterpolatedValue(adjustedTime);
-                    if (activityInfoInstance.SmoothedGradeTrack != null && interpolatedValue != null)
+                    if (interpolatedValue != null)
                     {
                         grade = interpolatedValue.Value;
                     }
                     interpolatedValue = activityInfoInstance.SmoothedCadenceTrack.GetInterpolatedValue(adjustedTime);
-                    if (activityInfoInstance.SmoothedCadenceTrack != null && interpolatedValue != null)
+                    if (interpolatedValue != null)
                     {
                         cadence = interpolatedValue.Value;
                     }
                     interpolatedValue = activityInfoInstance.SmoothedPowerTrack.GetInterpolatedValue(adjustedTime);
-                    if (activityInfoInstance.SmoothedPowerTrack != null && interpolatedValue != null)
+                    if (interpolatedValue != null)
                     {
                         power = interpolatedValue.Value;
                     }
@@ -1036,12 +1037,17 @@
             return fieldValue;
         }
 
-        private static string TrailsFields(IActivity activity, ActivityInfo activityInfoInstance, string field, Dictionary<string, IList<TrailResult>> trails)
+        private static string TrailsFields(IActivity activity, ActivityInfo activityInfoInstance, string field, Dictionary<string, List<ITrailResult>> trails)
         {
             string fieldValue = "";
 
             if (field.StartsWith("TRAIL"))
             {
+                if (!Trails.TestIntegration())
+                {
+                    return "";
+                }
+
                 string trailField;
                 string trailName;
                 int trailSplit = 0;
