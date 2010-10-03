@@ -17,3 +17,6 @@ Just right click on expression textbox and simply choose from many fields suppor
 <img>http://img832.imageshack.us/img832/4331/restc.png</img>
 
 Same principe just applies to athlete fields. Just right click and there is submenu Athlete with bunch of supported fields.
+
+So if you want to know distance of active part of activity you can use this formula:
+*{{{ {ActiveDistance}/1609.3472 }}}*
