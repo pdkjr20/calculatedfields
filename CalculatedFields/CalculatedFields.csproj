@@ -62,8 +62,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Zone Five Software\SportTracks 3\Common.Visuals.dll</HintPath>
     </Reference>
-    <Reference Include="ITrailResult">
-      <HintPath>..\ITrailResult\ITrailResult\bin\Release\ITrailResult.dll</HintPath>
+    <Reference Include="ITrailExport">
+      <HintPath>.\ITrailExport.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data.Linq" />

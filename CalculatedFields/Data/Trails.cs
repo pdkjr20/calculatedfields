@@ -11,7 +11,7 @@
     using ZoneFiveSoftware.Common.Data.GPS;
     using ZoneFiveSoftware.Common.Data.Measurement;
 
-    using TrailsPlugin.Integration;
+    using ITrailExport;
 
     public static class Trails
     {
@@ -27,7 +27,7 @@
             try
             {
                 Version version;
-                Type type = GetType("TrailsPlugin.Data.Integration", "TrailsPlugin", out version);
+                Type type = GetType("TrailsPlugin.Export.Integration", "TrailsPlugin", out version);
                 if ((type != null)) //&& (version.CompareTo(this.minVersion) >= 0))
                 {
                     list = (Dictionary<string, List<ITrailResult>>)type.GetMethod("GetTrailsResultsForActivity").Invoke(null, parameters);
@@ -52,7 +52,7 @@
             try
             {
                 Version version;
-                Type type = GetType("TrailsPlugin.Data.Integration", "TrailsPlugin", out version);
+                Type type = GetType("TrailsPlugin.Export.Integration", "TrailsPlugin", out version);
                 if ((type != null)) //&& (version.CompareTo(this.minVersion) >= 0))
                 {
                     return true;
