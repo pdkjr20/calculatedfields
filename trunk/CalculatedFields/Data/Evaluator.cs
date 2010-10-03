@@ -23,7 +23,7 @@
     using ZoneFiveSoftware.Common.Data.GPS;
     using ZoneFiveSoftware.Common.Data;
 
-    using TrailsPlugin.Integration;
+    using ITrailExport;
 
     internal static class Evaluator
     {
