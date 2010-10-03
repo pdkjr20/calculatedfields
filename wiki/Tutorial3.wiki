@@ -1,0 +1,16 @@
+#summary Active Rest parts of activities
+
+= Introduction =
+
+Here we will show where are fields for active and rest parts of activity stored.
+
+
+= Details =
+
+Ok this is will be very simple tutorial.<br><br>
+
+Data from active and rest parts of activities are virtualy same as normal fields.<br>
+For example you can use field *AvgPace* in formula.
+
+And for active and rest you have fields here.<br>
+Just right click on expression textbox and simply choose from many fields supported under Active and Rest menu arrows.<br>
