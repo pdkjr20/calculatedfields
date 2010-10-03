@@ -1,4 +1,4 @@
-#summary Active Rest parts of activities
+#summary Active Rest parts of activities, Athlete fields
 
 = Introduction =
 
@@ -14,3 +14,8 @@ For example you can use field *AvgPace* in formula.
 
 And for active and rest you have fields here.<br>
 Just right click on expression textbox and simply choose from many fields supported under Active and Rest menu arrows.<br>
+
+<img>http://img690.imageshack.us/img690/6186/activec.png</img><br><br>
+<img>http://img832.imageshack.us/img832/4331/restc.png</img>
+
+Same principe just applies to athlete fields. Just right click and there is submenu Athlete with bunch of supported fields.
