@@ -12,7 +12,7 @@ Ok this is will be very simple tutorial.<br><br>
 Data from active and rest parts of activities are virtualy same as normal fields.<br>
 
 
-And for active and rest you have fields here.<br>
+For active and rest you have fields here.<br>
 Just right click on expression textbox and simply choose from many fields supported under Active and Rest menu arrows.<br>
 
 <img>http://img690.imageshack.us/img690/6186/activec.png</img><br><br>
