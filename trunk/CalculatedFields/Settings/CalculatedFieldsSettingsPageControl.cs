@@ -217,19 +217,30 @@
                 item.Click += fieldItem_Click;
             }
 
-            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("Avg. HR/min"));
-            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("Sum of last 7 days distance"));
-            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("Sum of last 21 days distance"));
-            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("Sum of last 7 days distance only for category Running"));
-            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("Distance to Km"));
-            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("Distance to Miles"));
-            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("Speed to Speed in Miles"));
-            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("Adjust Distance by 3%"));
-            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("Condition for Category is Race OR Category is Trail"));
-            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("Condition for Category is Race AND Distance is greater than 7000m"));
-            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("Avg pace for Trail with name Pernek"));
+            stripTracks.DropDownItems.Add(new ToolStripMenuItem("HASGPSTRACK"));
+            stripTracks.DropDownItems.Add(new ToolStripMenuItem("HASHRTRACK"));
+            stripTracks.DropDownItems.Add(new ToolStripMenuItem("HASELEVATIONTRACK"));
+            stripTracks.DropDownItems.Add(new ToolStripMenuItem("HASCADENCETRACK"));
+            stripTracks.DropDownItems.Add(new ToolStripMenuItem("HASPOWERTRACK"));
 
-            foreach (ToolStripMenuItem item in stripFormulas.DropDownItems)
+            foreach (ToolStripMenuItem item in stripTracks.DropDownItems)
+            {
+                item.Click += fieldItem_Click;
+            }
+
+            stripExamples.DropDownItems.Add(new ToolStripMenuItem("Avg. HR/min"));
+            stripExamples.DropDownItems.Add(new ToolStripMenuItem("Sum of last 7 days distance"));
+            stripExamples.DropDownItems.Add(new ToolStripMenuItem("Sum of last 21 days distance"));
+            stripExamples.DropDownItems.Add(new ToolStripMenuItem("Sum of last 7 days distance only for category Running"));
+            stripExamples.DropDownItems.Add(new ToolStripMenuItem("Distance to Km"));
+            stripExamples.DropDownItems.Add(new ToolStripMenuItem("Distance to Miles"));
+            stripExamples.DropDownItems.Add(new ToolStripMenuItem("Speed to Speed in Miles"));
+            stripExamples.DropDownItems.Add(new ToolStripMenuItem("Adjust Distance by 3%"));
+            stripExamples.DropDownItems.Add(new ToolStripMenuItem("Condition for Category is Race OR Category is Trail"));
+            stripExamples.DropDownItems.Add(new ToolStripMenuItem("Condition for Category is Race AND Distance is greater than 7000m"));
+            stripExamples.DropDownItems.Add(new ToolStripMenuItem("Avg pace for Trail with name Pernek"));
+
+            foreach (ToolStripMenuItem item in stripExamples.DropDownItems)
             {
                 item.Click += fieldItem_Click;
             }
@@ -271,7 +282,7 @@
             ToolStripMenuItem item = sender as ToolStripMenuItem;
 
 
-            if (item.OwnerItem == stripActivity || item.OwnerItem == stripAthlete || item.OwnerItem == stripCustom || item.OwnerItem == stripNested || item.OwnerItem == stripActive || item.OwnerItem == stripRest)
+            if (item.OwnerItem == stripActivity || item.OwnerItem == stripAthlete || item.OwnerItem == stripCustom || item.OwnerItem == stripNested || item.OwnerItem == stripActive || item.OwnerItem == stripRest || item.OwnerItem == stripTracks)
             {
                 result = "{" + item.Text + "}";
             }
@@ -291,7 +302,7 @@
                 result = "{Field(" + item.Text + ",7)}";
             }
 
-            if (item.OwnerItem == stripFormulas && textBoxExpression.Focused)
+            if (item.OwnerItem == stripExamples && textBoxExpression.Focused)
             {
                 switch (item.Text)
                 {

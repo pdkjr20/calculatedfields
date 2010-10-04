@@ -48,7 +48,7 @@
             this.stripAggregate = new System.Windows.Forms.ToolStripMenuItem();
             this.stripCustom = new System.Windows.Forms.ToolStripMenuItem();
             this.stripNested = new System.Windows.Forms.ToolStripMenuItem();
-            this.stripFormulas = new System.Windows.Forms.ToolStripMenuItem();
+            this.stripExamples = new System.Windows.Forms.ToolStripMenuItem();
             this.checkBoxActive = new System.Windows.Forms.CheckBox();
             this.treeListCalculatedFields = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.buttonUpdate = new System.Windows.Forms.Button();
@@ -69,6 +69,7 @@
             this.textBoxNestedExpression = new System.Windows.Forms.TextBox();
             this.labelTrailsIntegration = new System.Windows.Forms.Label();
             this.checkBoxAfterImportFuture = new System.Windows.Forms.CheckBox();
+            this.stripTracks = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl.SuspendLayout();
             this.tabPageStandardExpressions.SuspendLayout();
             this.contextMenuStripFields.SuspendLayout();
@@ -195,9 +196,10 @@
             this.stripAggregate,
             this.stripCustom,
             this.stripNested,
-            this.stripFormulas});
+            this.stripTracks,
+            this.stripExamples});
             this.contextMenuStripFields.Name = "contextMenuStripFields";
-            this.contextMenuStripFields.Size = new System.Drawing.Size(175, 224);
+            this.contextMenuStripFields.Size = new System.Drawing.Size(175, 268);
             this.contextMenuStripFields.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripFields_Opening);
             // 
             // stripActivity
@@ -254,11 +256,11 @@
             this.stripNested.Size = new System.Drawing.Size(174, 22);
             this.stripNested.Text = "Nested Expressions";
             // 
-            // stripFormulas
+            // stripExamples
             // 
-            this.stripFormulas.Name = "stripFormulas";
-            this.stripFormulas.Size = new System.Drawing.Size(174, 22);
-            this.stripFormulas.Text = "Formulas";
+            this.stripExamples.Name = "stripExamples";
+            this.stripExamples.Size = new System.Drawing.Size(174, 22);
+            this.stripExamples.Text = "Examples";
             // 
             // checkBoxActive
             // 
@@ -510,6 +512,12 @@
             this.checkBoxAfterImportFuture.UseVisualStyleBackColor = true;
             this.checkBoxAfterImportFuture.CheckedChanged += new System.EventHandler(this.checkBoxAfterImportFuture_CheckedChanged);
             // 
+            // stripTracks
+            // 
+            this.stripTracks.Name = "stripTracks";
+            this.stripTracks.Size = new System.Drawing.Size(174, 22);
+            this.stripTracks.Text = "Data Tracks";
+            // 
             // CalculatedFieldsSettingsPageControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -570,8 +578,9 @@
         private System.Windows.Forms.ToolStripMenuItem stripNested;
         private System.Windows.Forms.ToolStripMenuItem stripActive;
         private System.Windows.Forms.ToolStripMenuItem stripRest;
-        private System.Windows.Forms.ToolStripMenuItem stripFormulas;
+        private System.Windows.Forms.ToolStripMenuItem stripExamples;
         private System.Windows.Forms.ToolStripMenuItem stripAggregate;
         private System.Windows.Forms.CheckBox checkBoxAfterImportFuture;
+        private System.Windows.Forms.ToolStripMenuItem stripTracks;
     }
 }
