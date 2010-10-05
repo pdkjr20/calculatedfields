@@ -228,6 +228,13 @@
                 item.Click += fieldItem_Click;
             }
 
+            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("RECOVERYHR60"));
+
+            foreach (ToolStripMenuItem item in stripFormulas.DropDownItems)
+            {
+                item.Click += fieldItem_Click;
+            }
+
             stripExamples.DropDownItems.Add(new ToolStripMenuItem("Avg. HR/min"));
             stripExamples.DropDownItems.Add(new ToolStripMenuItem("Sum of last 7 days distance"));
             stripExamples.DropDownItems.Add(new ToolStripMenuItem("Sum of last 21 days distance"));
@@ -282,7 +289,7 @@
             ToolStripMenuItem item = sender as ToolStripMenuItem;
 
 
-            if (item.OwnerItem == stripActivity || item.OwnerItem == stripAthlete || item.OwnerItem == stripCustom || item.OwnerItem == stripNested || item.OwnerItem == stripActive || item.OwnerItem == stripRest || item.OwnerItem == stripTracks)
+            if (item.OwnerItem == stripFormulas || item.OwnerItem == stripActivity || item.OwnerItem == stripAthlete || item.OwnerItem == stripCustom || item.OwnerItem == stripNested || item.OwnerItem == stripActive || item.OwnerItem == stripRest || item.OwnerItem == stripTracks)
             {
                 result = "{" + item.Text + "}";
             }
