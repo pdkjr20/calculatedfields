@@ -49,6 +49,10 @@
             cp.GenerateExecutable = false;
             cp.GenerateInMemory = true;
             cp.TreatWarningsAsErrors = false;
+
+            Directory.CreateDirectory(Environment.GetEnvironmentVariable("APPDATA") + "/CalculatedFieldsPlugin/TEMP");
+
+            cp.TempFiles = new TempFileCollection(Environment.GetEnvironmentVariable("APPDATA") + "/CalculatedFieldsPlugin/TEMP/");
             //cp.ReferencedAssemblies.Add("System.dll");
             //cp.ReferencedAssemblies.Add("System.Xml.dll");
             //cp.ReferencedAssemblies.Add("System.Core.dll");
@@ -448,6 +452,11 @@
                     fieldValue = DataTrack(activity, activityInfoInstance, field);
                 }
 
+                if (fieldValue == "")
+                {
+                    fieldValue = Formulas(activity, activityInfoInstance, field);
+                }
+
                 if (fieldValue == "" || fieldValue == "NaN" || fieldValue == "Infinity")
                 {
                     expression = "";
@@ -463,6 +472,21 @@
             //throw new Exception(history);
 
             return expression;
+        }
+
+        private static string Formulas(IActivity activity, ActivityInfo activityInfo, string field)
+        {
+            string fieldValue = "";
+
+            switch (field)
+            {
+                case "RECOVERYHR60":
+                    var dataTrack = GetDataTrack(activity, true);
+                    fieldValue = dataTrack.Select((o, index) => new { Elapsed = o.Elapsed, HR = (dataTrack[((index + 60) < dataTrack.Count) ? index + 60 : index].HR == 0) ? 0 : o.HR - dataTrack[((index + 60) < dataTrack.Count) ? index + 60 : index].HR }).OrderBy(o => o.HR).Last().HR.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                    break;
+            }
+
+            return fieldValue;
         }
 
         private static string LastXDays(IActivity activity, ActivityInfo activityInfo, string condition, string field, CalculatedFieldsRow calculatedFieldsRow)
@@ -483,7 +507,7 @@
                 {
                     days = Int32.Parse(Regex.Match(field, "(?<=,)[ 0-9]*(?=\\))").Value.Trim());
 
-                    DateTime actualActivityDate = activity.StartTime.Date;
+                    DateTime actualActivityDate = activity.StartTime;
 
                     foreach (var pastActivity in CalculatedFields.GetLogBook().Activities)
                     {

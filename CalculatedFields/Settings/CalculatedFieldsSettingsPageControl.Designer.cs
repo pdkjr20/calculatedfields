@@ -48,7 +48,9 @@
             this.stripAggregate = new System.Windows.Forms.ToolStripMenuItem();
             this.stripCustom = new System.Windows.Forms.ToolStripMenuItem();
             this.stripNested = new System.Windows.Forms.ToolStripMenuItem();
+            this.stripTracks = new System.Windows.Forms.ToolStripMenuItem();
             this.stripExamples = new System.Windows.Forms.ToolStripMenuItem();
+            this.stripFormulas = new System.Windows.Forms.ToolStripMenuItem();
             this.checkBoxActive = new System.Windows.Forms.CheckBox();
             this.treeListCalculatedFields = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.buttonUpdate = new System.Windows.Forms.Button();
@@ -69,7 +71,7 @@
             this.textBoxNestedExpression = new System.Windows.Forms.TextBox();
             this.labelTrailsIntegration = new System.Windows.Forms.Label();
             this.checkBoxAfterImportFuture = new System.Windows.Forms.CheckBox();
-            this.stripTracks = new System.Windows.Forms.ToolStripMenuItem();
+            this.labelTrailsIntegration2 = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabPageStandardExpressions.SuspendLayout();
             this.contextMenuStripFields.SuspendLayout();
@@ -91,10 +93,10 @@
             // 
             this.tabControl.Controls.Add(this.tabPageStandardExpressions);
             this.tabControl.Controls.Add(this.tabPageNestedExpressions);
-            this.tabControl.Location = new System.Drawing.Point(0, 26);
+            this.tabControl.Location = new System.Drawing.Point(0, 51);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(803, 671);
+            this.tabControl.Size = new System.Drawing.Size(803, 646);
             this.tabControl.TabIndex = 9;
             // 
             // tabPageStandardExpressions
@@ -117,7 +119,7 @@
             this.tabPageStandardExpressions.Location = new System.Drawing.Point(4, 22);
             this.tabPageStandardExpressions.Name = "tabPageStandardExpressions";
             this.tabPageStandardExpressions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageStandardExpressions.Size = new System.Drawing.Size(795, 645);
+            this.tabPageStandardExpressions.Size = new System.Drawing.Size(795, 620);
             this.tabPageStandardExpressions.TabIndex = 0;
             this.tabPageStandardExpressions.Text = "Standard Expressions";
             this.tabPageStandardExpressions.UseVisualStyleBackColor = true;
@@ -197,7 +199,8 @@
             this.stripCustom,
             this.stripNested,
             this.stripTracks,
-            this.stripExamples});
+            this.stripExamples,
+            this.stripFormulas});
             this.contextMenuStripFields.Name = "contextMenuStripFields";
             this.contextMenuStripFields.Size = new System.Drawing.Size(175, 268);
             this.contextMenuStripFields.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripFields_Opening);
@@ -256,11 +259,23 @@
             this.stripNested.Size = new System.Drawing.Size(174, 22);
             this.stripNested.Text = "Nested Expressions";
             // 
+            // stripTracks
+            // 
+            this.stripTracks.Name = "stripTracks";
+            this.stripTracks.Size = new System.Drawing.Size(174, 22);
+            this.stripTracks.Text = "Data Tracks";
+            // 
             // stripExamples
             // 
             this.stripExamples.Name = "stripExamples";
             this.stripExamples.Size = new System.Drawing.Size(174, 22);
             this.stripExamples.Text = "Examples";
+            // 
+            // stripFormulas
+            // 
+            this.stripFormulas.Name = "stripFormulas";
+            this.stripFormulas.Size = new System.Drawing.Size(174, 22);
+            this.stripFormulas.Text = "Formulas";
             // 
             // checkBoxActive
             // 
@@ -506,22 +521,26 @@
             this.checkBoxAfterImportFuture.AutoSize = true;
             this.checkBoxAfterImportFuture.Location = new System.Drawing.Point(255, 3);
             this.checkBoxAfterImportFuture.Name = "checkBoxAfterImportFuture";
-            this.checkBoxAfterImportFuture.Size = new System.Drawing.Size(203, 17);
+            this.checkBoxAfterImportFuture.Size = new System.Drawing.Size(256, 17);
             this.checkBoxAfterImportFuture.TabIndex = 11;
-            this.checkBoxAfterImportFuture.Text = "Recalculate future activities on import";
+            this.checkBoxAfterImportFuture.Text = "Recalculate future planned activities upon import";
             this.checkBoxAfterImportFuture.UseVisualStyleBackColor = true;
             this.checkBoxAfterImportFuture.CheckedChanged += new System.EventHandler(this.checkBoxAfterImportFuture_CheckedChanged);
             // 
-            // stripTracks
+            // labelTrailsIntegration2
             // 
-            this.stripTracks.Name = "stripTracks";
-            this.stripTracks.Size = new System.Drawing.Size(174, 22);
-            this.stripTracks.Text = "Data Tracks";
+            this.labelTrailsIntegration2.AutoSize = true;
+            this.labelTrailsIntegration2.Location = new System.Drawing.Point(596, 26);
+            this.labelTrailsIntegration2.Name = "labelTrailsIntegration2";
+            this.labelTrailsIntegration2.Size = new System.Drawing.Size(200, 13);
+            this.labelTrailsIntegration2.TabIndex = 18;
+            this.labelTrailsIntegration2.Text = "Thanks to Brandon Doherty and Gerhard";
             // 
             // CalculatedFieldsSettingsPageControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.labelTrailsIntegration2);
             this.Controls.Add(this.checkBoxAfterImportFuture);
             this.Controls.Add(this.labelTrailsIntegration);
             this.Controls.Add(this.tabControl);
@@ -582,5 +601,7 @@
         private System.Windows.Forms.ToolStripMenuItem stripAggregate;
         private System.Windows.Forms.CheckBox checkBoxAfterImportFuture;
         private System.Windows.Forms.ToolStripMenuItem stripTracks;
+        private System.Windows.Forms.ToolStripMenuItem stripFormulas;
+        private System.Windows.Forms.Label labelTrailsIntegration2;
     }
 }
