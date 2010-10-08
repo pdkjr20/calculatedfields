@@ -305,7 +305,7 @@
                                       dataInit += "DATATRACK";
                                   }
 
-                                  dataInit += ".Add(new DataTrackPoint(" + point.HR.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Pace.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Speed.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Elevation.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Grade.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Cadence.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Power.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Elapsed.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f));";
+                                  dataInit += ".Add(new DataTrackPoint(" + point.Distance.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.HR.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Pace.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Speed.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Elevation.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Grade.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Cadence.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Power.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Elapsed.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f));";
                               }
 
                               tempModuleSource += dataInit;
@@ -324,10 +324,10 @@
                               tempModuleSource +=                                    
                               ".Count() != 0) return " + expression + "; else return null;} }" +
                               "public class DataTrackPoint {" +
-                              "float hr;float pace;float speed;float elevation;float power;float grade;float cadence;float elapsed;" +
-                              "public float HR { get{return hr;} set{hr = value;} }public float Pace { get{return pace;} set{pace = value;} }public float Speed { get{return speed;} set{speed = value;} }public float Elevation { get{return elevation;} set{elevation = value;} }public float Power { get{return power;} set{power = value;} }public float Grade { get{return grade;} set{grade = value;} }public float Cadence { get{return cadence;} set{cadence = value;} } public float Elapsed { get{return elapsed;} set{elapsed = value;} }" +
+                              "float distance;float hr;float pace;float speed;float elevation;float power;float grade;float cadence;float elapsed;" +
+                              "public float Distance { get{return distance;} set{distance = value;} }public float HR { get{return hr;} set{hr = value;} }public float Pace { get{return pace;} set{pace = value;} }public float Speed { get{return speed;} set{speed = value;} }public float Elevation { get{return elevation;} set{elevation = value;} }public float Power { get{return power;} set{power = value;} }public float Grade { get{return grade;} set{grade = value;} }public float Cadence { get{return cadence;} set{cadence = value;} } public float Elapsed { get{return elapsed;} set{elapsed = value;} }" +
                               "public DataTrackPoint(){}" + 
-                              "public DataTrackPoint(float hr, float pace, float speed, float elevation, float grade, float cadence, float power, float elapsed){HR = hr;Pace = pace;Speed = speed;Elevation = elevation;Grade = grade;Cadence = cadence;Power = power;Elapsed = elapsed;}" + 
+                              "public DataTrackPoint(float distance, float hr, float pace, float speed, float elevation, float grade, float cadence, float power, float elapsed){Distance = distance;HR = hr;Pace = pace;Speed = speed;Elevation = elevation;Grade = grade;Cadence = cadence;Power = power;Elapsed = elapsed;}" + 
                               "}}";
                 
                 //throw new Exception(tempModuleSource);
@@ -478,12 +478,10 @@
         {
             string fieldValue = "";
 
-            switch (field)
+            if (fieldValue == "RECOVERYHR60")
             {
-                case "RECOVERYHR60":
-                    var dataTrack = GetDataTrack(activity, true);
-                    fieldValue = dataTrack.Select((o, index) => new { Elapsed = o.Elapsed, HR = (dataTrack[((index + 60) < dataTrack.Count) ? index + 60 : index].HR == 0) ? 0 : o.HR - dataTrack[((index + 60) < dataTrack.Count) ? index + 60 : index].HR }).OrderBy(o => o.HR).Last().HR.ToString(CultureInfo.InvariantCulture.NumberFormat);
-                    break;
+                var dataTrack = GetDataTrack(activity, true);
+                fieldValue = dataTrack.Select((o, index) => new { Elapsed = o.Elapsed, HR = (dataTrack[((index + 60) < dataTrack.Count) ? index + 60 : index].HR == 0) ? 0 : o.HR - dataTrack[((index + 60) < dataTrack.Count) ? index + 60 : index].HR }).OrderBy(o => o.HR).Last().HR.ToString(CultureInfo.InvariantCulture.NumberFormat);
             }
 
             return fieldValue;
@@ -658,6 +656,11 @@
                 totalElapsed = activityInfoInstance.SmoothedSpeedTrack.TotalElapsedSeconds * 1000;
                 startTime = activityInfoInstance.SmoothedSpeedTrack.StartTime;
             }
+            else if (activityInfoInstance.ActualDistanceMetersTrack.TotalElapsedSeconds != 0)
+            {
+                totalElapsed = activityInfoInstance.ActualDistanceMetersTrack.TotalElapsedSeconds * 1000;
+                startTime = activityInfoInstance.ActualDistanceMetersTrack.StartTime;
+            }
             else if (activityInfoInstance.SmoothedHeartRateTrack.TotalElapsedSeconds != 0)
             {
                 totalElapsed = activityInfoInstance.SmoothedHeartRateTrack.TotalElapsedSeconds * 1000;
@@ -712,7 +715,7 @@
 
                 if (!paused || includePauses)
                 {
-                    float hr = 0, pace = 0, speed = 0, elevation = 0, grade = 0, cadence = 0, power = 0;
+                    float hr = 0, pace = 0, speed = 0, elevation = 0, grade = 0, cadence = 0, power = 0, distance = 0;
                     ITimeValueEntry<float> interpolatedValue;
 
                     interpolatedValue = activityInfoInstance.SmoothedHeartRateTrack.GetInterpolatedValue(adjustedTime);
@@ -726,6 +729,11 @@
                         {
                             hr = interpolatedValue.Value;
                         }
+                    }
+                    interpolatedValue = activityInfoInstance.ActualDistanceMetersTrack.GetInterpolatedValue(adjustedTime);
+                    if (interpolatedValue != null)
+                    {
+                        distance = interpolatedValue.Value;
                     }
                     interpolatedValue = activityInfoInstance.SmoothedSpeedTrack.GetInterpolatedValue(adjustedTime);
                     if (interpolatedValue != null)
@@ -754,7 +762,7 @@
                         power = interpolatedValue.Value;
                     }
 
-                    dataTrack.Add(new DataTrackPoint(hr, pace, speed, elevation, grade, cadence, power, (i - pauseShift)/1000));
+                    dataTrack.Add(new DataTrackPoint(distance, hr, pace, speed, elevation, grade, cadence, power, (i - pauseShift)/1000));
                 }
             }
 

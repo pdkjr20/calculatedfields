@@ -18,7 +18,9 @@
         float cadence;
         float power;
         float elapsed;
+        float distance;
 
+        public float Distance { get { return distance; } set { distance = value; } }
         public float HR { get { return hr; } set { hr = value; } }
         public float Pace { get { return pace; } set { pace = value; } }
         public float Speed { get { return speed; } set { speed = value; } }
@@ -32,8 +34,9 @@
         {
         }
 
-        public DataTrackPoint(float hr, float pace, float speed, float elevation, float grade, float cadence, float power, float elapsed)
+        public DataTrackPoint(float distance, float hr, float pace, float speed, float elevation, float grade, float cadence, float power, float elapsed)
         {
+            Distance = distance;
             HR = hr;
             Pace = pace;
             Speed = speed;
