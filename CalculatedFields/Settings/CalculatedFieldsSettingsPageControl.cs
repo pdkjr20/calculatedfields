@@ -229,6 +229,8 @@
             }
 
             stripFormulas.DropDownItems.Add(new ToolStripMenuItem("RECOVERYHR60"));
+            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("FASTESTTIME"));
+            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("FASTESTDISTANCE"));
 
             foreach (ToolStripMenuItem item in stripFormulas.DropDownItems)
             {
@@ -289,7 +291,7 @@
             ToolStripMenuItem item = sender as ToolStripMenuItem;
 
 
-            if (item.OwnerItem == stripFormulas || item.OwnerItem == stripActivity || item.OwnerItem == stripAthlete || item.OwnerItem == stripCustom || item.OwnerItem == stripNested || item.OwnerItem == stripActive || item.OwnerItem == stripRest || item.OwnerItem == stripTracks)
+            if (item.OwnerItem == stripActivity || item.OwnerItem == stripAthlete || item.OwnerItem == stripCustom || item.OwnerItem == stripNested || item.OwnerItem == stripActive || item.OwnerItem == stripRest || item.OwnerItem == stripTracks)
             {
                 result = "{" + item.Text + "}";
             }
@@ -307,6 +309,22 @@
             if (item.OwnerItem == stripAggregate)
             {
                 result = "{Field(" + item.Text + ",7)}";
+            }
+
+            if (item.OwnerItem == stripFormulas)
+            {
+                switch (item.Text)
+                {
+                    case "RECOVERYHR60":
+                        result = "{RECOVERYHR60}";
+                        break;
+                    case "FASTESTTIME":
+                        result = "{FASTESTTIME(60)}";
+                        break;
+                    case "FASTESTDISTANCE":
+                        result = "{FASTESTDISTANCE(1000)}";
+                        break;
+                }
             }
 
             if (item.OwnerItem == stripExamples && textBoxExpression.Focused)

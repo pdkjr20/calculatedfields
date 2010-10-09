@@ -478,10 +478,71 @@
         {
             string fieldValue = "";
 
-            if (fieldValue == "RECOVERYHR60")
+            if (field == "RECOVERYHR60")
             {
                 var dataTrack = GetDataTrack(activity, true);
                 fieldValue = dataTrack.Select((o, index) => new { Elapsed = o.Elapsed, HR = (dataTrack[((index + 60) < dataTrack.Count) ? index + 60 : index].HR == 0) ? 0 : o.HR - dataTrack[((index + 60) < dataTrack.Count) ? index + 60 : index].HR }).OrderBy(o => o.HR).Last().HR.ToString(CultureInfo.InvariantCulture.NumberFormat);
+            }
+            if (field.Contains("FASTEST"))
+            {
+                string fastestField;
+                int fastestParameter = 0;
+
+                fastestField = Regex.Match(field, "(?<=FASTEST).*(?=\\()").Value;
+                fastestParameter = Int32.Parse(Regex.Match(field, "(?<=\\()[0-9]*(?=\\))").Value);
+
+                if (fastestField != "" && fastestParameter != 0)
+                {
+                    var dataTrack = GetDataTrack(activity, true);
+
+                    if (fastestField == "TIME")
+                    {
+                        float greatestDistance = 0;
+
+                        for (int i = 0; i < dataTrack.Count; i++)
+                        {
+                            for (int j = i; j < dataTrack.Count; j++)
+                            {
+                                if (dataTrack[j].Elapsed - dataTrack[i].Elapsed >= fastestParameter)
+                                {
+                                    float temp = dataTrack[j].Distance - dataTrack[i].Distance;
+                                    if (temp > greatestDistance)
+                                    {
+                                        greatestDistance = temp;
+                                    }
+
+                                    break;
+                                }
+                            }
+                        }
+
+                        fieldValue = greatestDistance.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                    }
+
+                    if (fastestField == "DISTANCE")
+                    {
+                        float fastestTime = float.MaxValue;
+
+                        for (int i = 0; i < dataTrack.Count; i++)
+                        {
+                            for (int j = i; j < dataTrack.Count; j++)
+                            {
+                                if (dataTrack[j].Distance - dataTrack[i].Distance >= fastestParameter)
+                                {
+                                    float temp = dataTrack[j].Elapsed - dataTrack[i].Elapsed;
+                                    if (temp < fastestTime)
+                                    {
+                                        fastestTime = temp;
+                                    }
+
+                                    break;
+                                }
+                            }
+                        }
+
+                        fieldValue = fastestTime.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                    }
+                }
             }
 
             return fieldValue;
@@ -738,28 +799,64 @@
                     interpolatedValue = activityInfoInstance.SmoothedSpeedTrack.GetInterpolatedValue(adjustedTime);
                     if (interpolatedValue != null)
                     {
-                        pace = 60 / (interpolatedValue.Value * 3.6f);
-                        speed = interpolatedValue.Value * 3.6f;
+                        if (paused)
+                        {
+                            pace = 0;
+                            speed = 0;
+                        }
+                        else
+                        {
+                            pace = 60 / (interpolatedValue.Value * 3.6f);
+                            speed = interpolatedValue.Value * 3.6f;
+                        }
                     }
                     interpolatedValue = activityInfoInstance.SmoothedElevationTrack.GetInterpolatedValue(adjustedTime);
                     if (interpolatedValue != null)
                     {
-                        elevation = interpolatedValue.Value;
+                        if (paused)
+                        {
+                            elevation = 0;
+                        }
+                        else
+                        {
+                            elevation = interpolatedValue.Value;
+                        }
                     }
                     interpolatedValue = activityInfoInstance.SmoothedGradeTrack.GetInterpolatedValue(adjustedTime);
                     if (interpolatedValue != null)
                     {
-                        grade = interpolatedValue.Value;
+                        if (paused)
+                        {
+                            grade = 0;
+                        }
+                        else
+                        {
+                            grade = interpolatedValue.Value;
+                        }
                     }
                     interpolatedValue = activityInfoInstance.SmoothedCadenceTrack.GetInterpolatedValue(adjustedTime);
                     if (interpolatedValue != null)
                     {
-                        cadence = interpolatedValue.Value;
+                        if (paused)
+                        {
+                            cadence = 0;
+                        }
+                        else
+                        {
+                            cadence = interpolatedValue.Value;
+                        }
                     }
                     interpolatedValue = activityInfoInstance.SmoothedPowerTrack.GetInterpolatedValue(adjustedTime);
                     if (interpolatedValue != null)
                     {
-                        power = interpolatedValue.Value;
+                        if (paused)
+                        {
+                            power = 0;
+                        }
+                        else
+                        {
+                            power = interpolatedValue.Value;
+                        }
                     }
 
                     dataTrack.Add(new DataTrackPoint(distance, hr, pace, speed, elevation, grade, cadence, power, (i - pauseShift)/1000));
