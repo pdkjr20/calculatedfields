@@ -516,7 +516,10 @@
                             }
                         }
 
-                        fieldValue = greatestDistance.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                        if (greatestDistance != 0)
+                        {
+                            fieldValue = greatestDistance.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                        }
                     }
 
                     if (fastestField == "DISTANCE")
@@ -540,7 +543,10 @@
                             }
                         }
 
-                        fieldValue = fastestTime.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                        if (fastestTime != float.MaxValue)
+                        {
+                            fieldValue = fastestTime.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                        }
                     }
                 }
             }
