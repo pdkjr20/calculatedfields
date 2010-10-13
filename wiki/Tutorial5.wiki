@@ -8,7 +8,8 @@ by C# compiler. So in fact you can write in expressions everything that you can 
 
 
 = Details =
-
+  * remember to encapsulate fields with {}, name of field is case insensitive.
+*{{{ {AvGPACe} }}}*
   * basic math<br>
 *{{{ {DISTANCE} * 5 / 20 * 1.2343 - (500 + 20.3443) * 0.32443 }}}*
   * strings concatenations and combining strings with fields
