@@ -1,0 +1,17 @@
+#summary Syntax in expressions
+
+= Introduction =
+
+Here you can see many examples of what can be done in expressions.<br>
+If you are a programmer, just for your information, epxressions are evaluated dynamic
+by C# compiler. So in fact you can write in expressions everything that you can write in C# as an one line expressions.
+
+
+= Details =
+
+  * basic math<br>
+*{{{ {DISTANCE} * 5 / 20 * 1.2343 - (500 + 20.3443) * 0.32443 }}}*
+  * strings concatenations and combining strings with fields
+*{{{ "this is our test string, distance is: " + {DISTANCE} + " and pace is: " + {AVGPACE} }}}*
+  * check if text contains some string, for example check if Category contains text Running
+*{{{ {CATEGORY}.Contains("Running") }}}*
