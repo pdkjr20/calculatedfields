@@ -228,7 +228,7 @@
                 item.Click += fieldItem_Click;
             }
 
-            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("RECOVERYHR60"));
+            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("RECOVERYHR"));
             stripFormulas.DropDownItems.Add(new ToolStripMenuItem("FASTESTTIME"));
             stripFormulas.DropDownItems.Add(new ToolStripMenuItem("FASTESTDISTANCE"));
 
@@ -315,8 +315,8 @@
             {
                 switch (item.Text)
                 {
-                    case "RECOVERYHR60":
-                        result = "{RECOVERYHR60}";
+                    case "RECOVERYHR":
+                        result = "{RECOVERYHR(60)}";
                         break;
                     case "FASTESTTIME":
                         result = "{FASTESTTIME(60)}";

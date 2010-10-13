@@ -478,10 +478,14 @@
         {
             string fieldValue = "";
 
-            if (field == "RECOVERYHR60")
+            if (field.Contains("RECOVERYHR"))
             {
+                int interval = 0;
+
+                interval = Int32.Parse(Regex.Match(field, "(?<=\\()[0-9]*(?=\\))").Value);
+
                 var dataTrack = GetDataTrack(activity, true);
-                fieldValue = dataTrack.Select((o, index) => new { Elapsed = o.Elapsed, HR = (dataTrack[((index + 60) < dataTrack.Count) ? index + 60 : index].HR == 0) ? 0 : o.HR - dataTrack[((index + 60) < dataTrack.Count) ? index + 60 : index].HR }).OrderBy(o => o.HR).Last().HR.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                fieldValue = dataTrack.Select((o, index) => new { Elapsed = o.Elapsed, HR = (dataTrack[((index + interval) < dataTrack.Count) ? index + interval : index].HR == 0) ? 0 : o.HR - dataTrack[((index + interval) < dataTrack.Count) ? index + interval : index].HR }).OrderBy(o => o.HR).Last().HR.ToString(CultureInfo.InvariantCulture.NumberFormat);
             }
             if (field.Contains("FASTEST"))
             {
