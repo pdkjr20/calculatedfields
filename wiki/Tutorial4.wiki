@@ -1,0 +1,35 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+This tutorial will guide you step by step with Trails feature of plugin.
+
+Do you know Trails plugin? Calculated Fields plugin is integrated 
+with Trails plugin. So you can easily calculate your pace, time etc
+for your trail created in Trails plugin.
+And fill these values to your custom fields.
+
+With this feature you have ability to create charts from your trails data.
+
+
+= Details =
+
+  * Ok we will first check if our integration with Trails plugin is enabled. Go to settings page of plugin and see text in upper right corner. If there is written that it's enabled integration is ok.<br>
+<img>http://img340.imageshack.us/img340/7444/integration.png</img><br><br>
+If no please download this build of Trails plugin and install it:<br>
+http://code.google.com/p/trails/downloads/detail?name=TrailsPlugin-0.2.128.st3plugin&can=2&q=
+  * First step is to create your trail in Trails plugin. It's important to remember it's name. In this example I have created trail with name *PernekMain*
+<img>http://img827.imageshack.us/img827/5477/trailsd.png</img>
+
+  * I have created bunch of custom fields for this trail like: Pernek Avg HR, Pernek Avg Pace, Pernek Main Distance, Pernek Main Time, Pernek Main Max HR. And set type of custom fields as necessary. Number for distance, elapsed time for pace etc. As you want.
+  * Now I go to settings page of Calculated Fields plugin. And create here these formulas (of course you fill fill your trail name as first parameter, number 1, second parameter tell plugin which lap of trail to fill, because you can repeat your trail many times in one activity, so if you want to see 2 lap of that trail just replace 1 with 2 etc):
+Pernek Avg HR - *{{{ {TrailAvgHR(PernekMain,1)} }}}*<br>
+Pernek Avg Pace - *{{{ {TrailAvgPace(PernekMain,1)} }}}*<br>
+Pernek Main Distance - *{{{ {TrailDistance(PernekMain,1)} }}}*<br>
+Pernek Main Max HR - *{{{ {TrailMaxHR(PernekMain,1)} }}}*<br>
+Pernek Main Time - *{{{ {TrailTime(PernekMain,1)} }}}*<br>
+  * Now I have all complete so I can calculate trails on all my activities
+<br>
+And here is nice result:<br>
+<img>http://img299.imageshack.us/img299/853/trailreport.png</img>
+<img>http://img844.imageshack.us/img844/4461/trailchart.png</img>
