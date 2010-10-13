@@ -3,7 +3,7 @@
 = Introduction =
 
 Here you can see many examples of what can be done in expressions.<br>
-If you are a programmer, just for your information, epxressions are evaluated dynamic
+If you are a programmer, just for your information, expressions are evaluated dynamic
 by C# compiler. So in fact you can write in expressions everything that you can write in C# as an one line expressions.
 
 
@@ -15,3 +15,10 @@ by C# compiler. So in fact you can write in expressions everything that you can 
 *{{{ "this is our test string, distance is: " + {DISTANCE} + " and pace is: " + {AVGPACE} }}}*
   * check if text contains some string, for example check if Category contains text Running
 *{{{ {CATEGORY}.Contains("Running") }}}*
+  * you can use regular expressions !
+*{{{ Regex.Match({WEATHERNOTES}, "[0-9]*.[0-9]*").Value }}}*
+  * You can combine as many fields as you want in one formula
+*{{{ {DISTANCE} / {AVGPACE} + 120 + {AVGHR} }}}*
+
+<br>
+and many many more
