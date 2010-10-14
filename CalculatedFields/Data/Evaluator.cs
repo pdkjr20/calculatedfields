@@ -576,13 +576,14 @@
                 {
                     days = Int32.Parse(Regex.Match(field, "(?<=,)[ 0-9]*(?=\\))").Value.Trim());
 
-                    DateTime actualActivityDate = activity.StartTime;
+                    DateTime actualActivityDate = (activity.StartTime.ToUniversalTime() + activity.TimeZoneUtcOffset).Date;
 
                     foreach (var pastActivity in CalculatedFields.GetLogBook().Activities)
                     {
-                        if (pastActivity.StartTime.Date <= actualActivityDate)
+                        DateTime pastActivityDate = (pastActivity.StartTime.ToUniversalTime() + activity.TimeZoneUtcOffset).Date;
+                        if (pastActivityDate <= actualActivityDate)
                         {
-                            if (actualActivityDate.Subtract(pastActivity.StartTime.Date).Days < days && (condition == "" || (condition != "" && Evaluate(condition, pastActivity, "", calculatedFieldsRow).ToString() == "True")))
+                            if (actualActivityDate.Subtract(pastActivityDate).Days < days && (condition == "" || (condition != "" && Evaluate(condition, pastActivity, "", calculatedFieldsRow).ToString() == "True")))
                             {
                                 //if (pastActivity.StartTime.Date.Day == 1)
                                 //{
@@ -1039,10 +1040,10 @@
                     fieldValue = "\"" + activity.Name + "\"";
                     break;
                 case "DATETIME":
-                    fieldValue = "\"" + activity.StartTime + "\"";
+                    fieldValue = "\"" + (activity.StartTime.ToUniversalTime() + activity.TimeZoneUtcOffset).ToString() + "\"";
                     break;
                 case "DATE":
-                    fieldValue = "\"" + activity.StartTime.ToShortDateString() + "\"";
+                    fieldValue = "\"" + (activity.StartTime.ToUniversalTime() + activity.TimeZoneUtcOffset).ToShortDateString() + "\"";
                     break;
                 case "NOTES":
                     fieldValue = "\"" + activity.Notes + "\"";
