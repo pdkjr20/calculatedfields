@@ -37,7 +37,7 @@
         private static readonly CSharpCodeProvider provider = new CSharpCodeProvider(new Dictionary<string, string>() { { "CompilerVersion", "v3.5" } });
 
         private static readonly Regex bracketsPattern = new Regex("{*}*", RegexOptions.Compiled);
-        private static readonly Regex fieldPattern = new Regex("{[A-Za-z0-9\\(\\), ]*}", RegexOptions.Compiled);
+        private static readonly Regex fieldPattern = new Regex("{[A-Za-z0-9\\(\\), .]*}", RegexOptions.Compiled);
         //private static readonly Regex fieldPattern = new Regex("{.*}", RegexOptions.Compiled);
 
         #endregion
@@ -444,17 +444,17 @@
 
                 if (fieldValue == "")
                 {
+                    fieldValue = Formulas(activity, activityInfoInstance, field);
+                }
+
+                if (fieldValue == "")
+                {
                     fieldValue = LastXDays(activity, activityInfoInstance, condition, field, calculatedFieldsRow);
                 }
 
                 if (fieldValue == "")
                 {
                     fieldValue = DataTrack(activity, activityInfoInstance, field);
-                }
-
-                if (fieldValue == "")
-                {
-                    fieldValue = Formulas(activity, activityInfoInstance, field);
                 }
 
                 if (fieldValue == "" || fieldValue == "NaN" || fieldValue == "Infinity")
@@ -478,6 +478,50 @@
         {
             string fieldValue = "";
 
+            if (field.Contains("RANGE"))
+            {
+                string returnType = Regex.Match(field, "(?<=RANGE).*(?=\\()").Value;
+                string dataField = Regex.Match(field, "(?<=\\()[a-zA-Z]*(?=,)").Value.ToUpper();
+                float lowerBound = Single.Parse(Regex.Match(field, "(?<=,)[0-9.]*(?=,)").Value);
+                float upperBound = Single.Parse(Regex.Match(field, "(?<=,)[0-9.]*(?=\\))").Value);
+
+                if (dataField != "" && returnType != "")
+                {
+                    var dataTrack = GetDataTrack(activity, false);
+
+                    switch (returnType)
+                    {
+                        case "ELAPSED":
+                            fieldValue = dataTrack.Where(o => (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power))))))))) >= lowerBound && (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power))))))))) <= upperBound).Count().ToString(CultureInfo.InvariantCulture.NumberFormat);
+                            break;
+                        case "DISTANCE":
+                            fieldValue = dataTrack.Select((o, index) => new { Field = (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power))))))))), Distance = (dataTrack[((index + 1) < dataTrack.Count) ? index + 1 : index].Distance - o.Distance) }).Where(o => o.Field >= lowerBound && o.Field <= upperBound).Sum(o => o.Distance).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                            break;
+                        case "HR":
+                            fieldValue = dataTrack.Where(o => (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power))))))))) >= lowerBound && (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power))))))))) <= upperBound).Average(o => o.HR).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                            break;
+                        case "PACE":
+                            fieldValue = dataTrack.Where(o => (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power))))))))) >= lowerBound && (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power))))))))) <= upperBound).Average(o => o.Pace).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                            break;
+                        case "SPEED":
+                            fieldValue = dataTrack.Where(o => (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power))))))))) >= lowerBound && (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power))))))))) <= upperBound).Average(o => o.Speed).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                            break;
+                        case "ELEVATION":
+                            fieldValue = dataTrack.Where(o => (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power))))))))) >= lowerBound && (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power))))))))) <= upperBound).Average(o => o.Elevation).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                            break;
+                        case "GRADE":
+                            fieldValue = dataTrack.Where(o => (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power))))))))) >= lowerBound && (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power))))))))) <= upperBound).Average(o => o.Grade).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                            break;
+                        case "CADENCE":
+                            fieldValue = dataTrack.Where(o => (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power))))))))) >= lowerBound && (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power))))))))) <= upperBound).Average(o => o.Cadence).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                            break;
+                        case "POWER":
+                            fieldValue = dataTrack.Where(o => (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power))))))))) >= lowerBound && (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power))))))))) <= upperBound).Average(o => o.Power).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                            break;
+                    }
+                }
+            }
+
             if (field.Contains("RECOVERYHR"))
             {
                 int interval = 0;
@@ -487,32 +531,91 @@
                 var dataTrack = GetDataTrack(activity, true);
                 fieldValue = dataTrack.Select((o, index) => new { Elapsed = o.Elapsed, HR = (dataTrack[((index + interval) < dataTrack.Count) ? index + interval : index].HR == 0) ? 0 : o.HR - dataTrack[((index + interval) < dataTrack.Count) ? index + interval : index].HR }).OrderBy(o => o.HR).Last().HR.ToString(CultureInfo.InvariantCulture.NumberFormat);
             }
-            if (field.Contains("FASTEST"))
+            if (field.Contains("PEAK"))
             {
-                string fastestField;
-                int fastestParameter = 0;
+                string operation = Regex.Match(field, "[a-zA-Z]*(?=PEAK)").Value;
+                string returnType = Regex.Match(field, "(?<=PEAK).*(?=\\()").Value;
+                string dataField = Regex.Match(field, "(?<=\\()[a-zA-Z]*(?=,)").Value.ToUpper();
+                int interval = Int32.Parse(Regex.Match(field, "(?<=,)[0-9]*(?=\\))").Value);
 
-                fastestField = Regex.Match(field, "(?<=FASTEST).*(?=\\()").Value;
-                fastestParameter = Int32.Parse(Regex.Match(field, "(?<=\\()[0-9]*(?=\\))").Value);
-
-                if (fastestField != "" && fastestParameter != 0)
+                if (dataField != "" && returnType != "" && interval != 0 && (operation == "MAX" || operation == "MIN"))
                 {
                     var dataTrack = GetDataTrack(activity, true);
 
-                    if (fastestField == "TIME")
+                    if (returnType == "TIME")
                     {
-                        float greatestDistance = 0;
+                        float peakValue;
+
+                        if (operation == "MAX")
+                        {
+                            peakValue = 0;
+                        }
+                        else
+                        {
+                            peakValue = float.MaxValue;
+                        }
 
                         for (int i = 0; i < dataTrack.Count; i++)
                         {
                             for (int j = i; j < dataTrack.Count; j++)
                             {
-                                if (dataTrack[j].Elapsed - dataTrack[i].Elapsed >= fastestParameter)
+                                if (dataTrack[j].Elapsed - dataTrack[i].Elapsed >= interval)
                                 {
-                                    float temp = dataTrack[j].Distance - dataTrack[i].Distance;
-                                    if (temp > greatestDistance)
+                                    float temp;
+
+                                    if (operation == "MAX")
                                     {
-                                        greatestDistance = temp;
+                                        temp = 0;
+                                    }
+                                    else
+                                    {
+                                        temp = float.MaxValue;
+                                    }
+
+                                    switch (dataField)
+                                    {
+                                        case "ELAPSED":
+                                            temp = dataTrack[j].Elapsed - dataTrack[i].Elapsed;
+                                            break;
+                                        case "DISTANCE":
+                                            temp = dataTrack[j].Distance - dataTrack[i].Distance;
+                                            break;
+                                        case "HR":
+                                            temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.HR);
+                                            break;
+                                        case "PACE":
+                                            temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.Pace);
+                                            break;
+                                        case "SPEED":
+                                            temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.Speed);
+                                            break;
+                                        case "ELEVATION":
+                                            temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.Elevation);
+                                            break;
+                                        case "GRADE":
+                                            temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.Grade);
+                                            break;
+                                        case "CADENCE":
+                                            temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.Cadence);
+                                            break;
+                                        case "POWER":
+                                            temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.Power);
+                                            break;
+                                    }
+
+                                    if (operation == "MAX")
+                                    {
+                                        if (temp > peakValue)
+                                        {
+                                            peakValue = temp;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (temp < peakValue)
+                                        {
+                                            peakValue = temp;
+                                        }
                                     }
 
                                     break;
@@ -520,26 +623,86 @@
                             }
                         }
 
-                        if (greatestDistance != 0)
+                        if (peakValue != 0)
                         {
-                            fieldValue = greatestDistance.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                            fieldValue = peakValue.ToString(CultureInfo.InvariantCulture.NumberFormat);
                         }
                     }
 
-                    if (fastestField == "DISTANCE")
+                    if (returnType == "DISTANCE")
                     {
-                        float fastestTime = float.MaxValue;
+                        float peakValue;
+
+                        if (operation == "MAX")
+                        {
+                            peakValue = 0;
+                        }
+                        else
+                        {
+                            peakValue = float.MaxValue;
+                        }
 
                         for (int i = 0; i < dataTrack.Count; i++)
                         {
                             for (int j = i; j < dataTrack.Count; j++)
                             {
-                                if (dataTrack[j].Distance - dataTrack[i].Distance >= fastestParameter)
+                                if (dataTrack[j].Distance - dataTrack[i].Distance >= interval)
                                 {
-                                    float temp = dataTrack[j].Elapsed - dataTrack[i].Elapsed;
-                                    if (temp < fastestTime)
+                                    float temp;
+
+                                    if (operation == "MAX")
                                     {
-                                        fastestTime = temp;
+                                        temp = 0;
+                                    }
+                                    else
+                                    {
+                                        temp = float.MaxValue;
+                                    }
+
+                                    switch (dataField)
+                                    {
+                                        case "ELAPSED":
+                                            temp = dataTrack[j].Elapsed - dataTrack[i].Elapsed;
+                                            break;
+                                        case "DISTANCE":
+                                            temp = dataTrack[j].Distance - dataTrack[i].Distance;
+                                            break;
+                                        case "HR":
+                                            temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.HR);
+                                            break;
+                                        case "PACE":
+                                            temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.Pace);
+                                            break;
+                                        case "SPEED":
+                                            temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.Speed);
+                                            break;
+                                        case "ELEVATION":
+                                            temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.Elevation);
+                                            break;
+                                        case "GRADE":
+                                            temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.Grade);
+                                            break;
+                                        case "CADENCE":
+                                            temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.Cadence);
+                                            break;
+                                        case "POWER":
+                                            temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.Power);
+                                            break;
+                                    }
+
+                                    if (operation == "MAX")
+                                    {
+                                        if (temp > peakValue)
+                                        {
+                                            peakValue = temp;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (temp < peakValue)
+                                        {
+                                            peakValue = temp;
+                                        }
                                     }
 
                                     break;
@@ -547,9 +710,9 @@
                             }
                         }
 
-                        if (fastestTime != float.MaxValue)
+                        if (peakValue != float.MaxValue)
                         {
-                            fieldValue = fastestTime.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                            fieldValue = peakValue.ToString(CultureInfo.InvariantCulture.NumberFormat);
                         }
                     }
                 }
@@ -1117,8 +1280,6 @@
                 case "DESCENDING":
                     fieldValue = activityInfoInstance.TotalDescendingMeters(CalculatedFields.GetLogBook().ClimbZones[0]).ToString(CultureInfo.InvariantCulture.NumberFormat);
                     break;
-
-                //active
                 case "ACTIVETIME":
                     fieldValue = activityInfoInstance.ActiveLapsTotalDetail.LapElapsed.TotalSeconds.ToString(CultureInfo.InvariantCulture.NumberFormat);
                     break;
