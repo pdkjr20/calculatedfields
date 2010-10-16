@@ -72,6 +72,8 @@
             this.labelTrailsIntegration = new System.Windows.Forms.Label();
             this.checkBoxAfterImportFuture = new System.Windows.Forms.CheckBox();
             this.labelTrailsIntegration2 = new System.Windows.Forms.Label();
+            this.stripRange = new System.Windows.Forms.ToolStripMenuItem();
+            this.stripPeak = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl.SuspendLayout();
             this.tabPageStandardExpressions.SuspendLayout();
             this.contextMenuStripFields.SuspendLayout();
@@ -195,6 +197,8 @@
             this.stripSplits,
             this.stripTrails,
             this.stripAthlete,
+            this.stripRange,
+            this.stripPeak,
             this.stripAggregate,
             this.stripCustom,
             this.stripNested,
@@ -202,7 +206,7 @@
             this.stripExamples,
             this.stripFormulas});
             this.contextMenuStripFields.Name = "contextMenuStripFields";
-            this.contextMenuStripFields.Size = new System.Drawing.Size(175, 268);
+            this.contextMenuStripFields.Size = new System.Drawing.Size(175, 334);
             this.contextMenuStripFields.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripFields_Opening);
             // 
             // stripActivity
@@ -403,7 +407,7 @@
             this.tabPageNestedExpressions.Location = new System.Drawing.Point(4, 22);
             this.tabPageNestedExpressions.Name = "tabPageNestedExpressions";
             this.tabPageNestedExpressions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageNestedExpressions.Size = new System.Drawing.Size(795, 645);
+            this.tabPageNestedExpressions.Size = new System.Drawing.Size(795, 620);
             this.tabPageNestedExpressions.TabIndex = 1;
             this.tabPageNestedExpressions.Text = "Nested Expressions";
             this.tabPageNestedExpressions.UseVisualStyleBackColor = true;
@@ -536,6 +540,18 @@
             this.labelTrailsIntegration2.TabIndex = 18;
             this.labelTrailsIntegration2.Text = "Thanks to Brandon Doherty and Gerhard";
             // 
+            // stripRange
+            // 
+            this.stripRange.Name = "stripRange";
+            this.stripRange.Size = new System.Drawing.Size(174, 22);
+            this.stripRange.Text = "Range";
+            // 
+            // stripPeak
+            // 
+            this.stripPeak.Name = "stripPeak";
+            this.stripPeak.Size = new System.Drawing.Size(174, 22);
+            this.stripPeak.Text = "Peak values";
+            // 
             // CalculatedFieldsSettingsPageControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -603,5 +619,7 @@
         private System.Windows.Forms.ToolStripMenuItem stripTracks;
         private System.Windows.Forms.ToolStripMenuItem stripFormulas;
         private System.Windows.Forms.Label labelTrailsIntegration2;
+        private System.Windows.Forms.ToolStripMenuItem stripRange;
+        private System.Windows.Forms.ToolStripMenuItem stripPeak;
     }
 }

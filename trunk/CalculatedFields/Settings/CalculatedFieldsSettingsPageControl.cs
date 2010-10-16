@@ -228,9 +228,26 @@
                 item.Click += fieldItem_Click;
             }
 
+            stripRange.DropDownItems.Add(new ToolStripMenuItem("Time in HR between 150-180"));
+            stripRange.DropDownItems.Add(new ToolStripMenuItem("HR in Pace between 5:00-5:30"));
+
+            foreach (ToolStripMenuItem item in stripRange.DropDownItems)
+            {
+                item.Click += fieldItem_Click;
+            }
+
+            stripPeak.DropDownItems.Add(new ToolStripMenuItem("Fastest 1000 meters"));
+            stripPeak.DropDownItems.Add(new ToolStripMenuItem("Fastest 300 seconds"));
+            stripPeak.DropDownItems.Add(new ToolStripMenuItem("HR peak for 30 seconds"));
+            stripPeak.DropDownItems.Add(new ToolStripMenuItem("Power peak for 20 seconds"));
+            stripPeak.DropDownItems.Add(new ToolStripMenuItem("Power peak for 1000 meters"));
+
+            foreach (ToolStripMenuItem item in stripPeak.DropDownItems)
+            {
+                item.Click += fieldItem_Click;
+            }
+
             stripFormulas.DropDownItems.Add(new ToolStripMenuItem("RECOVERYHR"));
-            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("FASTESTTIME"));
-            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("FASTESTDISTANCE"));
 
             foreach (ToolStripMenuItem item in stripFormulas.DropDownItems)
             {
@@ -311,18 +328,36 @@
                 result = "{Field(" + item.Text + ",7)}";
             }
 
-            if (item.OwnerItem == stripFormulas)
+            if (item.OwnerItem == stripFormulas || item.OwnerItem == stripRange || item.OwnerItem == stripPeak)
             {
                 switch (item.Text)
                 {
+                    case "Fastest 1000 meters":
+                        result = "{MINPEAKDISTANCE(Elapsed,1000)}";
+                        break;
+                    case "Fastest 300 seconds":
+                        result = "{MAXPEAKTIME(Distance,300)}";
+                        break;
+                    case "HR peak for 30 seconds":
+                        result = "{MAXPEAKTIME(HR,30)}";
+                        break;
+                    case "Power peak for 20 seconds":
+                        result = "{MAXPEAKTIME(Power,20)}";
+                        break;
+                    case "Power peak for 1000 meters":
+                        result = "{MAXPEAKDISTANCE(Power,1000)}";
+                        break;
+
+                    
+                    
+                    case "Time in HR between 150-180":
+                        result = "{RANGEELAPSED(HR,150,180)}";
+                        break;
+                    case "HR in Pace between 5:00-5:30":
+                        result = "{RANGEHR(Pace,5,5.5)}";
+                        break;
                     case "RECOVERYHR":
                         result = "{RECOVERYHR(60)}";
-                        break;
-                    case "FASTESTTIME":
-                        result = "{FASTESTTIME(60)}";
-                        break;
-                    case "FASTESTDISTANCE":
-                        result = "{FASTESTDISTANCE(1000)}";
                         break;
                 }
             }
