@@ -716,5 +716,10 @@
                 item.Click += fieldItem_Click;
             }
         }
+
+        private void labelDonationImage_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=5Y5242N7FPZGY&lc=SK&item_name=Camel%2fCalculated%20Fields%20plugin&item_number=CalculatedFields&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted");
+        }
     }
 }

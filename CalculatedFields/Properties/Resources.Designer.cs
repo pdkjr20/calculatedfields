@@ -59,5 +59,12 @@ namespace CalculatedFields.Properties {
                 resourceCulture = value;
             }
         }
+        
+        internal static System.Drawing.Bitmap btn_donateCC_LG {
+            get {
+                object obj = ResourceManager.GetObject("btn_donateCC_LG", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

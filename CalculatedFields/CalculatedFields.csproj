@@ -205,6 +205,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="plugin.xml" />
+    <None Include="Resources\btn_donateCC_LG.gif" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controller\" />
