@@ -34,7 +34,7 @@ Here are some more examples of conditions:<br>
   * Calculate only if distance is not 0:*{{{ {DISTANCE} != 0 }}}*
   * Calculate only if distance is 0:*{{{ {DISTANCE} == 0 }}}*
   * Calculate only if category of activity contains word Running:*{{{ {Category}.Contains("Running") }}}*
- * Calculate only if category of activity contains word Running and don't contains Trail:*{{{ {Category}.Contains("Running") && !{Category}.Contains("Trail") }}}*
+  * Calculate only if category of activity contains word Running and don't contains Trail:*{{{ {Category}.Contains("Running") && !{Category}.Contains("Trail") }}}*
   * Calculate only if distance is not 0 AND average hr is greater than 120:*{{{ {DISTANCE} != 0 && {AVGHR} > 120} }}}*
   * Calculate only if distance is not 0 AND average hr is greater than 120:*{{{ {DISTANCE} != 0 && {AVGHR} > 120} }}}*
   * Calculate only if Trimp is bigger or equal as 100 OR Trimp is smaller than 200 (Note that Trimp is custom field created by Training Load plugin):*{{{ {TRIMP} >= 100 || {TRIMP} < 200 }}}*
