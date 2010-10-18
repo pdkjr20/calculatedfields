@@ -1,0 +1,77 @@
+#summary Peak and Range feature
+
+= Introduction =
+
+This tutorial will describe two powerful features of Calculated Fields plugin for analyze.
+
+*Range feature*:<br>
+Do you want to find your average pace when having HR between 150-180 in activity?<br>
+Do you want to find your average heart rate when running in pace between 5:00-5:30?<br>
+Exactly for this is Range feature designed.<br>
+<br>
+*Peak feature*:<br>
+Do you want to find your fastest kilometer in activity?<br>
+Or your maximal power output for 30 seconds?<br>
+Or you want to find your fastest 300 seconds in activity?<br>
+Peak feature is here for help.
+
+= Details =
+
+*Range feature examples and description*:<br>
+
+Here is example formula for finding how much time you have been in HR between 150-180:<br>
+*{{{ {RANGEELAPSED(HR,150,180)} }}}*<br>
+So first is RANGE right after range you define return parameter of formula. So in this example we want to return elapsed time in seconds. First parameter is HR. This will tell plugin that you want to filter range on activity on HR. Second and thirt parameter is number that defines lower and upper bound of range.<BR>
+<BR>
+Formula for calculating your average pace when having HR between 150-170:<br>
+*{{{ {RANGEPACE(HR,150,170)} }}}*<br>
+So we want to return PACE and define range on HR field and lower bound is 150 and upper 170.
+<br>
+Here is list of usable fields (they can be used as return values and range field too):<br>
+  * ELAPSED
+  * DISTANCE
+  * HR
+  * PACE
+  * SPEED
+  * ELEVATION
+  * GRADE
+  * CADENCE
+  * POWER
+<br>
+*Peak feature examples and description*:<br>
+
+Now we want to find our fastest 1000meters (pretty exciting, we have High score plugin formula :) ):<br>
+*{{{ {MINPEAKDISTANCE(Elapsed,1000)} }}}*<br>
+Now we want to find minimal time for 1000 meters in our activity. (so we want to find MINPEAK). We want to find peak on interval of DISTANCE. First parameter specifies return type. Second parameter specifies interval value so in this example 1000 meters.<br>
+Ok now we want to find fastest 300 seconds of activity:
+*{{{ {MAXPEAKTIME(Distance,300)} }}}*<br>
+So now we want to find maximal distace that have been taken in 300 seconds. (so we want to find MAXPEAK). We want to find peak on interval of TIME. We want to return result as a DISTANCE. And we want to find peak on 300 seconds interval.<br>
+Ok do you want to find your power peak on 20 seconds?:
+*{{{ {MAXPEAKTIME(Power,20)} }}}*<br>
+We want to find maximal power. (so max peak). Interval is of type TIME. Result will be Power. And seconds parameter is 20 seconds. That's an interval for our peak.<br>
+etc.
+
+You can specifiy this combinations of PEAKS:
+  * MINPEAKTIME
+  * MAXPEAKTIME
+  * MINPEAKDISTANCE
+  * MAXPEAKDISTANCE
+
+And as a result type you can define these fields:
+  * ELAPSED
+  * DISTANCE
+  * HR
+  * PACE
+  * SPEED
+  * ELEVATION
+  * GRADE
+  * CADENCE
+  * POWER
+ <br>
+Other examples:
+Fastest 2km only on activities with GPS Track:<br>
+*{{{ {MINPEAKDISTANCE(Elapsed,2000)} }}}* Condition: *{{{ {HASGPSTRACK} }}}*<br>
+Power peak for 1000 meters:<br>
+*{{{ {MAXPEAKDISTANCE(Power,1000)} }}}*<br>
+HR Peak for 30 seconds:<br>
+*{{{ {MAXPEAKTIME(HR,30)} }}}*
