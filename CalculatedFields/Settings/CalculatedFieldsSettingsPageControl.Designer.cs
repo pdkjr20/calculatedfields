@@ -45,6 +45,8 @@
             this.stripSplits = new System.Windows.Forms.ToolStripMenuItem();
             this.stripTrails = new System.Windows.Forms.ToolStripMenuItem();
             this.stripAthlete = new System.Windows.Forms.ToolStripMenuItem();
+            this.stripRange = new System.Windows.Forms.ToolStripMenuItem();
+            this.stripPeak = new System.Windows.Forms.ToolStripMenuItem();
             this.stripAggregate = new System.Windows.Forms.ToolStripMenuItem();
             this.stripCustom = new System.Windows.Forms.ToolStripMenuItem();
             this.stripNested = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,8 +74,6 @@
             this.labelTrailsIntegration = new System.Windows.Forms.Label();
             this.checkBoxAfterImportFuture = new System.Windows.Forms.CheckBox();
             this.labelTrailsIntegration2 = new System.Windows.Forms.Label();
-            this.stripRange = new System.Windows.Forms.ToolStripMenuItem();
-            this.stripPeak = new System.Windows.Forms.ToolStripMenuItem();
             this.labelDonationImage = new System.Windows.Forms.Label();
             this.labelCopyright = new System.Windows.Forms.Label();
             this.labelCopyright2 = new System.Windows.Forms.Label();
@@ -82,16 +82,24 @@
             this.labelDonationText = new System.Windows.Forms.Label();
             this.labelDonationText2 = new System.Windows.Forms.Label();
             this.labelDonationsText3 = new System.Windows.Forms.Label();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.tabControl.SuspendLayout();
             this.tabPageStandardExpressions.SuspendLayout();
             this.contextMenuStripFields.SuspendLayout();
             this.tabPageNestedExpressions.SuspendLayout();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // checkBoxAfterImport
             // 
             this.checkBoxAfterImport.AutoSize = true;
-            this.checkBoxAfterImport.Location = new System.Drawing.Point(4, 92);
+            this.checkBoxAfterImport.Location = new System.Drawing.Point(3, 3);
             this.checkBoxAfterImport.Name = "checkBoxAfterImport";
             this.checkBoxAfterImport.Size = new System.Drawing.Size(203, 17);
             this.checkBoxAfterImport.TabIndex = 2;
@@ -103,11 +111,11 @@
             // 
             this.tabControl.Controls.Add(this.tabPageStandardExpressions);
             this.tabControl.Controls.Add(this.tabPageNestedExpressions);
-            this.tabControl.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tabControl.Location = new System.Drawing.Point(0, 140);
+            this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(803, 560);
+            this.tabControl.Size = new System.Drawing.Size(860, 544);
             this.tabControl.TabIndex = 9;
             // 
             // tabPageStandardExpressions
@@ -130,7 +138,7 @@
             this.tabPageStandardExpressions.Location = new System.Drawing.Point(4, 22);
             this.tabPageStandardExpressions.Name = "tabPageStandardExpressions";
             this.tabPageStandardExpressions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageStandardExpressions.Size = new System.Drawing.Size(795, 534);
+            this.tabPageStandardExpressions.Size = new System.Drawing.Size(852, 518);
             this.tabPageStandardExpressions.TabIndex = 0;
             this.tabPageStandardExpressions.Text = "Standard Expressions";
             this.tabPageStandardExpressions.UseVisualStyleBackColor = true;
@@ -253,6 +261,18 @@
             this.stripAthlete.Name = "stripAthlete";
             this.stripAthlete.Size = new System.Drawing.Size(174, 22);
             this.stripAthlete.Text = "Athlete";
+            // 
+            // stripRange
+            // 
+            this.stripRange.Name = "stripRange";
+            this.stripRange.Size = new System.Drawing.Size(174, 22);
+            this.stripRange.Text = "Range";
+            // 
+            // stripPeak
+            // 
+            this.stripPeak.Name = "stripPeak";
+            this.stripPeak.Size = new System.Drawing.Size(174, 22);
+            this.stripPeak.Text = "Peak values";
             // 
             // stripAggregate
             // 
@@ -416,7 +436,7 @@
             this.tabPageNestedExpressions.Location = new System.Drawing.Point(4, 22);
             this.tabPageNestedExpressions.Name = "tabPageNestedExpressions";
             this.tabPageNestedExpressions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageNestedExpressions.Size = new System.Drawing.Size(795, 534);
+            this.tabPageNestedExpressions.Size = new System.Drawing.Size(192, 174);
             this.tabPageNestedExpressions.TabIndex = 1;
             this.tabPageNestedExpressions.Text = "Nested Expressions";
             this.tabPageNestedExpressions.UseVisualStyleBackColor = true;
@@ -532,7 +552,7 @@
             // checkBoxAfterImportFuture
             // 
             this.checkBoxAfterImportFuture.AutoSize = true;
-            this.checkBoxAfterImportFuture.Location = new System.Drawing.Point(4, 113);
+            this.checkBoxAfterImportFuture.Location = new System.Drawing.Point(3, 24);
             this.checkBoxAfterImportFuture.Name = "checkBoxAfterImportFuture";
             this.checkBoxAfterImportFuture.Size = new System.Drawing.Size(256, 17);
             this.checkBoxAfterImportFuture.TabIndex = 11;
@@ -543,29 +563,17 @@
             // labelTrailsIntegration2
             // 
             this.labelTrailsIntegration2.AutoSize = true;
-            this.labelTrailsIntegration2.Location = new System.Drawing.Point(596, 26);
+            this.labelTrailsIntegration2.Location = new System.Drawing.Point(596, 25);
             this.labelTrailsIntegration2.Name = "labelTrailsIntegration2";
             this.labelTrailsIntegration2.Size = new System.Drawing.Size(200, 13);
             this.labelTrailsIntegration2.TabIndex = 18;
             this.labelTrailsIntegration2.Text = "Thanks to Brandon Doherty and Gerhard";
             // 
-            // stripRange
-            // 
-            this.stripRange.Name = "stripRange";
-            this.stripRange.Size = new System.Drawing.Size(174, 22);
-            this.stripRange.Text = "Range";
-            // 
-            // stripPeak
-            // 
-            this.stripPeak.Name = "stripPeak";
-            this.stripPeak.Size = new System.Drawing.Size(174, 22);
-            this.stripPeak.Text = "Peak values";
-            // 
             // labelDonationImage
             // 
             this.labelDonationImage.Cursor = System.Windows.Forms.Cursors.Hand;
             this.labelDonationImage.Image = global::CalculatedFields.Properties.Resources.btn_donateCC_LG;
-            this.labelDonationImage.Location = new System.Drawing.Point(266, 83);
+            this.labelDonationImage.Location = new System.Drawing.Point(414, 7);
             this.labelDonationImage.Name = "labelDonationImage";
             this.labelDonationImage.Size = new System.Drawing.Size(91, 47);
             this.labelDonationImage.TabIndex = 19;
@@ -574,7 +582,7 @@
             // labelCopyright
             // 
             this.labelCopyright.AutoSize = true;
-            this.labelCopyright.Location = new System.Drawing.Point(3, 0);
+            this.labelCopyright.Location = new System.Drawing.Point(3, 7);
             this.labelCopyright.Name = "labelCopyright";
             this.labelCopyright.Size = new System.Drawing.Size(141, 13);
             this.labelCopyright.TabIndex = 20;
@@ -583,7 +591,7 @@
             // labelCopyright2
             // 
             this.labelCopyright2.AutoSize = true;
-            this.labelCopyright2.Location = new System.Drawing.Point(3, 13);
+            this.labelCopyright2.Location = new System.Drawing.Point(3, 20);
             this.labelCopyright2.Name = "labelCopyright2";
             this.labelCopyright2.Size = new System.Drawing.Size(401, 13);
             this.labelCopyright2.TabIndex = 21;
@@ -593,7 +601,7 @@
             // labelCopyright3
             // 
             this.labelCopyright3.AutoSize = true;
-            this.labelCopyright3.Location = new System.Drawing.Point(3, 26);
+            this.labelCopyright3.Location = new System.Drawing.Point(3, 33);
             this.labelCopyright3.Name = "labelCopyright3";
             this.labelCopyright3.Size = new System.Drawing.Size(306, 13);
             this.labelCopyright3.TabIndex = 22;
@@ -602,7 +610,7 @@
             // labelCopyright4
             // 
             this.labelCopyright4.AutoSize = true;
-            this.labelCopyright4.Location = new System.Drawing.Point(3, 39);
+            this.labelCopyright4.Location = new System.Drawing.Point(3, 46);
             this.labelCopyright4.Name = "labelCopyright4";
             this.labelCopyright4.Size = new System.Drawing.Size(187, 13);
             this.labelCopyright4.TabIndex = 23;
@@ -611,7 +619,7 @@
             // labelDonationText
             // 
             this.labelDonationText.AutoSize = true;
-            this.labelDonationText.Location = new System.Drawing.Point(363, 104);
+            this.labelDonationText.Location = new System.Drawing.Point(521, 7);
             this.labelDonationText.Name = "labelDonationText";
             this.labelDonationText.Size = new System.Drawing.Size(229, 13);
             this.labelDonationText.TabIndex = 24;
@@ -620,7 +628,7 @@
             // labelDonationText2
             // 
             this.labelDonationText2.AutoSize = true;
-            this.labelDonationText2.Location = new System.Drawing.Point(363, 117);
+            this.labelDonationText2.Location = new System.Drawing.Point(521, 20);
             this.labelDonationText2.Name = "labelDonationText2";
             this.labelDonationText2.Size = new System.Drawing.Size(264, 13);
             this.labelDonationText2.TabIndex = 25;
@@ -629,29 +637,63 @@
             // labelDonationsText3
             // 
             this.labelDonationsText3.AutoSize = true;
-            this.labelDonationsText3.Location = new System.Drawing.Point(307, 0);
+            this.labelDonationsText3.Location = new System.Drawing.Point(828, 19);
             this.labelDonationsText3.Name = "labelDonationsText3";
             this.labelDonationsText3.Size = new System.Drawing.Size(0, 13);
             this.labelDonationsText3.TabIndex = 26;
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.checkBoxAfterImport);
+            this.splitContainer1.Panel1.Controls.Add(this.checkBoxAfterImportFuture);
+            this.splitContainer1.Panel1.Controls.Add(this.labelTrailsIntegration);
+            this.splitContainer1.Panel1.Controls.Add(this.labelTrailsIntegration2);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
+            this.splitContainer1.Size = new System.Drawing.Size(860, 700);
+            this.splitContainer1.SplitterDistance = 68;
+            this.splitContainer1.TabIndex = 27;
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.tabControl);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.labelDonationText2);
+            this.splitContainer2.Panel2.Controls.Add(this.labelCopyright3);
+            this.splitContainer2.Panel2.Controls.Add(this.labelDonationsText3);
+            this.splitContainer2.Panel2.Controls.Add(this.labelCopyright);
+            this.splitContainer2.Panel2.Controls.Add(this.labelCopyright2);
+            this.splitContainer2.Panel2.Controls.Add(this.labelDonationImage);
+            this.splitContainer2.Panel2.Controls.Add(this.labelCopyright4);
+            this.splitContainer2.Panel2.Controls.Add(this.labelDonationText);
+            this.splitContainer2.Size = new System.Drawing.Size(860, 628);
+            this.splitContainer2.SplitterDistance = 544;
+            this.splitContainer2.TabIndex = 0;
             // 
             // CalculatedFieldsSettingsPageControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.Controls.Add(this.labelTrailsIntegration);
-            this.Controls.Add(this.labelDonationsText3);
-            this.Controls.Add(this.tabControl);
-            this.Controls.Add(this.labelCopyright4);
-            this.Controls.Add(this.labelCopyright3);
-            this.Controls.Add(this.checkBoxAfterImport);
-            this.Controls.Add(this.labelTrailsIntegration2);
-            this.Controls.Add(this.labelCopyright2);
-            this.Controls.Add(this.labelDonationText);
-            this.Controls.Add(this.checkBoxAfterImportFuture);
-            this.Controls.Add(this.labelDonationText2);
-            this.Controls.Add(this.labelCopyright);
-            this.Controls.Add(this.labelDonationImage);
+            this.Controls.Add(this.splitContainer1);
             this.Name = "CalculatedFieldsSettingsPageControl";
             this.Size = new System.Drawing.Size(803, 700);
             this.tabControl.ResumeLayout(false);
@@ -660,8 +702,15 @@
             this.contextMenuStripFields.ResumeLayout(false);
             this.tabPageNestedExpressions.ResumeLayout(false);
             this.tabPageNestedExpressions.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            this.splitContainer2.Panel2.PerformLayout();
+            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -720,5 +769,7 @@
         private System.Windows.Forms.Label labelDonationText;
         private System.Windows.Forms.Label labelDonationText2;
         private System.Windows.Forms.Label labelDonationsText3;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.SplitContainer splitContainer2;
     }
 }

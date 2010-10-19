@@ -223,32 +223,20 @@
 
         private static object Evaluate(string expression, IActivity activity, string condition, CalculatedFieldsRow calculatedFieldsRow)
         {
-            Stopwatch stopwatch = new Stopwatch();
-            //stopwatch.Start();
-
             expression = ParseExpression(expression, activity, condition, calculatedFieldsRow);
             if (expression == "")
             {
                 return null;
             }
 
-            //stopwatch.Stop();
-            //calculatedFieldsRow.ParsingTime += stopwatch.Elapsed.Milliseconds;
-            
-            //stopwatch.Reset();
-            //stopwatch.Start();
-
             if (cacheEnabled && !expression.Contains("DATATRACK"))
             {
                 if (expressionsCache.ContainsKey(expression))
                 {
-                    //stopwatch.Stop();
-                    //calculatedFieldsRow.CompilationTime += stopwatch.Elapsed.Milliseconds;
                     return expressionsCache[expression];
                 }
             }
 
-            stopwatch.Start();
             string tempModuleSource = "";
             string serializedDataTrack = "";
             if (expression.Contains("DATATRACK"))
@@ -331,10 +319,6 @@
                               "}}";
                 
                 //throw new Exception(tempModuleSource);
-                              stopwatch.Stop();
-                              //stopwatch.Reset();
-                              //stopwatch.Start();
-                              //throw new Exception(stopwatch.Elapsed.Milliseconds.ToString());
             }
             else
             {
@@ -387,9 +371,6 @@
                     expressionsCache.Add(expression, result);
                 }
 
-                //stopwatch.Stop();
-                //throw new Exception(stopwatch.ElapsedMilliseconds.ToString());
-                //calculatedFieldsRow.CompilationTime += stopwatch.Elapsed.Milliseconds;
                 return result;
             }
         }
@@ -1202,8 +1183,14 @@
                 case "NAME":
                     fieldValue = "\"" + activity.Name + "\"";
                     break;
+                case "DATETIMETICKS":
+                    fieldValue = "\"" + (activity.StartTime.ToUniversalTime() + activity.TimeZoneUtcOffset).Ticks.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                    break;
                 case "DATETIME":
                     fieldValue = "\"" + (activity.StartTime.ToUniversalTime() + activity.TimeZoneUtcOffset).ToString() + "\"";
+                    break;
+                case "DATETICKS":
+                    fieldValue = "\"" + (activity.StartTime.ToUniversalTime() + activity.TimeZoneUtcOffset).Date.Ticks.ToString(CultureInfo.InvariantCulture.NumberFormat);
                     break;
                 case "DATE":
                     fieldValue = "\"" + (activity.StartTime.ToUniversalTime() + activity.TimeZoneUtcOffset).ToShortDateString() + "\"";
