@@ -21,7 +21,7 @@ Peak feature is here for help.
 
 Here is example formula for finding how much time you have been in HR between 150-180:<br>
 *{{{ {RANGEELAPSED(HR,150,180)} }}}*<br>
-So first is RANGE right after range you define return parameter of formula. So in this example we want to return elapsed time in seconds. First parameter is HR. This will tell plugin that you want to filter range on activity on HR. Second and thirt parameter is number that defines lower and upper bound of range.<BR>
+So first is RANGE, right after range you define return parameter of formula. So in this example we want to return elapsed time in seconds. First parameter is HR. This will tell plugin that you want to filter range on activity on HR. Second and third parameter is number that defines lower and upper bound of range.<BR>
 <BR>
 Formula for calculating your average pace when having HR between 150-170:<br>
 *{{{ {RANGEPACE(HR,150,170)} }}}*<br>
