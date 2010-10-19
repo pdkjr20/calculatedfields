@@ -16,8 +16,7 @@ With this feature you have ability to create charts from your trails data.
 
   * Ok we will first check if our integration with Trails plugin is enabled. Go to settings page of plugin and see text in upper right corner. If there is written that it's enabled integration is ok.<br>
 <img>http://img340.imageshack.us/img340/7444/integration.png</img><br><br>
-If no please download this build of Trails plugin and install it:<br>
-http://code.google.com/p/trails/downloads/detail?name=TrailsPlugin-0.2.128.st3plugin&can=2&q=
+If no please download latest build of Trails plugin and install it:<br>
   * First step is to create your trail in Trails plugin. It's important to remember it's name. In this example I have created trail with name *PernekMain*
 <img>http://img827.imageshack.us/img827/5477/trailsd.png</img>
 
