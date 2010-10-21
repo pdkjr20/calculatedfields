@@ -84,4 +84,6 @@ Fastest 2km only on activities with GPS Track:<br>
 Power peak for 1000 meters:<br>
 *{{{ {MAXPEAKDISTANCE(Power,1000)} }}}*<br>
 HR Peak for 30 seconds:<br>
-*{{{ {MAXPEAKTIME(HR,30)} }}}*
+*{{{ {MAXPEAKTIME(HR,30)} }}}*<br>
+Average HR of my fastest 1000meters:<br>
+*{{{ {MINPEAKDISTANCE(Elapsed,HR,1000)} }}}*<br>
