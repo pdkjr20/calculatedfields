@@ -237,10 +237,13 @@
             }
 
             stripPeak.DropDownItems.Add(new ToolStripMenuItem("Fastest 1000 meters"));
+            stripPeak.DropDownItems.Add(new ToolStripMenuItem("Return average HR of your fastest 1000 meters"));
             stripPeak.DropDownItems.Add(new ToolStripMenuItem("Fastest 300 seconds"));
             stripPeak.DropDownItems.Add(new ToolStripMenuItem("HR peak for 30 seconds"));
             stripPeak.DropDownItems.Add(new ToolStripMenuItem("Power peak for 20 seconds"));
             stripPeak.DropDownItems.Add(new ToolStripMenuItem("Power peak for 1000 meters"));
+            stripPeak.DropDownItems.Add(new ToolStripMenuItem("Return average cadence for power peak for 20 seconds"));
+            stripPeak.DropDownItems.Add(new ToolStripMenuItem("Return average HR for power peak for 20 seconds"));
 
             foreach (ToolStripMenuItem item in stripPeak.DropDownItems)
             {
@@ -335,6 +338,9 @@
                     case "Fastest 1000 meters":
                         result = "{MINPEAKDISTANCE(Elapsed,1000)}";
                         break;
+                    case "Return average HR of your fastest 1000 meters":
+                        result = "{MINPEAKDISTANCE(Elapsed,HR,1000)}";
+                        break;
                     case "Fastest 300 seconds":
                         result = "{MAXPEAKTIME(Distance,300)}";
                         break;
@@ -347,8 +353,13 @@
                     case "Power peak for 1000 meters":
                         result = "{MAXPEAKDISTANCE(Power,1000)}";
                         break;
+                    case "Return average cadence for power peak for 20 seconds":
+                        result = "{MAXPEAKTIME(Power,Cadence,20)}";
+                        break;
+                    case "Return average HR for power peak for 20 seconds":
+                        result = "{MAXPEAKTIME(Power,HR,20)}";
+                        break;
 
-                    
                     
                     case "Time in HR between 150-180":
                         result = "{RANGEELAPSED(HR,150,180)}";
@@ -691,11 +702,12 @@
             stripCustom.DropDownItems.Clear();
             stripNested.DropDownItems.Clear();
 
-            ICustomDataFieldObjectType type = CustomDataFieldDefinitions.StandardObjectType(typeof(IActivity));
+            ICustomDataFieldObjectType typeActivity = CustomDataFieldDefinitions.StandardObjectType(typeof(IActivity));
+            ICustomDataFieldObjectType typeAthlete = CustomDataFieldDefinitions.StandardObjectType(typeof(IAthleteInfoEntry));
 
             foreach (ICustomDataFieldDefinition definition in CalculatedFields.GetLogBook().CustomDataFieldDefinitions)
             {
-                if (definition.ObjectType == type)
+                if (definition.ObjectType == typeActivity || definition.ObjectType == typeAthlete)
                 {
                     stripCustom.DropDownItems.Add(new ToolStripMenuItem(definition.Name));
                 }
