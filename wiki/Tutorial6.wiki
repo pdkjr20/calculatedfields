@@ -42,14 +42,24 @@ Here is list of usable fields (they can be used as return values and range field
 
 Now we want to find our fastest 1000meters (pretty exciting, we have High score plugin formula :) ):<br>
 *{{{ {MINPEAKDISTANCE(Elapsed,1000)} }}}*<br>
-Now we want to find minimal time for 1000 meters in our activity. (so we want to find MINPEAK). We want to find peak on interval of DISTANCE. First parameter specifies return type. Second parameter specifies interval value so in this example 1000 meters.<br>
+Now we want to find minimal time for 1000 meters in our activity. (so we want to find MINPEAK). We want to find peak on interval of DISTANCE. First parameter specifies peak type. Second parameter specifies interval value so in this example 1000 meters.<br>
 Ok now we want to find fastest 300 seconds of activity:
 *{{{ {MAXPEAKTIME(Distance,300)} }}}*<br>
-So now we want to find maximal distace that have been taken in 300 seconds. (so we want to find MAXPEAK). We want to find peak on interval of TIME. We want to return result as a DISTANCE. And we want to find peak on 300 seconds interval.<br>
+So now we want to find maximal distance that have been taken in 300 seconds. (so we want to find MAXPEAK). We want to find peak on interval of TIME. We want to return result as a DISTANCE. And we want to find peak on 300 seconds interval.<br>
 Ok do you want to find your power peak on 20 seconds?:
 *{{{ {MAXPEAKTIME(Power,20)} }}}*<br>
-We want to find maximal power. (so max peak). Interval is of type TIME. Result will be Power. And seconds parameter is 20 seconds. That's an interval for our peak.<br>
+We want to find maximal power. (so max peak). Interval is of type TIME. Result and peak will be Power. And seconds parameter is 20 seconds. That's an interval for our peak.<br>
 etc.
+<br><br>
+Ok but what if we want to see average cadence of our 30 seconds power peak?
+Here it is. You can use second optional parameter for return type:
+*{{{ {MAXPEAKTIME(Power,Cadence,30)} }}}*
+So now we still want to find peak of power for time of 30 seconds. But we don't want to return as a result power. But we want to know average cadence in these 30 seconds.
+So we specify our second optional parameter Cadence. (it's a return type).
+Of course you can return for example average HR for these 30 seconds:
+*{{{ {MAXPEAKTIME(Power,HR,30)} }}}*
+<br><br>
+
 
 You can specifiy this combinations of PEAKS:
   * MINPEAKTIME
@@ -57,7 +67,7 @@ You can specifiy this combinations of PEAKS:
   * MINPEAKDISTANCE
   * MAXPEAKDISTANCE
 
-And as a result type you can define these fields:
+And as a peak type or result type you can define these fields:
   * ELAPSED
   * DISTANCE
   * HR
