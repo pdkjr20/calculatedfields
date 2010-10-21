@@ -53,11 +53,11 @@ etc.
 <br><br>
 Ok but what if we want to see average cadence of our 30 seconds power peak?
 Here it is. You can use second optional parameter for return type:
-*{{{ {MAXPEAKTIME(Power,Cadence,30)} }}}*
+*{{{ {MAXPEAKTIME(Power,Cadence,30)} }}}*<br>
 So now we still want to find peak of power for time of 30 seconds. But we don't want to return as a result power. But we want to know average cadence in these 30 seconds.
 So we specify our second optional parameter Cadence. (it's a return type).
 Of course you can return for example average HR for these 30 seconds:
-*{{{ {MAXPEAKTIME(Power,HR,30)} }}}*
+*{{{ {MAXPEAKTIME(Power,HR,30)} }}}*<br>
 <br><br>
 
 
