@@ -142,55 +142,57 @@
                                     GlobalSettings.calculatedFieldsRows.Exists(
                                         (o) => (o.CustomField == definition.Name && o.Active == "Y")))
                                 {
-                                    var calculatedFieldsRow =
-                                        GlobalSettings.calculatedFieldsRows.Find(
-                                            (o) => o.CustomField == definition.Name);
+                                    var allCalculatedFieldsRow = GlobalSettings.calculatedFieldsRows.Where((o) => o.CustomField == definition.Name);
+                                    //var calculatedFieldsRow = GlobalSettings.calculatedFieldsRows.Find((o) => o.CustomField == definition.Name);
 
-                                    if (calculatedFieldsRow.Condition != "")
+                                    foreach (var calculatedFieldsRow in allCalculatedFieldsRow)
                                     {
-                                        if (
-                                            Evaluate(calculatedFieldsRow.Condition, activity, "", calculatedFieldsRow).
-                                                ToString() == "True")
+                                        if (calculatedFieldsRow.Condition != "")
                                         {
-                                            result = Evaluate(
-                                                calculatedFieldsRow.CalculatedExpression,
-                                                activity,
-                                                calculatedFieldsRow.Condition,
-                                                calculatedFieldsRow);
+                                            if (
+                                                Evaluate(calculatedFieldsRow.Condition, activity, "", calculatedFieldsRow).
+                                                    ToString() == "True")
+                                            {
+                                                result = Evaluate(
+                                                    calculatedFieldsRow.CalculatedExpression,
+                                                    activity,
+                                                    calculatedFieldsRow.Condition,
+                                                    calculatedFieldsRow);
+                                            }
+                                            else
+                                            {
+                                                result = null;
+                                            }
                                         }
                                         else
                                         {
-                                            result = null;
+                                            result = Evaluate(
+                                                calculatedFieldsRow.CalculatedExpression, activity, "", calculatedFieldsRow);
                                         }
-                                    }
-                                    else
-                                    {
-                                        result = Evaluate(
-                                            calculatedFieldsRow.CalculatedExpression, activity, "", calculatedFieldsRow);
-                                    }
 
-                                    if (result != null && !testRun)
-                                    {
-                                        if (definition.DataType.Id ==
-                                            CustomDataFieldDefinitions.StandardDataTypes.NumberDataTypeId)
+                                        if (result != null && !testRun)
                                         {
-                                            activity.SetCustomDataValue(definition, Double.Parse(result.ToString()));
-                                        }
-                                        else if (definition.DataType.Id ==
-                                                 CustomDataFieldDefinitions.StandardDataTypes.TextDataTypeId)
-                                        {
-                                            activity.SetCustomDataValue(definition, result.ToString());
-                                        }
-                                        else if (definition.DataType.Id ==
-                                                 CustomDataFieldDefinitions.StandardDataTypes.TimeSpanDataTypeId)
-                                        {
-                                            double seconds = double.Parse(result.ToString());
-                                            activity.SetCustomDataValue(
-                                                definition,
-                                                new TimeSpan(
-                                                    (int)(seconds / 3600),
-                                                    (int)((seconds % 3600) / 60),
-                                                    (int)(seconds % 60)));
+                                            if (definition.DataType.Id ==
+                                                CustomDataFieldDefinitions.StandardDataTypes.NumberDataTypeId)
+                                            {
+                                                activity.SetCustomDataValue(definition, Double.Parse(result.ToString()));
+                                            }
+                                            else if (definition.DataType.Id ==
+                                                     CustomDataFieldDefinitions.StandardDataTypes.TextDataTypeId)
+                                            {
+                                                activity.SetCustomDataValue(definition, result.ToString());
+                                            }
+                                            else if (definition.DataType.Id ==
+                                                     CustomDataFieldDefinitions.StandardDataTypes.TimeSpanDataTypeId)
+                                            {
+                                                double seconds = double.Parse(result.ToString());
+                                                activity.SetCustomDataValue(
+                                                    definition,
+                                                    new TimeSpan(
+                                                        (int)(seconds / 3600),
+                                                        (int)((seconds % 3600) / 60),
+                                                        (int)(seconds % 60)));
+                                            }
                                         }
                                     }
                                 }
@@ -1600,11 +1602,10 @@
                         switch (trailField)
                         {
                             case "AVGPACE":
-                                double pace = trail[trailSplit - 1].AvgPace;
-                                fieldValue = pace.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                fieldValue = trail[trailSplit - 1].AvgPace.ToString(CultureInfo.InvariantCulture.NumberFormat);
                                 break;
                             case "DISTANCE":
-                                fieldValue = trail[trailSplit - 1].Distance.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                fieldValue = Double.Parse(trail[trailSplit - 1].Distance).ToString(CultureInfo.InvariantCulture.NumberFormat);
                                 break;
                             case "TIME":
                                 fieldValue = trail[trailSplit - 1].Duration.TotalSeconds.ToString(CultureInfo.InvariantCulture.NumberFormat);
@@ -1625,7 +1626,7 @@
                                 fieldValue = trail[trailSplit - 1].AvgSpeed.ToString(CultureInfo.InvariantCulture.NumberFormat);
                                 break;
                             case "ELEVATIONCHANGE":
-                                fieldValue = trail[trailSplit - 1].ElevChg.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                fieldValue = Double.Parse(trail[trailSplit - 1].ElevChg).ToString(CultureInfo.InvariantCulture.NumberFormat);
                                 break;
                             case "MAXHR":
                                 fieldValue = trail[trailSplit - 1].MaxHR.ToString(CultureInfo.InvariantCulture.NumberFormat);
