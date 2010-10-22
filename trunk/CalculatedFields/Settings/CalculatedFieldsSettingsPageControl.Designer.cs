@@ -115,7 +115,7 @@
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(860, 544);
+            this.tabControl.Size = new System.Drawing.Size(803, 544);
             this.tabControl.TabIndex = 9;
             // 
             // tabPageStandardExpressions
@@ -138,7 +138,7 @@
             this.tabPageStandardExpressions.Location = new System.Drawing.Point(4, 22);
             this.tabPageStandardExpressions.Name = "tabPageStandardExpressions";
             this.tabPageStandardExpressions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageStandardExpressions.Size = new System.Drawing.Size(852, 518);
+            this.tabPageStandardExpressions.Size = new System.Drawing.Size(795, 518);
             this.tabPageStandardExpressions.TabIndex = 0;
             this.tabPageStandardExpressions.Text = "Standard Expressions";
             this.tabPageStandardExpressions.UseVisualStyleBackColor = true;
@@ -436,7 +436,7 @@
             this.tabPageNestedExpressions.Location = new System.Drawing.Point(4, 22);
             this.tabPageNestedExpressions.Name = "tabPageNestedExpressions";
             this.tabPageNestedExpressions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageNestedExpressions.Size = new System.Drawing.Size(192, 174);
+            this.tabPageNestedExpressions.Size = new System.Drawing.Size(852, 518);
             this.tabPageNestedExpressions.TabIndex = 1;
             this.tabPageNestedExpressions.Text = "Nested Expressions";
             this.tabPageNestedExpressions.UseVisualStyleBackColor = true;
@@ -659,7 +659,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(860, 700);
+            this.splitContainer1.Size = new System.Drawing.Size(803, 700);
             this.splitContainer1.SplitterDistance = 68;
             this.splitContainer1.TabIndex = 27;
             // 
@@ -684,7 +684,7 @@
             this.splitContainer2.Panel2.Controls.Add(this.labelDonationImage);
             this.splitContainer2.Panel2.Controls.Add(this.labelCopyright4);
             this.splitContainer2.Panel2.Controls.Add(this.labelDonationText);
-            this.splitContainer2.Size = new System.Drawing.Size(860, 628);
+            this.splitContainer2.Size = new System.Drawing.Size(803, 628);
             this.splitContainer2.SplitterDistance = 544;
             this.splitContainer2.TabIndex = 0;
             // 
