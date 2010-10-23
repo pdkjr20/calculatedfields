@@ -37,7 +37,7 @@
         private static readonly CSharpCodeProvider provider = new CSharpCodeProvider(new Dictionary<string, string>() { { "CompilerVersion", "v3.5" } });
 
         private static readonly Regex bracketsPattern = new Regex("{*}*", RegexOptions.Compiled);
-        private static readonly Regex fieldPattern = new Regex("{[A-Za-z0-9\\(\\), .]*}", RegexOptions.Compiled);
+        private static readonly Regex fieldPattern = new Regex("{[^}]*}", RegexOptions.Compiled);
         //private static readonly Regex fieldPattern = new Regex("{.*}", RegexOptions.Compiled);
 
         #endregion
