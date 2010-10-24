@@ -37,6 +37,7 @@ Here is list of usable fields (they can be used as return values and range field
   * GRADE
   * CADENCE
   * POWER
+  * CLIMBSPEED
 <br>
 *Peak feature examples and description*:<br>
 
@@ -77,6 +78,7 @@ And as a peak type or result type you can define these fields:
   * GRADE
   * CADENCE
   * POWER
+  * CLIMBSPEED
  <br>
 Other examples:
 Fastest 2km only on activities with GPS Track:<br>
