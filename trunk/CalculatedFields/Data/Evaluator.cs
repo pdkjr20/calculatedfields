@@ -29,6 +29,15 @@
     {
         #region Constants and Fields
 
+        private static List<DataTrackPoint> dataTrackCache11 = null;
+        private static DateTime dataTrackCacheStamp11;
+        private static List<DataTrackPoint> dataTrackCache10 = null;
+        private static DateTime dataTrackCacheStamp10;
+        private static List<DataTrackPoint> dataTrackCache01 = null;
+        private static DateTime dataTrackCacheStamp01;
+        private static List<DataTrackPoint> dataTrackCache00 = null;
+        private static DateTime dataTrackCacheStamp00;
+
         private static uint dataTrackElement = 1000;
         private static bool cacheEnabled = true;
         private static Dictionary<string, object> expressionsCache = new Dictionary<string, object>();
@@ -37,8 +46,8 @@
         private static readonly CSharpCodeProvider provider = new CSharpCodeProvider(new Dictionary<string, string>() { { "CompilerVersion", "v3.5" } });
 
         private static readonly Regex bracketsPattern = new Regex("{*}*", RegexOptions.Compiled);
+        //private static readonly Regex fieldPattern = new Regex("{[a-zA-Z0-9{}(),. _%]*}", RegexOptions.Compiled);
         private static readonly Regex fieldPattern = new Regex("{[^}]*}", RegexOptions.Compiled);
-        //private static readonly Regex fieldPattern = new Regex("{.*}", RegexOptions.Compiled);
 
         #endregion
 
@@ -249,7 +258,7 @@
                     includePauses = true;
                 }
 
-                List<DataTrackPoint> dataTrack = GetDataTrack(activity, includePauses);
+                List<DataTrackPoint> dataTrack = GetDataTrack(activity, false, includePauses);
 
                 //try
                 /*{
@@ -377,6 +386,40 @@
             }
         }
 
+        private static string FindField(string field)
+        {
+            string returnValue = "";
+
+            if (bracketsPattern.IsMatch(field))
+            {
+                int opening = 0, closing = 0;
+
+                foreach (var c in field)
+                {
+                    if (c == '{')
+                    {
+                        opening++;
+                    }
+                    if (c == '}')
+                    {
+                        closing++;
+                    }
+
+                    if (opening > 0)
+                    {
+                        returnValue += c;
+                    }
+
+                    if (opening > 0 && (opening == closing))
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return returnValue;
+        }
+
         private static string ParseExpression(string expression, IActivity activity, string condition, CalculatedFieldsRow calculatedFieldsRow)
         {
             string field;
@@ -389,10 +432,14 @@
 
             ActivityInfo activityInfoInstance = ActivityInfoCache.Instance.GetInfo(activity);
 
-            while (fieldPattern.IsMatch(expression))
+            //while (fieldPattern.IsMatch(expression))
+            while (FindField(expression) != "")
             {
-                field = fieldPattern.Match(expression).Value;
-                field = bracketsPattern.Replace(field, "");
+                //field = fieldPattern.Match(expression).Value;
+                field = FindField(expression);
+                //field = bracketsPattern.Replace(field, "");
+                field = Regex.Replace(field, "^{", "");
+                field = Regex.Replace(field, "}$", "");
                 field = field.ToUpper();
 
                 if (fieldValue == "")
@@ -445,7 +492,11 @@
                     expression = "";
                 }
 
-                expression = fieldPattern.Replace(expression, fieldValue, 1);
+                //expression = fieldPattern.Replace(expression, fieldValue, 1);
+                if (expression != "")
+                {
+                    expression = expression.Replace(FindField(expression), fieldValue);
+                }
 
                 history += expression + "-";
 
@@ -461,17 +512,71 @@
         {
             string fieldValue = "";
 
+            if (field.Contains("HALFSPEEDRATIO"))
+            {
+                bool onlyActive = field.Contains("ACTIVE");
+
+                var dataTrack = GetDataTrack(activity, onlyActive, false);
+
+                float halfDistance = (dataTrack.Last().Distance - dataTrack.First().Distance) / 2f;
+                int firstHalfDistanceElapsed = 0;
+
+                for (int i = 0; i < dataTrack.Count; i++)
+                {
+                    if (dataTrack[i].Distance >= (dataTrack.First().Distance + halfDistance))
+                    {
+                        firstHalfDistanceElapsed = i;
+
+                        break;
+                    }
+                }
+
+                int secondHalfDistanceElapsed = dataTrack.Count - firstHalfDistanceElapsed;
+
+                float firstHalfSpeedRatio = halfDistance / (float)firstHalfDistanceElapsed;
+                float secondsHalfSpeedRatio = halfDistance / (float)secondHalfDistanceElapsed;
+
+                fieldValue = ((firstHalfSpeedRatio - secondsHalfSpeedRatio) / firstHalfSpeedRatio).ToString(CultureInfo.InvariantCulture.NumberFormat);
+            }
+            if (field.Contains("DECOUPLINGRATIO"))
+            {
+                bool onlyActive = field.Contains("ACTIVE");
+
+                var dataTrack = GetDataTrack(activity, onlyActive, false);
+
+                float halfDistance = (dataTrack.Last().Distance - dataTrack.First().Distance) / 2f;
+                int firstHalfDistanceElapsed = 0;
+
+                for (int i = 0; i < dataTrack.Count; i++)
+                {
+                    if (dataTrack[i].Distance >= (dataTrack.First().Distance + halfDistance))
+                    {
+                        firstHalfDistanceElapsed = i;
+
+                        break;
+                    }
+                }
+
+                int secondHalfDistanceElapsed = dataTrack.Count - firstHalfDistanceElapsed;
+
+                float firstHalfSpeedHRRatio = (halfDistance / (float)firstHalfDistanceElapsed) / dataTrack.Where((o, index) => index >= 0 && index <= firstHalfDistanceElapsed).Average(o => o.HR);
+                float secondsHalfSpeedHRRatio = (halfDistance / (float)secondHalfDistanceElapsed) / dataTrack.Where((o, index) => index > firstHalfDistanceElapsed).Average(o => o.HR);
+
+                fieldValue = ((firstHalfSpeedHRRatio - secondsHalfSpeedHRRatio) / firstHalfSpeedHRRatio).ToString(CultureInfo.InvariantCulture.NumberFormat);
+            }
             if (field.Contains("RANGE"))
             {
+                field = ParseExpression(field, activity, "", null);
+
                 string returnType = Regex.Match(field, "(?<=RANGE).*(?=\\()").Value;
                 string dataField = Regex.Match(field, "(?<=\\()[a-zA-Z]*(?=,)").Value.ToUpper();
-                float lowerBound = Single.Parse(Regex.Match(field, "(?<=,)[0-9.]*(?=,)").Value);
-                float upperBound = Single.Parse(Regex.Match(field, "(?<=,)[0-9.]*(?=\\))").Value);
+                float lowerBound = Single.Parse(Regex.Match(field, "(?<=,)[0-9.]*(?=,)").Value, CultureInfo.InvariantCulture.NumberFormat);
+                float upperBound = Single.Parse(Regex.Match(field, "(?<=,)[0-9.]*(?=\\))").Value, CultureInfo.InvariantCulture.NumberFormat);
 
                 if (dataField != "" && returnType != "")
                 {
-                    var dataTrack = GetDataTrack(activity, false);
-                    var query = dataTrack.Where(o => (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power))))))))) >= lowerBound && (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power))))))))) <= upperBound);
+                    var dataTrack = GetDataTrack(activity, false, false);
+                    var query = dataTrack.Where(o => (dataField == "CLIMBSPEED" ? o.ClimbSpeed : (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power)))))))))) >= lowerBound && (dataField == "CLIMBSPEED" ? o.ClimbSpeed : (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power)))))))))) <= upperBound);
 
                     if (query.Count() != 0)
                     {
@@ -481,7 +586,7 @@
                                 fieldValue = query.Count().ToString(CultureInfo.InvariantCulture.NumberFormat);
                                 break;
                             case "DISTANCE":
-                                fieldValue = dataTrack.Select((o, index) => new { Field = (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power))))))))), Distance = (dataTrack[((index + 1) < dataTrack.Count) ? index + 1 : index].Distance - o.Distance) }).Where(o => o.Field >= lowerBound && o.Field <= upperBound).Sum(o => o.Distance).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                fieldValue = dataTrack.Select((o, index) => new { Field = (dataField == "CLIMBSPEED" ? o.ClimbSpeed : (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power)))))))))), Distance = (dataTrack[((index + 1) < dataTrack.Count) ? index + 1 : index].Distance - o.Distance) }).Where(o => o.Field >= lowerBound && o.Field <= upperBound).Sum(o => o.Distance).ToString(CultureInfo.InvariantCulture.NumberFormat);
                                 break;
                             case "HR":
                                 fieldValue = query.Average(o => o.HR).ToString(CultureInfo.InvariantCulture.NumberFormat);
@@ -504,6 +609,9 @@
                             case "POWER":
                                 fieldValue = query.Average(o => o.Power).ToString(CultureInfo.InvariantCulture.NumberFormat);
                                 break;
+                            case "CLIMBSPEED":
+                                fieldValue = query.Average(o => o.ClimbSpeed).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                break;
                         }
                     }
                     else
@@ -515,15 +623,19 @@
 
             if (field.Contains("RECOVERYHR"))
             {
+                field = ParseExpression(field, activity, "", null);
+
                 int interval = 0;
 
                 interval = Int32.Parse(Regex.Match(field, "(?<=\\()[0-9]*(?=\\))").Value);
 
-                var dataTrack = GetDataTrack(activity, true);
+                var dataTrack = GetDataTrack(activity, false, true);
                 fieldValue = dataTrack.Select((o, index) => new { Elapsed = o.Elapsed, HR = (dataTrack[((index + interval) < dataTrack.Count) ? index + interval : index].HR == 0) ? 0 : o.HR - dataTrack[((index + interval) < dataTrack.Count) ? index + interval : index].HR }).OrderBy(o => o.HR).Last().HR.ToString(CultureInfo.InvariantCulture.NumberFormat);
             }
             if (field.Contains("PEAK"))
             {
+                field = ParseExpression(field, activity, "", null);
+
                 string operation = Regex.Match(field, "[a-zA-Z]*(?=PEAK)").Value;
                 string peakType = Regex.Match(field, "(?<=PEAK).*(?=\\()").Value;
                 string dataField = Regex.Match(field, "(?<=\\()[a-zA-Z]*(?=,)").Value.ToUpper();
@@ -532,7 +644,7 @@
 
                 if (dataField != "" && peakType != "" && interval != 0 && (operation == "MAX" || operation == "MIN"))
                 {
-                    var dataTrack = GetDataTrack(activity, true);
+                    var dataTrack = GetDataTrack(activity, false, true);
                     float peakValue;
                     int peakStart = 0, peakEnd = 0;
 
@@ -593,6 +705,9 @@
                                             break;
                                         case "POWER":
                                             temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.Power);
+                                            break;
+                                        case "CLIMBSPEED":
+                                            temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.ClimbSpeed);
                                             break;
                                     }
 
@@ -661,6 +776,9 @@
                                     case "POWER":
                                         fieldValue = dataTrack.Where((o, index) => index >= peakStart && index <= peakEnd).Average(o => o.Power).ToString(CultureInfo.InvariantCulture.NumberFormat);
                                         break;
+                                    case "CLIMBSPEED":
+                                        fieldValue = dataTrack.Where((o, index) => index >= peakStart && index <= peakEnd).Average(o => o.ClimbSpeed).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                        break;
                                 }
                             }
                             else
@@ -727,6 +845,9 @@
                                             break;
                                         case "POWER":
                                             temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.Power);
+                                            break;
+                                        case "CLIMBSPEED":
+                                            temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.ClimbSpeed);
                                             break;
                                     }
 
@@ -795,6 +916,9 @@
                                     case "POWER":
                                         fieldValue = dataTrack.Where((o, index) => index >= peakStart && index <= peakEnd).Average(o => o.Power).ToString(CultureInfo.InvariantCulture.NumberFormat);
                                         break;
+                                    case "CLIMBSPEED":
+                                        fieldValue = dataTrack.Where((o, index) => index >= peakStart && index <= peakEnd).Average(o => o.ClimbSpeed).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                        break;
                                 }
                             }
                             else
@@ -825,7 +949,14 @@
 
                 if (aggOperation != "")
                 {
+                    field = ParseExpression(field, activity, "", null);
+
                     days = Int32.Parse(Regex.Match(field, "(?<=,)[ 0-9]*(?=\\))").Value.Trim());
+
+                    if (aggOperation == "GET")
+                    {
+                        days++;
+                    }
 
                     DateTime actualActivityDate = (activity.StartTime.ToUniversalTime() + activity.TimeZoneUtcOffset).Date;
 
@@ -844,13 +975,13 @@
 
                                 switch (aggOperation)
                                 {
-//                                    case "GET":
-//                                        if (actualActivityDate.Subtract(pastActivityDate).Days-1 == days)
-//                                        {
-//                                            result = double.Parse(
-//                                                Evaluate("{" + aggField + "}", pastActivity, condition, calculatedFieldsRow).ToString());
-//                                        }
-//                                        break;
+                                    case "GET":
+                                        if (actualActivityDate.Subtract(pastActivityDate).Days == (days - 1))
+                                        {
+                                            result = double.Parse(
+                                                Evaluate("{" + aggField + "}", pastActivity, condition, calculatedFieldsRow).ToString());
+                                        }
+                                        break;
                                     case "SUM":
                                         result +=
                                             double.Parse(
@@ -983,7 +1114,67 @@
             return fieldValue;
         }
 
-        private static List<DataTrackPoint> GetDataTrack(IActivity activity, bool includePauses)
+        private static List<DataTrackPoint> GetDataTrack(IActivity activity, bool onlyActive, bool includePauses)
+        {
+            if (onlyActive && includePauses)
+            {
+                if (dataTrackCache11 != null && activity.StartTime.Ticks == dataTrackCacheStamp11.Ticks)
+                {
+                    return dataTrackCache11;
+                }
+                else
+                {
+                    dataTrackCacheStamp11 = activity.StartTime;
+                    dataTrackCache11 = CalculateDataTrack(activity, onlyActive, includePauses);
+
+                    return dataTrackCache11;
+                }
+            }
+            else if (onlyActive && !includePauses)
+            {
+                if (dataTrackCache10 != null && activity.StartTime.Ticks == dataTrackCacheStamp10.Ticks)
+                {
+                    return dataTrackCache10;
+                }
+                else
+                {
+                    dataTrackCacheStamp10 = activity.StartTime;
+                    dataTrackCache10 = CalculateDataTrack(activity, onlyActive, includePauses);
+
+                    return dataTrackCache10;
+                }
+            }
+            else if (!onlyActive && includePauses)
+            {
+                if (dataTrackCache01 != null && activity.StartTime.Ticks == dataTrackCacheStamp01.Ticks)
+                {
+                    return dataTrackCache01;
+                }
+                else
+                {
+                    dataTrackCacheStamp01 = activity.StartTime;
+                    dataTrackCache01 = CalculateDataTrack(activity, onlyActive, includePauses);
+
+                    return dataTrackCache01;
+                }
+            }
+            else //(!onlyActive && !includePauses)
+            {
+                if (dataTrackCache00 != null && activity.StartTime.Ticks == dataTrackCacheStamp00.Ticks)
+                {
+                    return dataTrackCache00;
+                }
+                else
+                {
+                    dataTrackCacheStamp00 = activity.StartTime;
+                    dataTrackCache00 = CalculateDataTrack(activity, onlyActive, includePauses);
+
+                    return dataTrackCache00;
+                }
+            }
+        }
+
+        private static List<DataTrackPoint> CalculateDataTrack(IActivity activity, bool onlyActive, bool includePauses)
         {
             List<DataTrackPoint> dataTrack = new List<DataTrackPoint>();
 
@@ -1039,8 +1230,9 @@
             for (uint i = 0; i <= totalElapsed; i += dataTrackElement)
             {
                 bool paused = false;
+                bool rest = false;
                 DateTime adjustedTime = startTime.AddMilliseconds(i);
-
+                
                 foreach (var timer in activity.TimerPauses)
                 {
                     if (adjustedTime >= timer.Lower && adjustedTime <= timer.Upper)
@@ -1054,9 +1246,22 @@
                     }
                 }
 
-                if (!paused || includePauses)
+                foreach (var activeLap in activityInfoInstance.LapDetailInfo(ActivityLapsType.RecordedLapsType).Where(o => o.Rest))
                 {
-                    float hr = 0, pace = 0, speed = 0, elevation = 0, grade = 0, cadence = 0, power = 0, distance = 0;
+                    if (adjustedTime >= activeLap.StartTime && adjustedTime <= activeLap.EndTime)
+                    {
+                        rest = true;
+                        if (onlyActive)
+                        {
+                            pauseShift += dataTrackElement;
+                        }
+                        break;
+                    }
+                }
+
+                if ((!paused || includePauses) && (!rest || !onlyActive))
+                {
+                    float hr = 0, pace = 0, speed = 0, elevation = 0, grade = 0, cadence = 0, power = 0, distance = 0, climbSpeed = 0;
                     ITimeValueEntry<float> interpolatedValue;
 
                     interpolatedValue = activityInfoInstance.SmoothedHeartRateTrack.GetInterpolatedValue(adjustedTime);
@@ -1108,10 +1313,17 @@
                         if (paused)
                         {
                             grade = 0;
+                            climbSpeed = 0;
                         }
                         else
                         {
                             grade = interpolatedValue.Value;
+
+                            if (speed != 0)
+                            {
+                                //throw new Exception(speed + "-" + grade);
+                                climbSpeed = speed * 1000f * grade;
+                            }
                         }
                     }
                     interpolatedValue = activityInfoInstance.SmoothedCadenceTrack.GetInterpolatedValue(adjustedTime);
@@ -1139,10 +1351,11 @@
                         }
                     }
 
-                    dataTrack.Add(new DataTrackPoint(distance, hr, pace, speed, elevation, grade, cadence, power, (i - pauseShift)/1000, paused));
+                    dataTrack.Add(new DataTrackPoint(distance, hr, pace, speed, elevation, grade, cadence, power, (i - pauseShift)/1000, climbSpeed, paused));
                 }
             }
 
+            //throw new Exception((totalElapsed - pauseShift).ToString());
            // var query = dataTrack.Where((o, index) => o.HR > dataTrack[((index+1) < dataTrack.Count) ? index + 1 : index].HR).Where(o => o.HR )
 
             return dataTrack;
@@ -1363,18 +1576,20 @@
                     fieldValue = (activity.PowerWattsTrack == null) ? "false" : "true";
                     break;
 
-                //                    stripTracks.DropDownItems.Add(new ToolStripMenuItem("HASGPSTRACK"));
-  //          stripTracks.DropDownItems.Add(new ToolStripMenuItem("HASHRTRACK"));
-    //        stripTracks.DropDownItems.Add(new ToolStripMenuItem("HASELEVATIONTRACK"));
-      //      stripTracks.DropDownItems.Add(new ToolStripMenuItem("HASCADENCETRACK"));
 
 
                 //totals)
                 case "TIME":
                     fieldValue = activityInfoInstance.Time.TotalSeconds.ToString(CultureInfo.InvariantCulture.NumberFormat);
                     break;
+                case "HALFTIME":
+                    fieldValue = (activityInfoInstance.Time.TotalSeconds / 2f).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                    break;
                 case "DISTANCE":
                     fieldValue = activityInfoInstance.DistanceMeters.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                    break;
+                case "HALFDISTANCE":
+                    fieldValue = (activityInfoInstance.DistanceMeters / 2f).ToString(CultureInfo.InvariantCulture.NumberFormat);
                     break;
                 case "AVGPACE":
                     pace = activityInfoInstance.Time.TotalSeconds / activityInfoInstance.DistanceMeters * 1000;
@@ -1492,6 +1707,8 @@
 
             if (field.StartsWith("SPLIT"))
             {
+                field = ParseExpression(field, activity, "", null);
+
                 string splitField;
                 int splitNumber = 0;
 
@@ -1561,6 +1778,8 @@
                 {
                     return "";
                 }
+
+                field = ParseExpression(field, activity, "", null);
 
                 string trailField;
                 string trailName;

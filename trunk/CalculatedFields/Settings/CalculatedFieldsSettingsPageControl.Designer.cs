@@ -84,6 +84,7 @@
             this.labelDonationsText3 = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.stripFormulasPool = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl.SuspendLayout();
             this.tabPageStandardExpressions.SuspendLayout();
             this.contextMenuStripFields.SuspendLayout();
@@ -221,9 +222,10 @@
             this.stripNested,
             this.stripTracks,
             this.stripExamples,
-            this.stripFormulas});
+            this.stripFormulas,
+            this.stripFormulasPool});
             this.contextMenuStripFields.Name = "contextMenuStripFields";
-            this.contextMenuStripFields.Size = new System.Drawing.Size(175, 312);
+            this.contextMenuStripFields.Size = new System.Drawing.Size(175, 356);
             this.contextMenuStripFields.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripFields_Opening);
             // 
             // stripActivity
@@ -436,7 +438,7 @@
             this.tabPageNestedExpressions.Location = new System.Drawing.Point(4, 22);
             this.tabPageNestedExpressions.Name = "tabPageNestedExpressions";
             this.tabPageNestedExpressions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageNestedExpressions.Size = new System.Drawing.Size(852, 518);
+            this.tabPageNestedExpressions.Size = new System.Drawing.Size(795, 518);
             this.tabPageNestedExpressions.TabIndex = 1;
             this.tabPageNestedExpressions.Text = "Nested Expressions";
             this.tabPageNestedExpressions.UseVisualStyleBackColor = true;
@@ -688,6 +690,12 @@
             this.splitContainer2.SplitterDistance = 544;
             this.splitContainer2.TabIndex = 0;
             // 
+            // stripFormulasPool
+            // 
+            this.stripFormulasPool.Name = "stripFormulasPool";
+            this.stripFormulasPool.Size = new System.Drawing.Size(174, 22);
+            this.stripFormulasPool.Text = "Formulas pool";
+            // 
             // CalculatedFieldsSettingsPageControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -771,5 +779,6 @@
         private System.Windows.Forms.Label labelDonationsText3;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.ToolStripMenuItem stripFormulasPool;
     }
 }

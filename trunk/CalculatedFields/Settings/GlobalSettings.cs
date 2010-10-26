@@ -19,6 +19,7 @@
         float power;
         float elapsed;
         float distance;
+        float climbSpeed;
         bool pause;
 
         public float Distance { get { return distance; } set { distance = value; } }
@@ -30,13 +31,14 @@
         public float Cadence { get { return cadence; } set { cadence = value; } }
         public float Power { get { return power; } set { power = value; } }
         public float Elapsed { get { return elapsed; } set { elapsed = value; } }
+        public float ClimbSpeed { get { return climbSpeed; } set { climbSpeed = value; } }
         public bool Pause { get { return pause; } set { pause = value; } }
 
         public DataTrackPoint()
         {
         }
 
-        public DataTrackPoint(float distance, float hr, float pace, float speed, float elevation, float grade, float cadence, float power, float elapsed, bool pause)
+        public DataTrackPoint(float distance, float hr, float pace, float speed, float elevation, float grade, float cadence, float power, float elapsed, float climbSpeed, bool pause)
         {
             Distance = distance;
             HR = hr;
@@ -47,6 +49,7 @@
             Cadence = cadence;
             Power = power;
             Elapsed = elapsed;
+            ClimbSpeed = climbSpeed;
             Pause = pause;
         }
     }
