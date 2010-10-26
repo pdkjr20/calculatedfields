@@ -97,7 +97,9 @@
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("NOTES"));
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("INTENSITY"));
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("TIME"));
+            stripActivity.DropDownItems.Add(new ToolStripMenuItem("HALFTIME"));
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("DISTANCE"));
+            stripActivity.DropDownItems.Add(new ToolStripMenuItem("HALFDISTANCE"));
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("AVGPACE"));
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("AVGCADENCE"));
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("AVGGRADE"));
@@ -251,8 +253,24 @@
             }
 
             stripFormulas.DropDownItems.Add(new ToolStripMenuItem("RECOVERYHR"));
+            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("Decoupling ratio of first half and second half of your activity (Ruskie)"));
+            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("Decoupling ratio of first half and second half of your activity (active parts)"));
+            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("Speed ratio between first half and second half of your activity (Decoupling ratio without HR) (Kuki)"));
+            stripFormulas.DropDownItems.Add(new ToolStripMenuItem("Speed ratio between first half and second half of your activity (active parts)"));
 
             foreach (ToolStripMenuItem item in stripFormulas.DropDownItems)
+            {
+                item.Click += fieldItem_Click;
+            }
+
+            stripFormulasPool.DropDownItems.Add(new ToolStripMenuItem("Bike score to show climby bike index (Stumpjumper68)"));
+            stripFormulasPool.DropDownItems.Add(new ToolStripMenuItem("Stride length in mm, you need footpod for this formula (dave a walker)"));
+            stripFormulasPool.DropDownItems.Add(new ToolStripMenuItem("Elevation change (GaryS)"));
+            stripFormulasPool.DropDownItems.Add(new ToolStripMenuItem("Estimated distance taking ascent into account (vax)"));
+            stripFormulasPool.DropDownItems.Add(new ToolStripMenuItem("First half distance Pace (GaryS)"));
+            stripFormulasPool.DropDownItems.Add(new ToolStripMenuItem("Second half distance Pace (GaryS)"));
+
+            foreach (ToolStripMenuItem item in stripFormulasPool.DropDownItems)
             {
                 item.Click += fieldItem_Click;
             }
@@ -331,7 +349,7 @@
                 result = "{Field(" + item.Text + ",7)}";
             }
 
-            if (item.OwnerItem == stripFormulas || item.OwnerItem == stripRange || item.OwnerItem == stripPeak)
+            if (item.OwnerItem == stripFormulas || item.OwnerItem == stripFormulasPool || item.OwnerItem == stripRange || item.OwnerItem == stripPeak)
             {
                 switch (item.Text)
                 {
@@ -360,6 +378,27 @@
                         result = "{MAXPEAKTIME(Power,HR,20)}";
                         break;
 
+
+                    case "Bike score to show climby bike index (Stumpjumper68)":
+                        result = "({ASCENDING} / {DISTANCE} * 100) * 4 + {ASCENDING} * {ASCENDING} / {DISTANCE} + {DISTANCE} / 1000";
+                        break;
+                    case "Stride length in mm, you need footpod for this formula (dave a walker)":
+                        result = "({DISTANCE} / ({TIME} / 60)) / {AVGCADENCE} * 1000 / 2";
+                        textBoxCondition.Text = "{AVGCADENCE} != 0";
+                        break;
+                    case "Elevation change (GaryS)":
+                        result = "{MAXPEAKDISTANCE(Elevation,10)} - {MINPEAKDISTANCE(Elevation,10)}";
+                        break;
+                    case "Estimated distance taking ascent into account (vax)":
+                        result = "({DISTANCE} + {ASCENDING} * 10)";
+                        break;
+                    case "First half distance Pace (GaryS)":
+                        result = "{RangeElapsed(Distance,0,{HALFDISTANCE})} / {HALFDISTANCE} * 1000";
+                        break;
+                    case "Second half distance Pace (GaryS)":
+                        result = "{RangeElapsed(Distance,{HALFDISTANCE},{Distance})} / {HALFDISTANCE} * 1000";
+                        break;
+
                     
                     case "Time in HR between 150-180":
                         result = "{RANGEELAPSED(HR,150,180)}";
@@ -369,6 +408,18 @@
                         break;
                     case "RECOVERYHR":
                         result = "{RECOVERYHR(60)}";
+                        break;
+                    case "Decoupling ratio of first half and second half of your activity (Ruskie)":
+                        result = "{DECOUPLINGRATIO}";
+                        break;
+                    case "Decoupling ratio of first half and second half of your activity (active parts)":
+                        result = "{DECOUPLINGRATIOACTIVE}";
+                        break;
+                    case "Speed ratio between first half and second half of your activity (Decoupling ratio without HR) (Kuki)":
+                        result = "{HALFSPEEDRATIO}";
+                        break;
+                    case "Speed ratio between first half and second half of your activity (active parts)":
+                        result = "{HALFSPEEDRATIOACTIVE}";
                         break;
                 }
             }
