@@ -568,6 +568,8 @@
             {
                 field = ParseExpression(field, activity, "", null);
 
+                bool active = field.StartsWith("ACTIVE");
+
                 string returnType = Regex.Match(field, "(?<=RANGE).*(?=\\()").Value;
                 string dataField = Regex.Match(field, "(?<=\\()[a-zA-Z]*(?=,)").Value.ToUpper();
                 float lowerBound = Single.Parse(Regex.Match(field, "(?<=,)[0-9.]*(?=,)").Value, CultureInfo.InvariantCulture.NumberFormat);
@@ -575,7 +577,7 @@
 
                 if (dataField != "" && returnType != "")
                 {
-                    var dataTrack = GetDataTrack(activity, false, false);
+                    var dataTrack = GetDataTrack(activity, active, false);
                     var query = dataTrack.Where(o => (dataField == "CLIMBSPEED" ? o.ClimbSpeed : (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power)))))))))) >= lowerBound && (dataField == "CLIMBSPEED" ? o.ClimbSpeed : (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power)))))))))) <= upperBound);
 
                     if (query.Count() != 0)
