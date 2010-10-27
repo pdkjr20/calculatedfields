@@ -234,6 +234,8 @@
             stripRange.DropDownItems.Add(new ToolStripMenuItem("HR in Pace between 5:00-5:30"));
             stripRange.DropDownItems.Add(new ToolStripMenuItem("Time of first half of distance"));
             stripRange.DropDownItems.Add(new ToolStripMenuItem("Average HR of second half of distance"));
+            stripRange.DropDownItems.Add(new ToolStripMenuItem("Time of first half of distance (only active parts)"));
+            stripRange.DropDownItems.Add(new ToolStripMenuItem("Average HR of second half of distance (only active parts)"));
 
             foreach (ToolStripMenuItem item in stripRange.DropDownItems)
             {
@@ -426,6 +428,13 @@
                     case "Average HR of second half of distance":
                         result = "{RANGEHR(Distance,{HALFDISTANCE},{DISTANCE})}";
                         break;
+                    case "Time of first half of distance (only active parts)":
+                        result = "{ACTIVERANGEELAPSED(Distance,0,{HALFDISTANCE})}";
+                        break;
+                    case "Average HR of second half of distance (only active parts)":
+                        result = "{ACTIVERANGEHR(Distance,{HALFDISTANCE},{DISTANCE})}";
+                        break;
+
 
                     case "RECOVERYHR":
                         result = "{RECOVERYHR(60)}";
