@@ -232,6 +232,8 @@
 
             stripRange.DropDownItems.Add(new ToolStripMenuItem("Time in HR between 150-180"));
             stripRange.DropDownItems.Add(new ToolStripMenuItem("HR in Pace between 5:00-5:30"));
+            stripRange.DropDownItems.Add(new ToolStripMenuItem("Time of first half of distance"));
+            stripRange.DropDownItems.Add(new ToolStripMenuItem("Average HR of second half of distance"));
 
             foreach (ToolStripMenuItem item in stripRange.DropDownItems)
             {
@@ -269,6 +271,9 @@
             stripFormulasPool.DropDownItems.Add(new ToolStripMenuItem("Estimated distance taking ascent into account (vax)"));
             stripFormulasPool.DropDownItems.Add(new ToolStripMenuItem("First half distance Pace (GaryS)"));
             stripFormulasPool.DropDownItems.Add(new ToolStripMenuItem("Second half distance Pace (GaryS)"));
+            stripFormulasPool.DropDownItems.Add(new ToolStripMenuItem("% VO2max (Scorpion79)"));
+            stripFormulasPool.DropDownItems.Add(new ToolStripMenuItem("Vdot (Scorpion79)"));
+            stripFormulasPool.DropDownItems.Add(new ToolStripMenuItem("VO2max (Scorpion79)"));
 
             foreach (ToolStripMenuItem item in stripFormulasPool.DropDownItems)
             {
@@ -393,10 +398,19 @@
                         result = "({DISTANCE} + {ASCENDING} * 10)";
                         break;
                     case "First half distance Pace (GaryS)":
-                        result = "{RangeElapsed(Distance,0,{HALFDISTANCE})} / {HALFDISTANCE} * 1000";
+                        result = "{RANGEELAPSED(Distance,0,{HALFDISTANCE})} / {HALFDISTANCE} * 1000";
                         break;
                     case "Second half distance Pace (GaryS)":
-                        result = "{RangeElapsed(Distance,{HALFDISTANCE},{Distance})} / {HALFDISTANCE} * 1000";
+                        result = "{RANGEELAPSED(Distance,{HALFDISTANCE},{Distance})} / {HALFDISTANCE} * 1000";
+                        break;
+                    case "% VO2max (Scorpion79)":
+                        result = "(0.8 + 0.1894393 * Math.Exp(-0.012778 * ({DISTANCE}/{TIME}*60)) + 0.2989558 * Math.Exp(-0.1932605 * ({DISTANCE}/{TIME}*60)))";
+                        break;
+                    case "Vdot (Scorpion79)":
+                        result = "(-4.60 + 0.182258 * ({DISTANCE}/{TIME}*60) + 0.000104 * Math.Pow({DISTANCE}/{TIME}*60, 2)) / (0.8 + 0.1894393 * Math.Exp(-0.012778 * ({DISTANCE}/{TIME}*60)) + 0.2989558 * Math.Exp(-0.1932605 * ({DISTANCE}/{TIME}*60)))";
+                        break;
+                    case "VO2max (Scorpion79)":
+                        result = "{ATHLETEWEIGHT} * ((-4.60 + 0.182258 * ({DISTANCE}/{TIME}*60) + 0.000104 * Math.Pow({DISTANCE}/{TIME}*60, 2)) / (0.8 + 0.1894393 * Math.Exp(-0.012778 * ({DISTANCE}/{TIME}*60)) + 0.2989558 * Math.Exp(-0.1932605 * ({DISTANCE}/{TIME}*60)))) / 1000";
                         break;
 
                     
@@ -406,6 +420,13 @@
                     case "HR in Pace between 5:00-5:30":
                         result = "{RANGEHR(Pace,5,5.5)}";
                         break;
+                    case "Time of first half of distance":
+                        result = "{RANGEELAPSED(Distance,0,{HALFDISTANCE})}";
+                        break;
+                    case "Average HR of second half of distance":
+                        result = "{RANGEHR(Distance,{HALFDISTANCE},{DISTANCE})}";
+                        break;
+
                     case "RECOVERYHR":
                         result = "{RECOVERYHR(60)}";
                         break;
