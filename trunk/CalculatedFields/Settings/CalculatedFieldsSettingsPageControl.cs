@@ -119,7 +119,9 @@
             }
 
             stripActive.DropDownItems.Add(new ToolStripMenuItem("ACTIVETIME"));
+            stripActive.DropDownItems.Add(new ToolStripMenuItem("ACTIVEHALFTIME"));
             stripActive.DropDownItems.Add(new ToolStripMenuItem("ACTIVEDISTANCE"));
+            stripActive.DropDownItems.Add(new ToolStripMenuItem("ACTIVEHALFDISTANCE"));
             stripActive.DropDownItems.Add(new ToolStripMenuItem("ACTIVEAVGPACE"));
             stripActive.DropDownItems.Add(new ToolStripMenuItem("ACTIVEAVGSPEED"));
             stripActive.DropDownItems.Add(new ToolStripMenuItem("ACTIVEAVGCADENCE"));
