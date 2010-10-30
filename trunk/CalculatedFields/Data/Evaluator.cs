@@ -13,6 +13,7 @@
     using System.Xml.Serialization;
     using System.IO;
     using System.Web;
+    using Utils;
 
     using Microsoft.CSharp;
 
@@ -1557,7 +1558,7 @@
                     fieldValue = "\"" + (activity.StartTime.ToUniversalTime() + activity.TimeZoneUtcOffset).ToShortDateString() + "\"";
                     break;
                 case "NOTES":
-                    fieldValue = "\"" + activity.Notes.Replace("\n", "").Replace("\r", "") + "\"";
+                    fieldValue = "\"" + activity.Notes.Escape() + "\"";
                     break;
                 case "INTENSITY":
                     fieldValue = activity.Intensity.ToString(CultureInfo.InvariantCulture.NumberFormat);
