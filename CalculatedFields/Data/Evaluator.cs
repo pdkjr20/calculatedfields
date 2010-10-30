@@ -1080,7 +1080,7 @@
                         }
                         else if (definition.DataType.Id == CustomDataFieldDefinitions.StandardDataTypes.TextDataTypeId)
                         {
-                            fieldValue = activity.GetCustomDataValue(definition).ToString();
+                            fieldValue = activity.GetCustomDataValue(definition).ToString().Escape();
                         }
                         else if (definition.DataType.Id == CustomDataFieldDefinitions.StandardDataTypes.TimeSpanDataTypeId)
                         {
@@ -1401,7 +1401,7 @@
                     fieldValue = "\"" + athleteEntry.Date.ToShortDateString() + "\"";
                     break;
                 case "ATHLETEDIARY":
-                    fieldValue = "\"" + athleteEntry.DiaryText + "\"";
+                    fieldValue = "\"" + athleteEntry.DiaryText.Escape() + "\"";
                     break;
                 case "ATHLETEDIASTOLICBLOODPRESSURE":
                     fieldValue = athleteEntry.DiastolicBloodPressure.ToString(CultureInfo.InvariantCulture.NumberFormat);
@@ -1435,7 +1435,7 @@
                     fieldValue = athleteEntry.Sick.ToString();
                     break;
                 case "ATHLETESICKTEXT":
-                    fieldValue = "\"" + athleteEntry.SickText + "\"";
+                    fieldValue = "\"" + athleteEntry.SickText.Escape() + "\"";
                     break;
                 case "ATHLETESKINFOLD":
                     fieldValue = athleteEntry.Skinfold.ToString(CultureInfo.InvariantCulture.NumberFormat);
@@ -1472,7 +1472,7 @@
                             }
                             else if (definition.DataType.Id == CustomDataFieldDefinitions.StandardDataTypes.TextDataTypeId)
                             {
-                                fieldValue = athleteEntry.GetCustomDataValue(definition).ToString();
+                                fieldValue = athleteEntry.GetCustomDataValue(definition).ToString().Escape();
                             }
                             else if (definition.DataType.Id == CustomDataFieldDefinitions.StandardDataTypes.TimeSpanDataTypeId)
                             {
@@ -1537,13 +1537,13 @@
                     fieldValue = activity.Weather.TemperatureCelsius.ToString(CultureInfo.InvariantCulture.NumberFormat);
                     break;
                 case "WEATHERNOTES":
-                    fieldValue = "\"" + activity.Weather.ConditionsText + "\"";
+                    fieldValue = "\"" + activity.Weather.ConditionsText.Escape() + "\"";
                     break;
                 case "LOCATION":
-                    fieldValue = "\"" + activity.Location + "\"";
+                    fieldValue = "\"" + activity.Location.Escape() + "\"";
                     break;
                 case "NAME":
-                    fieldValue = "\"" + activity.Name + "\"";
+                    fieldValue = "\"" + activity.Name.Escape() + "\"";
                     break;
                 case "DATETIMETICKS":
                     fieldValue = "\"" + (activity.StartTime.ToUniversalTime() + activity.TimeZoneUtcOffset).Ticks.ToString(CultureInfo.InvariantCulture.NumberFormat);
@@ -1739,7 +1739,7 @@
                     switch (splitField)
                     {
                         case "NOTES":
-                            fieldValue = "\"" + split.Notes + "\"";
+                            fieldValue = "\"" + split.Notes.Escape() + "\"";
                             break;
                         case "AVGPACE":
                             double pace = split.LapElapsed.TotalSeconds / split.LapDistanceMeters * 1000;
