@@ -1557,7 +1557,7 @@
                     fieldValue = "\"" + (activity.StartTime.ToUniversalTime() + activity.TimeZoneUtcOffset).ToShortDateString() + "\"";
                     break;
                 case "NOTES":
-                    fieldValue = "\"" + activity.Notes + "\"";
+                    fieldValue = "\"" + activity.Notes.Replace("\n", "").Replace("\r", "") + "\"";
                     break;
                 case "INTENSITY":
                     fieldValue = activity.Intensity.ToString(CultureInfo.InvariantCulture.NumberFormat);
@@ -1630,11 +1630,19 @@
                 case "DESCENDING":
                     fieldValue = activityInfoInstance.TotalDescendingMeters(CalculatedFields.GetLogBook().ClimbZones[0]).ToString(CultureInfo.InvariantCulture.NumberFormat);
                     break;
+
+                // active
                 case "ACTIVETIME":
                     fieldValue = activityInfoInstance.ActiveLapsTotalDetail.LapElapsed.TotalSeconds.ToString(CultureInfo.InvariantCulture.NumberFormat);
                     break;
+                case "ACTIVEHALFTIME":
+                    fieldValue = (activityInfoInstance.ActiveLapsTotalDetail.LapElapsed.TotalSeconds / 2f).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                    break;
                 case "ACTIVEDISTANCE":
                     fieldValue = activityInfoInstance.ActiveLapsTotalDetail.LapDistanceMeters.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                    break;
+                case "ACTIVEHALFDISTANCE":
+                    fieldValue = (activityInfoInstance.ActiveLapsTotalDetail.LapDistanceMeters / 2f).ToString(CultureInfo.InvariantCulture.NumberFormat);
                     break;
                 case "ACTIVEAVGPACE":
                     pace = activityInfoInstance.ActiveLapsTotalDetail.LapElapsed.TotalSeconds /
@@ -1664,7 +1672,7 @@
                     fieldValue = activityInfoInstance.ActiveLapsTotalDetail.MaximumPowerWatts.ToString(CultureInfo.InvariantCulture.NumberFormat);
                     break;
 
-                //rest
+                // rest
                 case "RESTTIME":
                     fieldValue = activityInfoInstance.RestLapsTotalDetail.LapElapsed.TotalSeconds.ToString(CultureInfo.InvariantCulture.NumberFormat);
                     break;
