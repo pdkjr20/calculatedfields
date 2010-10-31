@@ -215,6 +215,7 @@
             stripAggregate.DropDownItems.Add(new ToolStripMenuItem("Avg"));
             stripAggregate.DropDownItems.Add(new ToolStripMenuItem("Min"));
             stripAggregate.DropDownItems.Add(new ToolStripMenuItem("Max"));
+            stripAggregate.DropDownItems.Add(new ToolStripMenuItem("Count"));
 
             foreach (ToolStripMenuItem item in stripAggregate.DropDownItems)
             {
