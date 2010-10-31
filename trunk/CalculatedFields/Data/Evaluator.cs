@@ -153,15 +153,14 @@
                                         (o) => (o.CustomField == definition.Name && o.Active == "Y")))
                                 {
                                     var allCalculatedFieldsRow = GlobalSettings.calculatedFieldsRows.Where((o) => o.CustomField == definition.Name);
-                                    //var calculatedFieldsRow = GlobalSettings.calculatedFieldsRows.Find((o) => o.CustomField == definition.Name);
 
                                     foreach (var calculatedFieldsRow in allCalculatedFieldsRow)
                                     {
                                         if (calculatedFieldsRow.Condition != "")
                                         {
-                                            if (
-                                                Evaluate(calculatedFieldsRow.Condition, activity, "", calculatedFieldsRow).
-                                                    ToString() == "True")
+                                            var conditionResult = Evaluate(calculatedFieldsRow.Condition, activity, "", calculatedFieldsRow);
+
+                                            if (conditionResult != null && conditionResult.ToString() == "True")
                                             {
                                                 result = Evaluate(
                                                     calculatedFieldsRow.CalculatedExpression,
@@ -241,7 +240,7 @@
                 return null;
             }
 
-            if (cacheEnabled && !expression.Contains("DATATRACK"))
+            if (cacheEnabled)
             {
                 if (expressionsCache.ContainsKey(expression))
                 {
@@ -249,105 +248,10 @@
                 }
             }
 
-            string tempModuleSource = "";
-            string serializedDataTrack = "";
-            if (expression.Contains("DATATRACK"))
-            {
-                bool includePauses = false;
-                if (expression.Contains("DATATRACKWITHPAUSES"))
-                {
-                    includePauses = true;
-                }
-
-                List<DataTrackPoint> dataTrack = GetDataTrack(activity, false, includePauses);
-
-                //try
-                /*{
-                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<DataTrackPoint>));
-                    StringWriter stringWriter = new StringWriter();
-                    xmlSerializer.Serialize(stringWriter, dataTrack);
-                    serializedDataTrack = stringWriter.ToString();
-                    //throw new Exception(serializedDataTrack);
-
-                    dataTrack = (List<DataTrackPoint>)(new XmlSerializer(typeof(List<DataTrackPoint>)).Deserialize(new StringReader(serializedDataTrack)));
-                    serializedDataTrack = serializedDataTrack.Replace("\"", "'");
-                }*/
-                //catch (Exception e)
-                //{
-                //    throw new Exception(e.InnerException.ToString());
-                //}
-
-                //throw new Exception(serializedDataTrack);
-
-                tempModuleSource = "namespace ns{" + "using System;" + "using System.Text.RegularExpressions;" +
-                              "using System.Collections.Generic;using System.Xml;using System.Xml.Serialization;using System.IO;using System.Linq;using System.Globalization;" + //using DataTrackPoint;" +
-                              "class CF{" +
-                              "public static object Evaluate(){";
-                              if (includePauses)
-                              {
-                                  tempModuleSource += "List<DataTrackPoint> DATATRACKWITHPAUSES = new List<DataTrackPoint>();";
-                              }
-                              else
-                              {
-                                  tempModuleSource += "List<DataTrackPoint> DATATRACK = new List<DataTrackPoint>();";
-                              }
-
-                              string dataInit = "";
-
-                              foreach (var point in dataTrack)
-                              {
-                                  if (includePauses)
-                                  {
-                                      dataInit += "DATATRACKWITHPAUSES";
-                                  }
-                                  else
-                                  {
-                                      dataInit += "DATATRACK";
-                                  }
-                                  
-                                  dataInit += ".Add(new DataTrackPoint(" + point.Distance.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.HR.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Pace.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Speed.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Elevation.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Grade.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Cadence.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Power.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Elapsed.ToString(CultureInfo.InvariantCulture.NumberFormat) + "f," + point.Pause.ToString().ToLower() + "));";
-                              }
-
-                              tempModuleSource += dataInit;
-                              //"string xml = @\"" + serializedDataTrack +"\";" +
-                              //"List<DataTrackPoint> DATATRACK = (List<DataTrackPoint>)(new XmlSerializer(typeof(List<DataTrackPoint>)).Deserialize(new StringReader(" + "xml.Replace(\"'\", \"\"\")" + ")));" +
-
-                              if (includePauses)
-                              {
-                                  tempModuleSource += "if (DATATRACKWITHPAUSES";
-                              }
-                              else
-                              {
-                                  tempModuleSource += "if (DATATRACK";
-                              }
-
-                              tempModuleSource +=                                    
-                              ".Count() != 0) return " + expression + "; else return null;} }" +
-                              "public class DataTrackPoint {" +
-                              "float distance;float hr;float pace;float speed;float elevation;float power;float grade;float cadence;float elapsed;bool pause;" +
-                              "public float Distance { get{return distance;} set{distance = value;} }public float HR { get{return hr;} set{hr = value;} }public float Pace { get{return pace;} set{pace = value;} }public float Speed { get{return speed;} set{speed = value;} }public float Elevation { get{return elevation;} set{elevation = value;} }public float Power { get{return power;} set{power = value;} }public float Grade { get{return grade;} set{grade = value;} }public float Cadence { get{return cadence;} set{cadence = value;} } public float Elapsed { get{return elapsed;} set{elapsed = value;} } public bool Pause { get{return pause;} set{pause = value;} }" +
-                              "public DataTrackPoint(){}" + 
-                              "public DataTrackPoint(float distance, float hr, float pace, float speed, float elevation, float grade, float cadence, float power, float elapsed, bool pause){Distance = distance;HR = hr;Pace = pace;Speed = speed;Elevation = elevation;Grade = grade;Cadence = cadence;Power = power;Elapsed = elapsed;Pause = pause;}" + 
-                              "}}";
-                
-                //throw new Exception(tempModuleSource);
-            }
-            else
-            {
-                tempModuleSource = "namespace ns{" + "using System;" + "using System.Text.RegularExpressions;" +
-                                          "class CF{" +
-                                          "public static object Evaluate(){return " + expression + ";}}" +
-                                          "}";
-            }
-
-
-            //string TempModuleSource = "namespace ns{" + "using System;" + "using System.Text.RegularExpressions;" +
-              //            "class CF{" + "public static object Evaluate(){return " + expression + ";}}" +
-                //          "public class DataTrackPoint {" +
-                  //        "float hr;float pace;float speed;float elevation;float power;float grade;float cadence;float elapsed;" +
-                    //      "public float HR { get{return hr;} set{hr = value;} }public float Pace { get{return pace;} set{pace = value;} }public float Speed { get{return speed;} set{speed = value;} }public float Elevation { get{return elevation;} set{elevation = value;} }public float Power { get{return power;} set{power = value;} }public float Grade { get{return grade;} set{grade = value;} }public float Cadence { get{return cadence;} set{cadence = value;} } public float Elapsed { get{return elapsed;} set{elapsed = value;} }}" +
-                      //    "}";
-
+            string tempModuleSource = "namespace ns{" + "using System;" + "using System.Text.RegularExpressions;" +
+                                      "class CF{" +
+                                      "public static object Evaluate(){return " + expression + ";}}" +
+                                      "}";
 
             CompilerResults cr = provider.CompileAssemblyFromSource(cp, tempModuleSource);
             if (cr.Errors.Count > 0)
@@ -362,7 +266,7 @@
                     }
                 }
 
-                throw new ArgumentException(errorText);
+                throw new Exception(expression + "\n\n" + errorText);
             }
             else
             {
@@ -375,10 +279,10 @@
                 }
                 catch (Exception e)
                 {
-                    throw new Exception(e.Message + "\n\n" + e.InnerException.Message);
+                    throw new Exception(expression + "\n\n" + e.Message + "\n\n" + e.InnerException.Message);
                 }
 
-                if (cacheEnabled && !expression.Contains("DATATRACK"))
+                if (cacheEnabled)
                 {
                     expressionsCache.Add(expression, result);
                 }
@@ -419,6 +323,253 @@
             }
 
             return returnValue;
+        }
+
+        private static List<DataTrackPoint> GetDataTrack(IActivity activity, bool onlyActive, bool includePauses)
+        {
+            if (onlyActive && includePauses)
+            {
+                if (dataTrackCache11 != null && activity.StartTime.Ticks == dataTrackCacheStamp11.Ticks)
+                {
+                    return dataTrackCache11;
+                }
+                else
+                {
+                    dataTrackCacheStamp11 = activity.StartTime;
+                    dataTrackCache11 = CalculateDataTrack(activity, onlyActive, includePauses);
+
+                    return dataTrackCache11;
+                }
+            }
+            else if (onlyActive && !includePauses)
+            {
+                if (dataTrackCache10 != null && activity.StartTime.Ticks == dataTrackCacheStamp10.Ticks)
+                {
+                    return dataTrackCache10;
+                }
+                else
+                {
+                    dataTrackCacheStamp10 = activity.StartTime;
+                    dataTrackCache10 = CalculateDataTrack(activity, onlyActive, includePauses);
+
+                    return dataTrackCache10;
+                }
+            }
+            else if (!onlyActive && includePauses)
+            {
+                if (dataTrackCache01 != null && activity.StartTime.Ticks == dataTrackCacheStamp01.Ticks)
+                {
+                    return dataTrackCache01;
+                }
+                else
+                {
+                    dataTrackCacheStamp01 = activity.StartTime;
+                    dataTrackCache01 = CalculateDataTrack(activity, onlyActive, includePauses);
+
+                    return dataTrackCache01;
+                }
+            }
+            else //(!onlyActive && !includePauses)
+            {
+                if (dataTrackCache00 != null && activity.StartTime.Ticks == dataTrackCacheStamp00.Ticks)
+                {
+                    return dataTrackCache00;
+                }
+                else
+                {
+                    dataTrackCacheStamp00 = activity.StartTime;
+                    dataTrackCache00 = CalculateDataTrack(activity, onlyActive, includePauses);
+
+                    return dataTrackCache00;
+                }
+            }
+        }
+
+        private static List<DataTrackPoint> CalculateDataTrack(IActivity activity, bool onlyActive, bool includePauses)
+        {
+            List<DataTrackPoint> dataTrack = new List<DataTrackPoint>();
+
+            ActivityInfo activityInfoInstance = ActivityInfoCache.Instance.GetInfo(activity);
+
+            uint totalElapsed = 0;
+            DateTime startTime = DateTime.MaxValue;
+
+            if (activityInfoInstance.SmoothedSpeedTrack.TotalElapsedSeconds != 0)
+            {
+                totalElapsed = activityInfoInstance.SmoothedSpeedTrack.TotalElapsedSeconds * 1000;
+                startTime = activityInfoInstance.SmoothedSpeedTrack.StartTime;
+            }
+            else if (activityInfoInstance.ActualDistanceMetersTrack.TotalElapsedSeconds != 0)
+            {
+                totalElapsed = activityInfoInstance.ActualDistanceMetersTrack.TotalElapsedSeconds * 1000;
+                startTime = activityInfoInstance.ActualDistanceMetersTrack.StartTime;
+            }
+            else if (activityInfoInstance.SmoothedHeartRateTrack.TotalElapsedSeconds != 0)
+            {
+                totalElapsed = activityInfoInstance.SmoothedHeartRateTrack.TotalElapsedSeconds * 1000;
+                startTime = activityInfoInstance.SmoothedHeartRateTrack.StartTime;
+            }
+            else if (activityInfoInstance.SmoothedPowerTrack.TotalElapsedSeconds != 0)
+            {
+                totalElapsed = activityInfoInstance.SmoothedPowerTrack.TotalElapsedSeconds * 1000;
+                startTime = activityInfoInstance.SmoothedPowerTrack.StartTime;
+            }
+            else if (activityInfoInstance.SmoothedGradeTrack.TotalElapsedSeconds != 0)
+            {
+                totalElapsed = activityInfoInstance.SmoothedGradeTrack.TotalElapsedSeconds * 1000;
+                startTime = activityInfoInstance.SmoothedGradeTrack.StartTime;
+            }
+            else if (activityInfoInstance.SmoothedElevationTrack.TotalElapsedSeconds != 0)
+            {
+                totalElapsed = activityInfoInstance.SmoothedElevationTrack.TotalElapsedSeconds * 1000;
+                startTime = activityInfoInstance.SmoothedElevationTrack.StartTime;
+            }
+            else if (activityInfoInstance.SmoothedCadenceTrack.TotalElapsedSeconds != 0)
+            {
+                totalElapsed = activityInfoInstance.SmoothedCadenceTrack.TotalElapsedSeconds * 1000;
+                startTime = activityInfoInstance.SmoothedCadenceTrack.StartTime;
+            }
+
+
+            //throw new Exception(totalElapsed.ToString());
+            if (totalElapsed == 0)
+            {
+                return dataTrack;
+            }
+
+            float pauseShift = 0;
+            for (uint i = 0; i <= totalElapsed; i += dataTrackElement)
+            {
+                bool paused = false;
+                bool rest = false;
+                DateTime adjustedTime = startTime.AddMilliseconds(i);
+
+                foreach (var timer in activity.TimerPauses)
+                {
+                    if (adjustedTime >= timer.Lower && adjustedTime <= timer.Upper)
+                    {
+                        paused = true;
+                        if (!includePauses)
+                        {
+                            pauseShift += dataTrackElement;
+                        }
+                        break;
+                    }
+                }
+
+                foreach (var activeLap in activityInfoInstance.LapDetailInfo(ActivityLapsType.RecordedLapsType).Where(o => o.Rest))
+                {
+                    if (adjustedTime >= activeLap.StartTime && adjustedTime <= activeLap.EndTime)
+                    {
+                        rest = true;
+                        if (onlyActive)
+                        {
+                            pauseShift += dataTrackElement;
+                        }
+                        break;
+                    }
+                }
+
+                if ((!paused || includePauses) && (!rest || !onlyActive))
+                {
+                    float hr = 0, pace = 0, speed = 0, elevation = 0, grade = 0, cadence = 0, power = 0, distance = 0, climbSpeed = 0;
+                    ITimeValueEntry<float> interpolatedValue;
+
+                    interpolatedValue = activityInfoInstance.SmoothedHeartRateTrack.GetInterpolatedValue(adjustedTime);
+                    if (interpolatedValue != null)
+                    {
+                        if (paused)
+                        {
+                            hr = 0;
+                        }
+                        else
+                        {
+                            hr = interpolatedValue.Value;
+                        }
+                    }
+                    interpolatedValue = activityInfoInstance.ActualDistanceMetersTrack.GetInterpolatedValue(adjustedTime);
+                    if (interpolatedValue != null)
+                    {
+                        distance = interpolatedValue.Value;
+                    }
+                    interpolatedValue = activityInfoInstance.SmoothedSpeedTrack.GetInterpolatedValue(adjustedTime);
+                    if (interpolatedValue != null)
+                    {
+                        if (paused)
+                        {
+                            pace = 0;
+                            speed = 0;
+                        }
+                        else
+                        {
+                            pace = 60 / (interpolatedValue.Value * 3.6f);
+                            speed = interpolatedValue.Value * 3.6f;
+                        }
+                    }
+                    interpolatedValue = activityInfoInstance.SmoothedElevationTrack.GetInterpolatedValue(adjustedTime);
+                    if (interpolatedValue != null)
+                    {
+                        if (paused)
+                        {
+                            elevation = 0;
+                        }
+                        else
+                        {
+                            elevation = interpolatedValue.Value;
+                        }
+                    }
+                    interpolatedValue = activityInfoInstance.SmoothedGradeTrack.GetInterpolatedValue(adjustedTime);
+                    if (interpolatedValue != null)
+                    {
+                        if (paused)
+                        {
+                            grade = 0;
+                            climbSpeed = 0;
+                        }
+                        else
+                        {
+                            grade = interpolatedValue.Value;
+
+                            if (speed != 0)
+                            {
+                                //throw new Exception(speed + "-" + grade);
+                                climbSpeed = speed * 1000f * grade;
+                            }
+                        }
+                    }
+                    interpolatedValue = activityInfoInstance.SmoothedCadenceTrack.GetInterpolatedValue(adjustedTime);
+                    if (interpolatedValue != null)
+                    {
+                        if (paused)
+                        {
+                            cadence = 0;
+                        }
+                        else
+                        {
+                            cadence = interpolatedValue.Value;
+                        }
+                    }
+                    interpolatedValue = activityInfoInstance.SmoothedPowerTrack.GetInterpolatedValue(adjustedTime);
+                    if (interpolatedValue != null)
+                    {
+                        if (paused)
+                        {
+                            power = 0;
+                        }
+                        else
+                        {
+                            power = interpolatedValue.Value;
+                        }
+                    }
+
+                    dataTrack.Add(new DataTrackPoint(distance, hr, pace, speed, elevation, grade, cadence, power, (i - pauseShift) / 1000, climbSpeed, paused));
+                }
+            }
+
+            //throw new Exception((totalElapsed - pauseShift).ToString());
+            // var query = dataTrack.Where((o, index) => o.HR > dataTrack[((index+1) < dataTrack.Count) ? index + 1 : index].HR).Where(o => o.HR )
+
+            return dataTrack;
         }
 
         private static string ParseExpression(string expression, IActivity activity, string condition, CalculatedFieldsRow calculatedFieldsRow)
@@ -968,69 +1119,80 @@
                         DateTime pastActivityDate = (pastActivity.StartTime.ToUniversalTime() + activity.TimeZoneUtcOffset).Date;
                         if (pastActivityDate <= actualActivityDate)
                         {
-                            if (actualActivityDate.Subtract(pastActivityDate).Days < days && (condition == "" || (condition != "" && Evaluate(condition, pastActivity, "", calculatedFieldsRow).ToString() == "True")))
+                            if (actualActivityDate.Subtract(pastActivityDate).Days < days)
                             {
-                                //if (pastActivity.StartTime.Date.Day == 1)
-                                //{
-                                //    throw new Exception(pastActivity.StartTime.Date.ToString() + "-" + actualActivityDate.ToString() + "-" + activity.StartTime.ToString() + "-" + days.ToString() + "-" + actualActivityDate.Subtract(pastActivity.StartTime.Date).Days.ToString());
-                                //}
-                                count++;
+                                object conditionResult = "True";
 
-                                switch (aggOperation)
+                                if (condition != "")
                                 {
-                                    case "GET":
-                                        if (actualActivityDate.Subtract(pastActivityDate).Days == (days - 1))
-                                        {
-                                            result = double.Parse(
-                                                Evaluate("{" + aggField + "}", pastActivity, condition, calculatedFieldsRow).ToString());
-                                        }
-                                        break;
-                                    case "SUM":
-                                        result +=
-                                            double.Parse(
-                                                Evaluate("{" + aggField + "}", pastActivity, condition, calculatedFieldsRow).ToString());
-                                        break;
-                                    case "AVG":
-                                        result +=
-                                            double.Parse(
-                                                Evaluate("{" + aggField + "}", pastActivity, condition, calculatedFieldsRow).ToString());
-                                        break;
-                                    case "MAX":
-                                        if (result == 0)
-                                        {
-                                            result =
-                                                double.Parse(
-                                                    Evaluate("{" + aggField + "}", pastActivity, condition, calculatedFieldsRow).ToString());
-                                        }
+                                    conditionResult = Evaluate(condition, pastActivity, "", calculatedFieldsRow);
+                                }
 
-                                        if (
-                                            double.Parse(
-                                                Evaluate("{" + aggField + "}", pastActivity, condition, calculatedFieldsRow).ToString()) >
-                                            result)
-                                        {
-                                            result =
-                                                double.Parse(
-                                                    Evaluate("{" + aggField + "}", pastActivity, condition, calculatedFieldsRow).ToString());
-                                        }
-                                        break;
-                                    case "MIN":
-                                        if (result == 0)
-                                        {
-                                            result =
-                                                double.Parse(
-                                                    Evaluate("{" + aggField + "}", pastActivity, condition, calculatedFieldsRow).ToString());
-                                        }
+                                if (conditionResult.ToString() == "True")
+                                {
 
-                                        if (
-                                            double.Parse(
-                                                Evaluate("{" + aggField + "}", pastActivity, condition, calculatedFieldsRow).ToString()) <
-                                            result)
-                                        {
-                                            result =
+                                    //if (pastActivity.StartTime.Date.Day == 1)
+                                    //{
+                                    //    throw new Exception(pastActivity.StartTime.Date.ToString() + "-" + actualActivityDate.ToString() + "-" + activity.StartTime.ToString() + "-" + days.ToString() + "-" + actualActivityDate.Subtract(pastActivity.StartTime.Date).Days.ToString());
+                                    //}
+                                    count++;
+
+                                    switch (aggOperation)
+                                    {
+                                        case "GET":
+                                            if (actualActivityDate.Subtract(pastActivityDate).Days == (days - 1))
+                                            {
+                                                result = double.Parse(
+                                                    Evaluate("{" + aggField + "}", pastActivity, condition, calculatedFieldsRow).ToString());
+                                            }
+                                            break;
+                                        case "SUM":
+                                            result +=
                                                 double.Parse(
                                                     Evaluate("{" + aggField + "}", pastActivity, condition, calculatedFieldsRow).ToString());
-                                        }
-                                        break;
+                                            break;
+                                        case "AVG":
+                                            result +=
+                                                double.Parse(
+                                                    Evaluate("{" + aggField + "}", pastActivity, condition, calculatedFieldsRow).ToString());
+                                            break;
+                                        case "MAX":
+                                            if (result == 0)
+                                            {
+                                                result =
+                                                    double.Parse(
+                                                        Evaluate("{" + aggField + "}", pastActivity, condition, calculatedFieldsRow).ToString());
+                                            }
+
+                                            if (
+                                                double.Parse(
+                                                    Evaluate("{" + aggField + "}", pastActivity, condition, calculatedFieldsRow).ToString()) >
+                                                result)
+                                            {
+                                                result =
+                                                    double.Parse(
+                                                        Evaluate("{" + aggField + "}", pastActivity, condition, calculatedFieldsRow).ToString());
+                                            }
+                                            break;
+                                        case "MIN":
+                                            if (result == 0)
+                                            {
+                                                result =
+                                                    double.Parse(
+                                                        Evaluate("{" + aggField + "}", pastActivity, condition, calculatedFieldsRow).ToString());
+                                            }
+
+                                            if (
+                                                double.Parse(
+                                                    Evaluate("{" + aggField + "}", pastActivity, condition, calculatedFieldsRow).ToString()) <
+                                                result)
+                                            {
+                                                result =
+                                                    double.Parse(
+                                                        Evaluate("{" + aggField + "}", pastActivity, condition, calculatedFieldsRow).ToString());
+                                            }
+                                            break;
+                                    }
                                 }
                             }
                         }
@@ -1046,6 +1208,12 @@
                             else
                             {
                                 result = 0;
+                            }
+                            break;
+                        case "COUNT":
+                            if (count != 0)
+                            {
+                                result = count;
                             }
                             break;
                     }
@@ -1115,253 +1283,6 @@
             }
 
             return fieldValue;
-        }
-
-        private static List<DataTrackPoint> GetDataTrack(IActivity activity, bool onlyActive, bool includePauses)
-        {
-            if (onlyActive && includePauses)
-            {
-                if (dataTrackCache11 != null && activity.StartTime.Ticks == dataTrackCacheStamp11.Ticks)
-                {
-                    return dataTrackCache11;
-                }
-                else
-                {
-                    dataTrackCacheStamp11 = activity.StartTime;
-                    dataTrackCache11 = CalculateDataTrack(activity, onlyActive, includePauses);
-
-                    return dataTrackCache11;
-                }
-            }
-            else if (onlyActive && !includePauses)
-            {
-                if (dataTrackCache10 != null && activity.StartTime.Ticks == dataTrackCacheStamp10.Ticks)
-                {
-                    return dataTrackCache10;
-                }
-                else
-                {
-                    dataTrackCacheStamp10 = activity.StartTime;
-                    dataTrackCache10 = CalculateDataTrack(activity, onlyActive, includePauses);
-
-                    return dataTrackCache10;
-                }
-            }
-            else if (!onlyActive && includePauses)
-            {
-                if (dataTrackCache01 != null && activity.StartTime.Ticks == dataTrackCacheStamp01.Ticks)
-                {
-                    return dataTrackCache01;
-                }
-                else
-                {
-                    dataTrackCacheStamp01 = activity.StartTime;
-                    dataTrackCache01 = CalculateDataTrack(activity, onlyActive, includePauses);
-
-                    return dataTrackCache01;
-                }
-            }
-            else //(!onlyActive && !includePauses)
-            {
-                if (dataTrackCache00 != null && activity.StartTime.Ticks == dataTrackCacheStamp00.Ticks)
-                {
-                    return dataTrackCache00;
-                }
-                else
-                {
-                    dataTrackCacheStamp00 = activity.StartTime;
-                    dataTrackCache00 = CalculateDataTrack(activity, onlyActive, includePauses);
-
-                    return dataTrackCache00;
-                }
-            }
-        }
-
-        private static List<DataTrackPoint> CalculateDataTrack(IActivity activity, bool onlyActive, bool includePauses)
-        {
-            List<DataTrackPoint> dataTrack = new List<DataTrackPoint>();
-
-            ActivityInfo activityInfoInstance = ActivityInfoCache.Instance.GetInfo(activity);
-
-            uint totalElapsed = 0;
-            DateTime startTime = DateTime.MaxValue;
-
-            if (activityInfoInstance.SmoothedSpeedTrack.TotalElapsedSeconds != 0)
-            {
-                totalElapsed = activityInfoInstance.SmoothedSpeedTrack.TotalElapsedSeconds * 1000;
-                startTime = activityInfoInstance.SmoothedSpeedTrack.StartTime;
-            }
-            else if (activityInfoInstance.ActualDistanceMetersTrack.TotalElapsedSeconds != 0)
-            {
-                totalElapsed = activityInfoInstance.ActualDistanceMetersTrack.TotalElapsedSeconds * 1000;
-                startTime = activityInfoInstance.ActualDistanceMetersTrack.StartTime;
-            }
-            else if (activityInfoInstance.SmoothedHeartRateTrack.TotalElapsedSeconds != 0)
-            {
-                totalElapsed = activityInfoInstance.SmoothedHeartRateTrack.TotalElapsedSeconds * 1000;
-                startTime = activityInfoInstance.SmoothedHeartRateTrack.StartTime;
-            }
-            else if (activityInfoInstance.SmoothedPowerTrack.TotalElapsedSeconds != 0)
-            {
-                totalElapsed = activityInfoInstance.SmoothedPowerTrack.TotalElapsedSeconds * 1000;
-                startTime = activityInfoInstance.SmoothedPowerTrack.StartTime;
-            }
-            else if (activityInfoInstance.SmoothedGradeTrack.TotalElapsedSeconds != 0)
-            {
-                totalElapsed = activityInfoInstance.SmoothedGradeTrack.TotalElapsedSeconds * 1000;
-                startTime = activityInfoInstance.SmoothedGradeTrack.StartTime;
-            }
-            else if (activityInfoInstance.SmoothedElevationTrack.TotalElapsedSeconds != 0)
-            {
-                totalElapsed = activityInfoInstance.SmoothedElevationTrack.TotalElapsedSeconds * 1000;
-                startTime = activityInfoInstance.SmoothedElevationTrack.StartTime;
-            }
-            else if (activityInfoInstance.SmoothedCadenceTrack.TotalElapsedSeconds != 0)
-            {
-                totalElapsed = activityInfoInstance.SmoothedCadenceTrack.TotalElapsedSeconds * 1000;
-                startTime = activityInfoInstance.SmoothedCadenceTrack.StartTime;
-            }
-
-
-            //throw new Exception(totalElapsed.ToString());
-            if (totalElapsed == 0)
-            {
-                return dataTrack;
-            }
-
-            float pauseShift = 0;
-            for (uint i = 0; i <= totalElapsed; i += dataTrackElement)
-            {
-                bool paused = false;
-                bool rest = false;
-                DateTime adjustedTime = startTime.AddMilliseconds(i);
-                
-                foreach (var timer in activity.TimerPauses)
-                {
-                    if (adjustedTime >= timer.Lower && adjustedTime <= timer.Upper)
-                    {
-                        paused = true;
-                        if (!includePauses)
-                        {
-                            pauseShift += dataTrackElement;
-                        }
-                        break;
-                    }
-                }
-
-                foreach (var activeLap in activityInfoInstance.LapDetailInfo(ActivityLapsType.RecordedLapsType).Where(o => o.Rest))
-                {
-                    if (adjustedTime >= activeLap.StartTime && adjustedTime <= activeLap.EndTime)
-                    {
-                        rest = true;
-                        if (onlyActive)
-                        {
-                            pauseShift += dataTrackElement;
-                        }
-                        break;
-                    }
-                }
-
-                if ((!paused || includePauses) && (!rest || !onlyActive))
-                {
-                    float hr = 0, pace = 0, speed = 0, elevation = 0, grade = 0, cadence = 0, power = 0, distance = 0, climbSpeed = 0;
-                    ITimeValueEntry<float> interpolatedValue;
-
-                    interpolatedValue = activityInfoInstance.SmoothedHeartRateTrack.GetInterpolatedValue(adjustedTime);
-                    if (interpolatedValue != null)
-                    {
-                        if (paused)
-                        {
-                            hr = 0;
-                        }
-                        else
-                        {
-                            hr = interpolatedValue.Value;
-                        }
-                    }
-                    interpolatedValue = activityInfoInstance.ActualDistanceMetersTrack.GetInterpolatedValue(adjustedTime);
-                    if (interpolatedValue != null)
-                    {
-                        distance = interpolatedValue.Value;
-                    }
-                    interpolatedValue = activityInfoInstance.SmoothedSpeedTrack.GetInterpolatedValue(adjustedTime);
-                    if (interpolatedValue != null)
-                    {
-                        if (paused)
-                        {
-                            pace = 0;
-                            speed = 0;
-                        }
-                        else
-                        {
-                            pace = 60 / (interpolatedValue.Value * 3.6f);
-                            speed = interpolatedValue.Value * 3.6f;
-                        }
-                    }
-                    interpolatedValue = activityInfoInstance.SmoothedElevationTrack.GetInterpolatedValue(adjustedTime);
-                    if (interpolatedValue != null)
-                    {
-                        if (paused)
-                        {
-                            elevation = 0;
-                        }
-                        else
-                        {
-                            elevation = interpolatedValue.Value;
-                        }
-                    }
-                    interpolatedValue = activityInfoInstance.SmoothedGradeTrack.GetInterpolatedValue(adjustedTime);
-                    if (interpolatedValue != null)
-                    {
-                        if (paused)
-                        {
-                            grade = 0;
-                            climbSpeed = 0;
-                        }
-                        else
-                        {
-                            grade = interpolatedValue.Value;
-
-                            if (speed != 0)
-                            {
-                                //throw new Exception(speed + "-" + grade);
-                                climbSpeed = speed * 1000f * grade;
-                            }
-                        }
-                    }
-                    interpolatedValue = activityInfoInstance.SmoothedCadenceTrack.GetInterpolatedValue(adjustedTime);
-                    if (interpolatedValue != null)
-                    {
-                        if (paused)
-                        {
-                            cadence = 0;
-                        }
-                        else
-                        {
-                            cadence = interpolatedValue.Value;
-                        }
-                    }
-                    interpolatedValue = activityInfoInstance.SmoothedPowerTrack.GetInterpolatedValue(adjustedTime);
-                    if (interpolatedValue != null)
-                    {
-                        if (paused)
-                        {
-                            power = 0;
-                        }
-                        else
-                        {
-                            power = interpolatedValue.Value;
-                        }
-                    }
-
-                    dataTrack.Add(new DataTrackPoint(distance, hr, pace, speed, elevation, grade, cadence, power, (i - pauseShift)/1000, climbSpeed, paused));
-                }
-            }
-
-            //throw new Exception((totalElapsed - pauseShift).ToString());
-           // var query = dataTrack.Where((o, index) => o.HR > dataTrack[((index+1) < dataTrack.Count) ? index + 1 : index].HR).Where(o => o.HR )
-
-            return dataTrack;
         }
 
         private static string DataTrack(IActivity activity, ActivityInfo activityInfoInstance, string field)
