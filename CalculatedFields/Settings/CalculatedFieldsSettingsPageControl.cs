@@ -21,10 +21,13 @@
 
             buttonAdd.Image = CommonResources.Images.DocumentAdd16;
             buttonAddNested.Image = CommonResources.Images.DocumentAdd16;
+            buttonAddVirtual.Image = CommonResources.Images.DocumentAdd16;
             buttonRemove.Image = CommonResources.Images.Delete16;
             buttonRemoveNested.Image = CommonResources.Images.Delete16;
+            buttonRemoveVirtual.Image = CommonResources.Images.Delete16;
             buttonUpdate.Image = CommonResources.Images.Edit16;
             buttonUpdateNested.Image = CommonResources.Images.Edit16;
+            buttonUpdateVirtual.Image = CommonResources.Images.Edit16;
 
             buttonTestSelected.Image = CommonResources.Images.Analyze16;
             buttonCalculateSelected.Image = CommonResources.Images.Calculator16;
@@ -79,6 +82,19 @@
 
             treeListNestedExpressions.RowData = GlobalSettings.nestedFieldsRows;
             treeListNestedExpressions.ThemeChanged(visualTheme);
+
+
+            var virtualField = new TreeList.Column("CustomField", "Virtual Field", 150, StringAlignment.Near);
+            var virtualExpression = new TreeList.Column("CalculatedExpression", "Expression", 300, StringAlignment.Near);
+
+            treeListVirtualExpressions.Columns.Add(virtualField);
+            treeListVirtualExpressions.Columns.Add(virtualExpression);
+            treeListVirtualExpressions.Columns.Add(condition);
+            treeListVirtualExpressions.Columns.Add(active);
+
+            treeListVirtualExpressions.RowData = GlobalSettings.virtualFieldsRows;
+            treeListVirtualExpressions.ThemeChanged(visualTheme);
+
 
             if (Trails.TestIntegration())
             {
@@ -511,6 +527,10 @@
             {
                 textBoxNestedExpression.SelectedText = result;
             }
+            if (textBoxVirtualExpression.Focused)
+            {
+                textBoxVirtualExpression.SelectedText = result;
+            }
         }
 
         private void comboBoxCustomField_Click(object sender, EventArgs e)
@@ -543,6 +563,15 @@
             GlobalSettings.nestedFieldsRows.Add(new NestedFieldsRow(Guid.NewGuid().ToString(), this.textBoxNestedExpressionName.Text, textBoxNestedExpression.Text));
             GlobalSettings.nestedFieldsRows.Sort();
             treeListNestedExpressions.RowData = GlobalSettings.nestedFieldsRows;
+
+            GlobalSettings.SaveSettings();
+        }
+
+        private void buttonAddVirtual_Click(object sender, EventArgs e)
+        {
+            GlobalSettings.virtualFieldsRows.Add(new CalculatedFieldsRow(Guid.NewGuid().ToString(), this.textBoxVirtualField.Text, textBoxVirtualExpression.Text, textBoxVirtualCondition.Text, checkBoxVirtualActive.Checked.ToString()));
+            GlobalSettings.virtualFieldsRows.Sort();
+            treeListVirtualExpressions.RowData = GlobalSettings.virtualFieldsRows;
 
             GlobalSettings.SaveSettings();
         }
@@ -591,6 +620,35 @@
             GlobalSettings.SaveSettings();
         }
 
+        private void buttonUpdateVirtual_Click(object sender, EventArgs e)
+        {
+            if (treeListVirtualExpressions.SelectedItems.Count == 1)
+            {
+                foreach (CalculatedFieldsRow row in treeListVirtualExpressions.SelectedItems)
+                {
+                    var updateRow = GlobalSettings.virtualFieldsRows.Find((r) => r.ID == row.ID);
+                    updateRow.CustomField = this.textBoxVirtualField.Text;
+                    updateRow.CalculatedExpression = textBoxVirtualExpression.Text;
+                    updateRow.Condition = textBoxVirtualCondition.Text;
+                    updateRow.Active = (checkBoxVirtualActive.Checked) ? "Y" : "N";
+
+                    GlobalSettings.virtualFieldsRows.Sort();
+                    treeListVirtualExpressions.RowData = GlobalSettings.virtualFieldsRows;
+                }
+            }
+            else
+            {
+                foreach (CalculatedFieldsRow row in treeListVirtualExpressions.SelectedItems)
+                {
+                    GlobalSettings.virtualFieldsRows.Find((r) => r.ID == row.ID).Active = (checkBoxVirtualActive.Checked) ? "Y" : "N";
+                    GlobalSettings.virtualFieldsRows.Sort();
+                    treeListVirtualExpressions.RowData = GlobalSettings.virtualFieldsRows;
+                }
+            }
+
+            GlobalSettings.SaveSettings();
+        }
+
         private void buttonRemove_Click(object sender, EventArgs e)
         {
             foreach (CalculatedFieldsRow row in treeListCalculatedFields.SelectedItems)
@@ -611,6 +669,41 @@
             }
 
             GlobalSettings.SaveSettings();
+        }
+
+        private void buttonRemoveVirtual_Click(object sender, EventArgs e)
+        {
+            foreach (CalculatedFieldsRow row in treeListVirtualExpressions.SelectedItems)
+            {
+                GlobalSettings.virtualFieldsRows.Remove(row);
+                treeListVirtualExpressions.RowData = GlobalSettings.virtualFieldsRows;
+            }
+
+            GlobalSettings.SaveSettings();
+        }
+
+        private void textBoxVirtualField_TextChanged(object sender, EventArgs e)
+        {
+            if (this.textBoxVirtualExpression.Text == "" || textBoxVirtualField.Text == "")
+            {
+                this.buttonAddNested.Enabled = false;
+            }
+            else
+            {
+                this.buttonAddVirtual.Enabled = true;
+            }
+        }
+
+        private void textBoxVirtualExpression_TextChanged(object sender, EventArgs e)
+        {
+            if (this.textBoxVirtualExpression.Text == "" || textBoxVirtualField.Text == "")
+            {
+                this.buttonAddNested.Enabled = false;
+            }
+            else
+            {
+                this.buttonAddVirtual.Enabled = true;
+            }
         }
 
         private void textBoxExpression_TextChanged(object sender, EventArgs e)
@@ -730,6 +823,36 @@
             {
                 this.textBoxNestedExpressionName.Text = row.NestedExpression;
                 this.textBoxNestedExpression.Text = row.Expression;
+            }
+        }
+
+        private void treeListVirtualExpressions_SelectedItemsChanged(object sender, EventArgs e)
+        {
+            if (treeListVirtualExpressions.SelectedItems.Count == 0)
+            {
+                buttonRemoveVirtual.Enabled = false;
+                buttonUpdateVirtual.Enabled = false;
+            }
+            else
+            {
+                buttonRemoveVirtual.Enabled = true;
+                buttonUpdateVirtual.Enabled = true;
+            }
+
+            foreach (CalculatedFieldsRow row in treeListVirtualExpressions.SelectedItems)
+            {
+                this.textBoxVirtualField.Text = row.CustomField;
+                this.textBoxVirtualExpression.Text = row.CalculatedExpression;
+                this.textBoxVirtualCondition.Text = row.Condition;
+
+                if (row.Active == "Y")
+                {
+                    this.checkBoxVirtualActive.Checked = true;
+                }
+                else
+                {
+                    this.checkBoxVirtualActive.Checked = false;
+                }
             }
         }
 

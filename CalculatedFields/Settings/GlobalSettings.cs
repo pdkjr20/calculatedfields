@@ -131,6 +131,7 @@
 
         public static List<CalculatedFieldsRow> calculatedFieldsRows = new List<CalculatedFieldsRow>();
         public static List<NestedFieldsRow> nestedFieldsRows = new List<NestedFieldsRow>();
+        public static List<CalculatedFieldsRow> virtualFieldsRows = new List<CalculatedFieldsRow>();
 
         public static bool runAfterImport;
         public static bool calculateFutureAfterImport;
@@ -154,7 +155,7 @@
 
         public static void LoadSettings()
         {
-            string id, active, customField, expression, condition, nestedName, nestedExpression;
+            string id, active, customField, expression, condition, nestedName, nestedExpression, virtualField;
 
             if (!File.Exists(path))
             {
@@ -163,6 +164,7 @@
 
             calculatedFieldsRows.Clear();
             nestedFieldsRows.Clear();
+            virtualFieldsRows.Clear();
 
             var document = new XmlDocument();
             XmlReader reader = new XmlTextReader(path);
@@ -173,29 +175,64 @@
                 runAfterImport = (document.ChildNodes[0].Attributes["RunAfterImport"] != null) ? Boolean.Parse(document.ChildNodes[0].Attributes["RunAfterImport"].Value) : false;
                 calculateFutureAfterImport = (document.ChildNodes[0].Attributes["CalculateFutureAfterImport"] != null) ? Boolean.Parse(document.ChildNodes[0].Attributes["CalculateFutureAfterImport"].Value) : false;
 
-                XmlNodeList rowsNode = document.ChildNodes[0].FirstChild.ChildNodes;
-
-                foreach (XmlNode node in rowsNode)
+                XmlNodeList rowsNode = null;
+                XmlNodeList nestedRowsNode = null;
+                XmlNodeList virtualRowsNode = null;
+                
+                foreach (XmlNode node in document.ChildNodes[0].ChildNodes)
                 {
-                    id = (node.Attributes["ID"] != null) ? node.Attributes["ID"].Value : Guid.NewGuid().ToString(); 
-                    customField = (node.Attributes["CustomField"] != null) ? node.Attributes["CustomField"].Value : "";
-                    expression = (node.Attributes["Expression"] != null) ? node.Attributes["Expression"].Value : "";
-                    condition = (node.Attributes["Condition"] != null) ? node.Attributes["Condition"].Value : "";
-                    active = (node.Attributes["Active"] != null) ? node.Attributes["Active"].Value : "Y";
-
-                    calculatedFieldsRows.Add(new CalculatedFieldsRow(id, customField, expression, condition, active));
+                    if (node.Name == "Rows")
+                    {
+                        rowsNode = node.ChildNodes;
+                    }
+                    if (node.Name == "NestedRows")
+                    {
+                        nestedRowsNode = node.ChildNodes;
+                    }
+                    if (node.Name == "VirtualRows")
+                    {
+                        virtualRowsNode = node.ChildNodes;
+                    }
                 }
 
-                XmlNodeList nestedRowsNode = document.ChildNodes[0].LastChild.ChildNodes;
-
-
-                foreach (XmlNode node in nestedRowsNode)
+                if (rowsNode != null)
                 {
-                    id = (node.Attributes["ID"] != null) ? node.Attributes["ID"].Value : Guid.NewGuid().ToString();
-                    nestedName = (node.Attributes["NestedExpressionName"] != null) ? node.Attributes["NestedExpressionName"].Value : "";
-                    nestedExpression = (node.Attributes["Expression"] != null) ? node.Attributes["Expression"].Value : "";
+                    foreach (XmlNode node in rowsNode)
+                    {
+                        id = (node.Attributes["ID"] != null) ? node.Attributes["ID"].Value : Guid.NewGuid().ToString();
+                        customField = (node.Attributes["CustomField"] != null) ? node.Attributes["CustomField"].Value : "";
+                        expression = (node.Attributes["Expression"] != null) ? node.Attributes["Expression"].Value : "";
+                        condition = (node.Attributes["Condition"] != null) ? node.Attributes["Condition"].Value : "";
+                        active = (node.Attributes["Active"] != null) ? node.Attributes["Active"].Value : "Y";
 
-                    nestedFieldsRows.Add(new NestedFieldsRow(id, nestedName, nestedExpression));
+                        calculatedFieldsRows.Add(new CalculatedFieldsRow(id, customField, expression, condition, active));
+                    }
+                }
+
+                if (nestedRowsNode != null)
+                {
+                    foreach (XmlNode node in nestedRowsNode)
+                    {
+                        id = (node.Attributes["ID"] != null) ? node.Attributes["ID"].Value : Guid.NewGuid().ToString();
+                        nestedName = (node.Attributes["NestedExpressionName"] != null) ? node.Attributes["NestedExpressionName"].Value : "";
+                        nestedExpression = (node.Attributes["Expression"] != null) ? node.Attributes["Expression"].Value : "";
+
+                        nestedFieldsRows.Add(new NestedFieldsRow(id, nestedName, nestedExpression));
+                    }
+                }
+
+                if (virtualRowsNode != null)
+                {
+                    foreach (XmlNode node in virtualRowsNode)
+                    {
+                        id = (node.Attributes["ID"] != null) ? node.Attributes["ID"].Value : Guid.NewGuid().ToString();
+                        virtualField = (node.Attributes["CustomField"] != null) ? node.Attributes["CustomField"].Value : "";
+                        expression = (node.Attributes["Expression"] != null) ? node.Attributes["Expression"].Value : "";
+                        condition = (node.Attributes["Condition"] != null) ? node.Attributes["Condition"].Value : "";
+                        active = (node.Attributes["Active"] != null) ? node.Attributes["Active"].Value : "Y";
+
+                        virtualFieldsRows.Add(new CalculatedFieldsRow(id, virtualField, expression, condition, active));
+                    }
                 }
             }
             catch (Exception)
@@ -237,6 +274,20 @@
                 rowElement.SetAttribute("ID", row.ID);
                 rowElement.SetAttribute("NestedExpressionName", row.NestedExpression);
                 rowElement.SetAttribute("Expression", row.Expression);
+            }
+
+            XmlElement virtualRowsElement = document.CreateElement("VirtualRows");
+            calculatedFieldsElement.AppendChild(virtualRowsElement);
+
+            foreach (var row in virtualFieldsRows)
+            {
+                XmlElement rowElement = document.CreateElement("Row");
+                virtualRowsElement.AppendChild(rowElement);
+                rowElement.SetAttribute("ID", row.ID);
+                rowElement.SetAttribute("CustomField", row.CustomField);
+                rowElement.SetAttribute("Expression", row.CalculatedExpression);
+                rowElement.SetAttribute("Condition", row.Condition);
+                rowElement.SetAttribute("Active", row.Active);
             }
 
             var w = new XmlTextWriter(path, Encoding.UTF8);

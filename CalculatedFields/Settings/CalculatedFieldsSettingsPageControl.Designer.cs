@@ -74,6 +74,18 @@
             this.labelNestedExpression = new System.Windows.Forms.Label();
             this.buttonRemoveNested = new System.Windows.Forms.Button();
             this.treeListNestedExpressions = new ZoneFiveSoftware.Common.Visuals.TreeList();
+            this.tabPageVirtualExpressions = new System.Windows.Forms.TabPage();
+            this.splitContainer5 = new System.Windows.Forms.SplitContainer();
+            this.labelVirtualCondition = new System.Windows.Forms.Label();
+            this.textBoxVirtualCondition = new System.Windows.Forms.TextBox();
+            this.labelVirtualExpressionName = new System.Windows.Forms.Label();
+            this.buttonUpdateVirtual = new System.Windows.Forms.Button();
+            this.textBoxVirtualExpression = new System.Windows.Forms.TextBox();
+            this.textBoxVirtualField = new System.Windows.Forms.TextBox();
+            this.buttonAddVirtual = new System.Windows.Forms.Button();
+            this.labelVirtualExpression = new System.Windows.Forms.Label();
+            this.buttonRemoveVirtual = new System.Windows.Forms.Button();
+            this.treeListVirtualExpressions = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.labelTrailsIntegration = new System.Windows.Forms.Label();
             this.checkBoxAfterImportFuture = new System.Windows.Forms.CheckBox();
             this.labelTrailsIntegration2 = new System.Windows.Forms.Label();
@@ -87,6 +99,7 @@
             this.labelDonationsText3 = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.checkBoxVirtualActive = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.tabPageStandardExpressions.SuspendLayout();
             this.splitContainer3.Panel1.SuspendLayout();
@@ -97,6 +110,10 @@
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
             this.splitContainer4.SuspendLayout();
+            this.tabPageVirtualExpressions.SuspendLayout();
+            this.splitContainer5.Panel1.SuspendLayout();
+            this.splitContainer5.Panel2.SuspendLayout();
+            this.splitContainer5.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -120,6 +137,7 @@
             // 
             this.tabControl.Controls.Add(this.tabPageStandardExpressions);
             this.tabControl.Controls.Add(this.tabPageNestedExpressions);
+            this.tabControl.Controls.Add(this.tabPageVirtualExpressions);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
@@ -167,7 +185,7 @@
             // 
             this.splitContainer3.Panel2.Controls.Add(this.treeListCalculatedFields);
             this.splitContainer3.Size = new System.Drawing.Size(789, 512);
-            this.splitContainer3.SplitterDistance = 116;
+            this.splitContainer3.SplitterDistance = 118;
             this.splitContainer3.TabIndex = 18;
             // 
             // labelCustomField
@@ -371,6 +389,7 @@
             // 
             // buttonRemove
             // 
+            this.buttonRemove.Enabled = false;
             this.buttonRemove.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonRemove.Location = new System.Drawing.Point(423, 4);
             this.buttonRemove.Name = "buttonRemove";
@@ -409,6 +428,7 @@
             // 
             // buttonUpdate
             // 
+            this.buttonUpdate.Enabled = false;
             this.buttonUpdate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonUpdate.Location = new System.Drawing.Point(423, 33);
             this.buttonUpdate.Name = "buttonUpdate";
@@ -454,7 +474,7 @@
             this.treeListCalculatedFields.RowSeparatorLines = true;
             this.treeListCalculatedFields.ShowLines = false;
             this.treeListCalculatedFields.ShowPlusMinus = false;
-            this.treeListCalculatedFields.Size = new System.Drawing.Size(789, 392);
+            this.treeListCalculatedFields.Size = new System.Drawing.Size(789, 390);
             this.treeListCalculatedFields.TabIndex = 11;
             this.treeListCalculatedFields.SelectedItemsChanged += new System.EventHandler(this.treeListCalculatedFields_SelectedItemsChanged);
             // 
@@ -504,6 +524,7 @@
             // 
             // buttonUpdateNested
             // 
+            this.buttonUpdateNested.Enabled = false;
             this.buttonUpdateNested.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonUpdateNested.Location = new System.Drawing.Point(423, 33);
             this.buttonUpdateNested.Name = "buttonUpdateNested";
@@ -555,6 +576,7 @@
             // 
             // buttonRemoveNested
             // 
+            this.buttonRemoveNested.Enabled = false;
             this.buttonRemoveNested.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonRemoveNested.Location = new System.Drawing.Point(423, 4);
             this.buttonRemoveNested.Name = "buttonRemoveNested";
@@ -591,6 +613,162 @@
             this.treeListNestedExpressions.Size = new System.Drawing.Size(789, 421);
             this.treeListNestedExpressions.TabIndex = 18;
             this.treeListNestedExpressions.SelectedItemsChanged += new System.EventHandler(this.treeListNestedExpressions_SelectedItemsChanged);
+            // 
+            // tabPageVirtualExpressions
+            // 
+            this.tabPageVirtualExpressions.Controls.Add(this.splitContainer5);
+            this.tabPageVirtualExpressions.Location = new System.Drawing.Point(4, 22);
+            this.tabPageVirtualExpressions.Name = "tabPageVirtualExpressions";
+            this.tabPageVirtualExpressions.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageVirtualExpressions.Size = new System.Drawing.Size(795, 518);
+            this.tabPageVirtualExpressions.TabIndex = 2;
+            this.tabPageVirtualExpressions.Text = "Virtual expressions";
+            this.tabPageVirtualExpressions.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer5
+            // 
+            this.splitContainer5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer5.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer5.Name = "splitContainer5";
+            this.splitContainer5.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer5.Panel1
+            // 
+            this.splitContainer5.Panel1.Controls.Add(this.checkBoxVirtualActive);
+            this.splitContainer5.Panel1.Controls.Add(this.labelVirtualCondition);
+            this.splitContainer5.Panel1.Controls.Add(this.textBoxVirtualCondition);
+            this.splitContainer5.Panel1.Controls.Add(this.labelVirtualExpressionName);
+            this.splitContainer5.Panel1.Controls.Add(this.buttonUpdateVirtual);
+            this.splitContainer5.Panel1.Controls.Add(this.textBoxVirtualExpression);
+            this.splitContainer5.Panel1.Controls.Add(this.textBoxVirtualField);
+            this.splitContainer5.Panel1.Controls.Add(this.buttonAddVirtual);
+            this.splitContainer5.Panel1.Controls.Add(this.labelVirtualExpression);
+            this.splitContainer5.Panel1.Controls.Add(this.buttonRemoveVirtual);
+            // 
+            // splitContainer5.Panel2
+            // 
+            this.splitContainer5.Panel2.Controls.Add(this.treeListVirtualExpressions);
+            this.splitContainer5.Size = new System.Drawing.Size(789, 512);
+            this.splitContainer5.SplitterDistance = 118;
+            this.splitContainer5.TabIndex = 18;
+            // 
+            // labelVirtualCondition
+            // 
+            this.labelVirtualCondition.AutoSize = true;
+            this.labelVirtualCondition.Location = new System.Drawing.Point(3, 92);
+            this.labelVirtualCondition.Name = "labelVirtualCondition";
+            this.labelVirtualCondition.Size = new System.Drawing.Size(51, 13);
+            this.labelVirtualCondition.TabIndex = 18;
+            this.labelVirtualCondition.Text = "Condition";
+            // 
+            // textBoxVirtualCondition
+            // 
+            this.textBoxVirtualCondition.ContextMenuStrip = this.contextMenuStripFields;
+            this.textBoxVirtualCondition.Location = new System.Drawing.Point(67, 89);
+            this.textBoxVirtualCondition.Name = "textBoxVirtualCondition";
+            this.textBoxVirtualCondition.Size = new System.Drawing.Size(722, 20);
+            this.textBoxVirtualCondition.TabIndex = 17;
+            // 
+            // labelVirtualExpressionName
+            // 
+            this.labelVirtualExpressionName.AutoSize = true;
+            this.labelVirtualExpressionName.Location = new System.Drawing.Point(3, 39);
+            this.labelVirtualExpressionName.Name = "labelVirtualExpressionName";
+            this.labelVirtualExpressionName.Size = new System.Drawing.Size(61, 13);
+            this.labelVirtualExpressionName.TabIndex = 13;
+            this.labelVirtualExpressionName.Text = "Virtual Field";
+            // 
+            // buttonUpdateVirtual
+            // 
+            this.buttonUpdateVirtual.Enabled = false;
+            this.buttonUpdateVirtual.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonUpdateVirtual.Location = new System.Drawing.Point(423, 33);
+            this.buttonUpdateVirtual.Name = "buttonUpdateVirtual";
+            this.buttonUpdateVirtual.Size = new System.Drawing.Size(75, 23);
+            this.buttonUpdateVirtual.TabIndex = 16;
+            this.buttonUpdateVirtual.Text = "Update";
+            this.buttonUpdateVirtual.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonUpdateVirtual.UseVisualStyleBackColor = true;
+            this.buttonUpdateVirtual.Click += new System.EventHandler(this.buttonUpdateVirtual_Click);
+            // 
+            // textBoxVirtualExpression
+            // 
+            this.textBoxVirtualExpression.ContextMenuStrip = this.contextMenuStripFields;
+            this.textBoxVirtualExpression.Location = new System.Drawing.Point(67, 62);
+            this.textBoxVirtualExpression.Name = "textBoxVirtualExpression";
+            this.textBoxVirtualExpression.Size = new System.Drawing.Size(722, 20);
+            this.textBoxVirtualExpression.TabIndex = 12;
+            this.textBoxVirtualExpression.TextChanged += new System.EventHandler(this.textBoxVirtualExpression_TextChanged);
+            // 
+            // textBoxVirtualField
+            // 
+            this.textBoxVirtualField.Location = new System.Drawing.Point(67, 35);
+            this.textBoxVirtualField.Name = "textBoxVirtualField";
+            this.textBoxVirtualField.Size = new System.Drawing.Size(269, 20);
+            this.textBoxVirtualField.TabIndex = 15;
+            this.textBoxVirtualField.TextChanged += new System.EventHandler(this.textBoxVirtualField_TextChanged);
+            // 
+            // buttonAddVirtual
+            // 
+            this.buttonAddVirtual.Enabled = false;
+            this.buttonAddVirtual.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonAddVirtual.Location = new System.Drawing.Point(342, 33);
+            this.buttonAddVirtual.Name = "buttonAddVirtual";
+            this.buttonAddVirtual.Size = new System.Drawing.Size(75, 23);
+            this.buttonAddVirtual.TabIndex = 10;
+            this.buttonAddVirtual.Text = "Add";
+            this.buttonAddVirtual.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonAddVirtual.UseVisualStyleBackColor = true;
+            this.buttonAddVirtual.Click += new System.EventHandler(this.buttonAddVirtual_Click);
+            // 
+            // labelVirtualExpression
+            // 
+            this.labelVirtualExpression.AutoSize = true;
+            this.labelVirtualExpression.Location = new System.Drawing.Point(3, 65);
+            this.labelVirtualExpression.Name = "labelVirtualExpression";
+            this.labelVirtualExpression.Size = new System.Drawing.Size(58, 13);
+            this.labelVirtualExpression.TabIndex = 14;
+            this.labelVirtualExpression.Text = "Expression";
+            // 
+            // buttonRemoveVirtual
+            // 
+            this.buttonRemoveVirtual.Enabled = false;
+            this.buttonRemoveVirtual.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonRemoveVirtual.Location = new System.Drawing.Point(423, 4);
+            this.buttonRemoveVirtual.Name = "buttonRemoveVirtual";
+            this.buttonRemoveVirtual.Size = new System.Drawing.Size(75, 23);
+            this.buttonRemoveVirtual.TabIndex = 9;
+            this.buttonRemoveVirtual.Text = "Remove";
+            this.buttonRemoveVirtual.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonRemoveVirtual.UseVisualStyleBackColor = true;
+            this.buttonRemoveVirtual.Click += new System.EventHandler(this.buttonRemoveVirtual_Click);
+            // 
+            // treeListVirtualExpressions
+            // 
+            this.treeListVirtualExpressions.BackColor = System.Drawing.Color.Transparent;
+            this.treeListVirtualExpressions.Border = ZoneFiveSoftware.Common.Visuals.ControlBorder.Style.SmallRoundShadow;
+            this.treeListVirtualExpressions.CheckBoxes = false;
+            this.treeListVirtualExpressions.DefaultIndent = 15;
+            this.treeListVirtualExpressions.DefaultRowHeight = -1;
+            this.treeListVirtualExpressions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeListVirtualExpressions.HeaderRowHeight = 21;
+            this.treeListVirtualExpressions.Location = new System.Drawing.Point(0, 0);
+            this.treeListVirtualExpressions.MultiSelect = true;
+            this.treeListVirtualExpressions.Name = "treeListVirtualExpressions";
+            this.treeListVirtualExpressions.NumHeaderRows = ZoneFiveSoftware.Common.Visuals.TreeList.HeaderRows.Auto;
+            this.treeListVirtualExpressions.NumLockedColumns = 0;
+            this.treeListVirtualExpressions.RowAlternatingColors = true;
+            this.treeListVirtualExpressions.RowHotlightColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
+            this.treeListVirtualExpressions.RowHotlightColorText = System.Drawing.SystemColors.HighlightText;
+            this.treeListVirtualExpressions.RowHotlightMouse = true;
+            this.treeListVirtualExpressions.RowSelectedColor = System.Drawing.SystemColors.Highlight;
+            this.treeListVirtualExpressions.RowSelectedColorText = System.Drawing.SystemColors.HighlightText;
+            this.treeListVirtualExpressions.RowSeparatorLines = true;
+            this.treeListVirtualExpressions.ShowLines = false;
+            this.treeListVirtualExpressions.ShowPlusMinus = false;
+            this.treeListVirtualExpressions.Size = new System.Drawing.Size(789, 390);
+            this.treeListVirtualExpressions.TabIndex = 18;
+            this.treeListVirtualExpressions.SelectedItemsChanged += new System.EventHandler(this.treeListVirtualExpressions_SelectedItemsChanged);
             // 
             // labelTrailsIntegration
             // 
@@ -741,6 +919,18 @@
             this.splitContainer2.SplitterDistance = 544;
             this.splitContainer2.TabIndex = 0;
             // 
+            // checkBoxVirtualActive
+            // 
+            this.checkBoxVirtualActive.AutoSize = true;
+            this.checkBoxVirtualActive.Checked = true;
+            this.checkBoxVirtualActive.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxVirtualActive.Location = new System.Drawing.Point(6, 10);
+            this.checkBoxVirtualActive.Name = "checkBoxVirtualActive";
+            this.checkBoxVirtualActive.Size = new System.Drawing.Size(110, 17);
+            this.checkBoxVirtualActive.TabIndex = 19;
+            this.checkBoxVirtualActive.Text = "Calculation active";
+            this.checkBoxVirtualActive.UseVisualStyleBackColor = true;
+            // 
             // CalculatedFieldsSettingsPageControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -761,6 +951,11 @@
             this.splitContainer4.Panel1.PerformLayout();
             this.splitContainer4.Panel2.ResumeLayout(false);
             this.splitContainer4.ResumeLayout(false);
+            this.tabPageVirtualExpressions.ResumeLayout(false);
+            this.splitContainer5.Panel1.ResumeLayout(false);
+            this.splitContainer5.Panel1.PerformLayout();
+            this.splitContainer5.Panel2.ResumeLayout(false);
+            this.splitContainer5.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -833,5 +1028,18 @@
         private ZoneFiveSoftware.Common.Visuals.TreeList treeListCalculatedFields;
         private System.Windows.Forms.SplitContainer splitContainer4;
         private ZoneFiveSoftware.Common.Visuals.TreeList treeListNestedExpressions;
+        private System.Windows.Forms.TabPage tabPageVirtualExpressions;
+        private System.Windows.Forms.SplitContainer splitContainer5;
+        private System.Windows.Forms.Label labelVirtualExpressionName;
+        private System.Windows.Forms.Button buttonUpdateVirtual;
+        private System.Windows.Forms.TextBox textBoxVirtualExpression;
+        private System.Windows.Forms.TextBox textBoxVirtualField;
+        private System.Windows.Forms.Button buttonAddVirtual;
+        private System.Windows.Forms.Label labelVirtualExpression;
+        private System.Windows.Forms.Button buttonRemoveVirtual;
+        private ZoneFiveSoftware.Common.Visuals.TreeList treeListVirtualExpressions;
+        private System.Windows.Forms.Label labelVirtualCondition;
+        private System.Windows.Forms.TextBox textBoxVirtualCondition;
+        private System.Windows.Forms.CheckBox checkBoxVirtualActive;
     }
 }

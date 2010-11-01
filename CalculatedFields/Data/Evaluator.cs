@@ -42,6 +42,7 @@
         private static uint dataTrackElement = 1000;
         private static bool cacheEnabled = true;
         private static Dictionary<string, object> expressionsCache = new Dictionary<string, object>();
+        private static Dictionary<string, object> virtualFields = new Dictionary<string, object>();
 
         private static readonly CompilerParameters cp = new CompilerParameters(new[] { "mscorlib.dll", "System.dll", "System.Core.dll", "System.Xml.dll" });
         private static readonly CSharpCodeProvider provider = new CSharpCodeProvider(new Dictionary<string, string>() { { "CompilerVersion", "v3.5" } });
@@ -135,6 +136,36 @@
                             progressBarForm.ProgressBarValue += 1000000 / activities.Count;
                         }
 
+                        foreach (var virtualFieldsRow in GlobalSettings.virtualFieldsRows)
+                        {
+                            if (virtualFieldsRow.Condition != "")
+                            {
+                                var conditionResult = Evaluate(virtualFieldsRow.Condition, activity, "", virtualFieldsRow);
+
+                                if (conditionResult != null && conditionResult.ToString() == "True")
+                                {
+                                    result = Evaluate(
+                                        virtualFieldsRow.CalculatedExpression,
+                                        activity,
+                                        virtualFieldsRow.Condition,
+                                        virtualFieldsRow);
+                                }
+                                else
+                                {
+                                    result = null;
+                                }
+                            }
+                            else
+                            {
+                                result = Evaluate(virtualFieldsRow.CalculatedExpression, activity, "", virtualFieldsRow);
+                            }
+
+                            if (result != null)
+                            {
+                                virtualFields.Add(virtualFieldsRow.CustomField.ToUpper(), result);
+                            }
+                        }
+
                         ICustomDataFieldObjectType type =
                             CustomDataFieldDefinitions.StandardObjectType(typeof(IActivity));
 
@@ -209,6 +240,8 @@
 
                             Application.DoEvents();
                         }
+
+                        virtualFields.Clear();
 
                         if (progressBarForm.Cancelled || (testRun && actualActivity >= 30))
                         {
@@ -636,7 +669,7 @@
 
                 if (fieldValue == "")
                 {
-                    fieldValue = DataTrack(activity, activityInfoInstance, field);
+                    fieldValue = VirtualFields(field);
                 }
 
                 if (fieldValue == "" || fieldValue == "NaN" || fieldValue == "Infinity")
@@ -1225,6 +1258,30 @@
             return fieldValue;
         }
 
+        private static string VirtualFields(string field)
+        {
+            string fieldValue = "";
+            double result;
+
+            foreach (var row in GlobalSettings.virtualFieldsRows)
+            {
+                if (row.CustomField.ToUpper() == field)
+                {
+                    if (virtualFields.ContainsKey(field))
+                    {
+                        fieldValue = virtualFields[field].ToString();
+                        
+                        if (Double.TryParse(fieldValue, out result))
+                        {
+                            fieldValue = result.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                        }
+                    }
+                }
+            }
+
+            return fieldValue;
+        }
+
         private static string CustomFields(IActivity activity, ActivityInfo activityInfoInstance, string field)
         {
             string fieldValue = "";
@@ -1280,22 +1337,6 @@
                         throw new Exception("You can't use recursive formula.");
                     }
                 }
-            }
-
-            return fieldValue;
-        }
-
-        private static string DataTrack(IActivity activity, ActivityInfo activityInfoInstance, string field)
-        {
-            string fieldValue = "";
-
-            if (field == "DATATRACK")
-            {
-                fieldValue = "DATATRACK";
-            }
-            else if (field == "DATATRACKWITHPAUSES")
-            {
-                fieldValue = "DATATRACKWITHPAUSES";
             }
 
             return fieldValue;
