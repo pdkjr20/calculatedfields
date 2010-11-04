@@ -13,7 +13,13 @@ Exactly for this is Range feature designed.<br>
 Do you want to find your fastest kilometer in activity?<br>
 Or your maximal power output for 30 seconds?<br>
 Or you want to find your fastest 300 seconds in activity?<br>
-Peak feature is here for help.
+Peak feature is here for help.<br>
+<br>
+*Important*:<br>
+Results returned by Range and Peak feature are dependant on your smoothing settings of used datatracks in ST settings.
+And you can influence accuracy of results by settings smaller resolution of DataTrack.
+So 1000 milliseconds is for example fast standard with relative accurate results for DataTrack feature. But with big activities with many pauses result will be few seconds out.<br>
+But with 100 milliseconds resolution it will be much more accurate. Of course the calculation will be slower. So it's up to you what you will choose. Just experiment with resolution settings and choose what you want.<br>
 
 = Details =
 
@@ -26,6 +32,9 @@ So first is RANGE, right after range you define return parameter of formula. So 
 Formula for calculating your average pace when having HR between 150-170:<br>
 *{{{ {RANGEPACE(HR,150,170)} }}}*<br>
 So we want to return PACE and define range on HR field and lower bound is 150 and upper 170.
+<br>
+Formula for calculating your average pace when having HR between 150-170 *(but only for active parts of activity)*:<br>
+*{{{ {ACTIVERANGEPACE(HR,150,170)} }}}*<br>
 <br>
 Here is list of usable fields (they can be used as return values and range field too):<br>
   * ELAPSED
@@ -59,7 +68,7 @@ So now we still want to find peak of power for time of 30 seconds. But we don't 
 So we specify our second optional parameter Cadence. (it's a return type).
 Of course you can return for example average HR for these 30 seconds:
 *{{{ {MAXPEAKTIME(Power,HR,30)} }}}*<br>
-<br><br>
+<br>
 
 
 You can specifiy this combinations of PEAKS:
@@ -79,7 +88,7 @@ And as a peak type or result type you can define these fields:
   * CADENCE
   * POWER
   * CLIMBSPEED
- <br>
+
 Other examples:
 Fastest 2km only on activities with GPS Track:<br>
 *{{{ {MINPEAKDISTANCE(Elapsed,2000)} }}}* Condition: *{{{ {HASGPSTRACK} }}}*<br>
