@@ -76,6 +76,7 @@
             this.treeListNestedExpressions = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.tabPageVirtualExpressions = new System.Windows.Forms.TabPage();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
+            this.checkBoxVirtualActive = new System.Windows.Forms.CheckBox();
             this.labelVirtualCondition = new System.Windows.Forms.Label();
             this.textBoxVirtualCondition = new System.Windows.Forms.TextBox();
             this.labelVirtualExpressionName = new System.Windows.Forms.Label();
@@ -99,7 +100,9 @@
             this.labelDonationsText3 = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.checkBoxVirtualActive = new System.Windows.Forms.CheckBox();
+            this.comboBoxDataTrackResolution = new System.Windows.Forms.ComboBox();
+            this.labelDataTrackResolution = new System.Windows.Forms.Label();
+            this.labelDataTrackResolution2 = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabPageStandardExpressions.SuspendLayout();
             this.splitContainer3.Panel1.SuspendLayout();
@@ -652,6 +655,18 @@
             this.splitContainer5.SplitterDistance = 118;
             this.splitContainer5.TabIndex = 18;
             // 
+            // checkBoxVirtualActive
+            // 
+            this.checkBoxVirtualActive.AutoSize = true;
+            this.checkBoxVirtualActive.Checked = true;
+            this.checkBoxVirtualActive.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxVirtualActive.Location = new System.Drawing.Point(6, 10);
+            this.checkBoxVirtualActive.Name = "checkBoxVirtualActive";
+            this.checkBoxVirtualActive.Size = new System.Drawing.Size(110, 17);
+            this.checkBoxVirtualActive.TabIndex = 19;
+            this.checkBoxVirtualActive.Text = "Calculation active";
+            this.checkBoxVirtualActive.UseVisualStyleBackColor = true;
+            // 
             // labelVirtualCondition
             // 
             this.labelVirtualCondition.AutoSize = true;
@@ -882,6 +897,9 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.labelDataTrackResolution2);
+            this.splitContainer1.Panel1.Controls.Add(this.labelDataTrackResolution);
+            this.splitContainer1.Panel1.Controls.Add(this.comboBoxDataTrackResolution);
             this.splitContainer1.Panel1.Controls.Add(this.checkBoxAfterImport);
             this.splitContainer1.Panel1.Controls.Add(this.checkBoxAfterImportFuture);
             this.splitContainer1.Panel1.Controls.Add(this.labelTrailsIntegration);
@@ -919,17 +937,36 @@
             this.splitContainer2.SplitterDistance = 544;
             this.splitContainer2.TabIndex = 0;
             // 
-            // checkBoxVirtualActive
+            // comboBoxDataTrackResolution
             // 
-            this.checkBoxVirtualActive.AutoSize = true;
-            this.checkBoxVirtualActive.Checked = true;
-            this.checkBoxVirtualActive.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxVirtualActive.Location = new System.Drawing.Point(6, 10);
-            this.checkBoxVirtualActive.Name = "checkBoxVirtualActive";
-            this.checkBoxVirtualActive.Size = new System.Drawing.Size(110, 17);
-            this.checkBoxVirtualActive.TabIndex = 19;
-            this.checkBoxVirtualActive.Text = "Calculation active";
-            this.checkBoxVirtualActive.UseVisualStyleBackColor = true;
+            this.comboBoxDataTrackResolution.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxDataTrackResolution.FormattingEnabled = true;
+            this.comboBoxDataTrackResolution.Items.AddRange(new object[] {
+            "100",
+            "1000"});
+            this.comboBoxDataTrackResolution.Location = new System.Drawing.Point(151, 45);
+            this.comboBoxDataTrackResolution.Name = "comboBoxDataTrackResolution";
+            this.comboBoxDataTrackResolution.Size = new System.Drawing.Size(73, 21);
+            this.comboBoxDataTrackResolution.TabIndex = 19;
+            this.comboBoxDataTrackResolution.SelectedValueChanged += new System.EventHandler(this.comboBoxDataTrackResolution_SelectedValueChanged);
+            // 
+            // labelDataTrackResolution
+            // 
+            this.labelDataTrackResolution.AutoSize = true;
+            this.labelDataTrackResolution.Location = new System.Drawing.Point(3, 48);
+            this.labelDataTrackResolution.Name = "labelDataTrackResolution";
+            this.labelDataTrackResolution.Size = new System.Drawing.Size(142, 13);
+            this.labelDataTrackResolution.TabIndex = 20;
+            this.labelDataTrackResolution.Text = "DataTrack feature resolution";
+            // 
+            // labelDataTrackResolution2
+            // 
+            this.labelDataTrackResolution2.AutoSize = true;
+            this.labelDataTrackResolution2.Location = new System.Drawing.Point(230, 48);
+            this.labelDataTrackResolution2.Name = "labelDataTrackResolution2";
+            this.labelDataTrackResolution2.Size = new System.Drawing.Size(279, 13);
+            this.labelDataTrackResolution2.TabIndex = 21;
+            this.labelDataTrackResolution2.Text = "in milliseconds (smaller value is more accurate, but slower)";
             // 
             // CalculatedFieldsSettingsPageControl
             // 
@@ -1041,5 +1078,8 @@
         private System.Windows.Forms.Label labelVirtualCondition;
         private System.Windows.Forms.TextBox textBoxVirtualCondition;
         private System.Windows.Forms.CheckBox checkBoxVirtualActive;
+        private System.Windows.Forms.ComboBox comboBoxDataTrackResolution;
+        private System.Windows.Forms.Label labelDataTrackResolution2;
+        private System.Windows.Forms.Label labelDataTrackResolution;
     }
 }

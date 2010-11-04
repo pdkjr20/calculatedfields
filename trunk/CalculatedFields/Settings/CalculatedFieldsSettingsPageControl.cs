@@ -52,6 +52,7 @@
 
             this.checkBoxAfterImport.Checked = GlobalSettings.runAfterImport;
             this.checkBoxAfterImportFuture.Checked = GlobalSettings.calculateFutureAfterImport;
+            this.comboBoxDataTrackResolution.SelectedItem = GlobalSettings.dataTrackResolution.ToString();
 
             ITheme visualTheme = CalculatedFields.GetApplication().VisualTheme;
 
@@ -939,6 +940,13 @@
         private void labelDonationImage_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=5Y5242N7FPZGY&lc=SK&item_name=Camel%2fCalculated%20Fields%20plugin&item_number=CalculatedFields&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted");
+        }
+
+        private void comboBoxDataTrackResolution_SelectedValueChanged(object sender, EventArgs e)
+        {
+            GlobalSettings.dataTrackResolution = int.Parse(this.comboBoxDataTrackResolution.SelectedItem.ToString());
+
+            GlobalSettings.SaveSettings();
         }
     }
 }
