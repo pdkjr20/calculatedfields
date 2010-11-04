@@ -10,6 +10,9 @@
     [Serializable]
     public class DataTrackPoint
     {
+        int lapNumber;
+        string lapNote;
+        bool lapActive;
         float hr;
         float pace;
         float speed;
@@ -33,13 +36,19 @@
         public float Elapsed { get { return elapsed; } set { elapsed = value; } }
         public float ClimbSpeed { get { return climbSpeed; } set { climbSpeed = value; } }
         public bool Pause { get { return pause; } set { pause = value; } }
+        public int LapNumber { get { return lapNumber; } set { lapNumber = value; } }
+        public string LapNote { get { return lapNote; } set { lapNote = value; } }
+        public bool LapActive { get { return lapActive; } set { lapActive = value; } }
 
         public DataTrackPoint()
         {
         }
 
-        public DataTrackPoint(float distance, float hr, float pace, float speed, float elevation, float grade, float cadence, float power, float elapsed, float climbSpeed, bool pause)
+        public DataTrackPoint(int lapNumber, string lapNote, bool lapActive, float distance, float hr, float pace, float speed, float elevation, float grade, float cadence, float power, float elapsed, float climbSpeed, bool pause)
         {
+            LapNumber = lapNumber;
+            LapNote = lapNote;
+            LapActive = lapActive;
             Distance = distance;
             HR = hr;
             Pace = pace;
@@ -135,6 +144,7 @@
 
         public static bool runAfterImport;
         public static bool calculateFutureAfterImport;
+        public static int dataTrackResolution;
 
         private static readonly string path;
 
@@ -174,6 +184,7 @@
                 document.Load(reader);
                 runAfterImport = (document.ChildNodes[0].Attributes["RunAfterImport"] != null) ? Boolean.Parse(document.ChildNodes[0].Attributes["RunAfterImport"].Value) : false;
                 calculateFutureAfterImport = (document.ChildNodes[0].Attributes["CalculateFutureAfterImport"] != null) ? Boolean.Parse(document.ChildNodes[0].Attributes["CalculateFutureAfterImport"].Value) : false;
+                dataTrackResolution = (document.ChildNodes[0].Attributes["DataTrackResolution"] != null) ? int.Parse(document.ChildNodes[0].Attributes["DataTrackResolution"].Value) : 1000;
 
                 XmlNodeList rowsNode = null;
                 XmlNodeList nestedRowsNode = null;
@@ -248,6 +259,8 @@
             XmlElement calculatedFieldsElement = document.CreateElement("CalculatedFields");
             calculatedFieldsElement.SetAttribute("RunAfterImport", runAfterImport.ToString());
             calculatedFieldsElement.SetAttribute("CalculateFutureAfterImport", calculateFutureAfterImport.ToString());
+            calculatedFieldsElement.SetAttribute("DataTrackResolution", dataTrackResolution.ToString());
+
             document.AppendChild(calculatedFieldsElement);
 
             XmlElement rowsElement = document.CreateElement("Rows");
