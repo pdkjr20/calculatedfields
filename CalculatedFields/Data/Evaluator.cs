@@ -41,6 +41,8 @@
         private static List<DataTrackPoint> dataTrackCache00 = null;
         private static DateTime dataTrackCacheStamp00;
 
+        private static int smoothingPace, smoothingElevation, smoothingHR, smoothingCadence, smoothingPower;
+
         private static bool cacheEnabled = true;
         private static Dictionary<string, object> expressionsCache = new Dictionary<string, object>();
         private static Dictionary<string, object> virtualFields = new Dictionary<string, object>();
@@ -118,14 +120,10 @@
 
                 int actualActivity = 0;
 
-                foreach (var row in GlobalSettings.calculatedFieldsRows)
-                {
-                    row.CompilationTime = 0;
-                    row.ParsingTime = 0;
-                }
-
                 try
                 {
+                    SmoothingBackup();
+
                     foreach (IActivity activity in activities)
                     {
                         if (testRun)
@@ -145,6 +143,8 @@
 
                         foreach (var virtualFieldsRow in GlobalSettings.virtualFieldsRows)
                         {
+                            SmoothingSetTemporary(virtualFieldsRow);
+
                             if (virtualFieldsRow.Condition != "")
                             {
                                 var conditionResult = Evaluate(virtualFieldsRow.Condition, activity, "", virtualFieldsRow);
@@ -171,6 +171,8 @@
                             {
                                 virtualFields.Add(virtualFieldsRow.CustomField.ToUpper(), result);
                             }
+
+                            SmoothingSetDefault();
                         }
 
                         ICustomDataFieldObjectType type =
@@ -180,6 +182,7 @@
                         {
                             if (progressBarForm.Cancelled || (testRun && actualActivity >= 30))
                             {
+                                SmoothingSetDefault();
                                 progressBarForm.Close();
                                 break;
                             }
@@ -194,6 +197,8 @@
 
                                     foreach (var calculatedFieldsRow in allCalculatedFieldsRow)
                                     {
+                                        SmoothingSetTemporary(calculatedFieldsRow);
+
                                         if (calculatedFieldsRow.Condition != "")
                                         {
                                             var conditionResult = Evaluate(calculatedFieldsRow.Condition, activity, "", calculatedFieldsRow);
@@ -241,6 +246,8 @@
                                                         (int)(seconds % 60)));
                                             }
                                         }
+
+                                        SmoothingSetDefault();
                                     }
                                 }
                             }
@@ -252,6 +259,7 @@
 
                         if (progressBarForm.Cancelled || (testRun && actualActivity >= 30))
                         {
+                            SmoothingSetDefault();
                             progressBarForm.Close();
                             break;
                         }
@@ -259,11 +267,13 @@
                 }
                 catch (Exception)
                 {
+                    SmoothingSetDefault();
                     progressBarForm.Close();
 
                     throw;
                 }
 
+                SmoothingSetDefault();
                 progressBarForm.Close();
             }
         }
@@ -271,6 +281,54 @@
         #endregion
 
         #region Methods
+
+        private static void SmoothingBackup()
+        {
+            var analysisSettings = CalculatedFields.GetApplication().SystemPreferences.AnalysisSettings;
+
+            smoothingPace = analysisSettings.SpeedSmoothingSeconds;
+            smoothingElevation = analysisSettings.ElevationSmoothingSeconds;
+            smoothingHR = analysisSettings.HeartRateSmoothingSeconds;
+            smoothingCadence = analysisSettings.CadenceSmoothingSeconds;
+            smoothingPower = analysisSettings.PowerSmoothingSeconds;
+        }
+
+        private static void SmoothingSetTemporary(CalculatedFieldsRow calculatedFieldsRow)
+        {
+            var analysisSettings = CalculatedFields.GetApplication().SystemPreferences.AnalysisSettings;
+
+            if (calculatedFieldsRow.SmoothingPace != 0)
+            {
+                analysisSettings.SpeedSmoothingSeconds = calculatedFieldsRow.SmoothingPace;
+            }
+            if (calculatedFieldsRow.SmoothingElevation != 0)
+            {
+                analysisSettings.ElevationSmoothingSeconds = calculatedFieldsRow.SmoothingElevation;
+            }
+            if (calculatedFieldsRow.SmoothingHR != 0)
+            {
+                analysisSettings.HeartRateSmoothingSeconds = calculatedFieldsRow.SmoothingHR;
+            }
+            if (calculatedFieldsRow.SmoothingCadence != 0)
+            {
+                analysisSettings.CadenceSmoothingSeconds = calculatedFieldsRow.SmoothingCadence;
+            }
+            if (calculatedFieldsRow.SmoothingPower != 0)
+            {
+                analysisSettings.PowerSmoothingSeconds = calculatedFieldsRow.SmoothingPower;
+            }
+        }
+
+        private static void SmoothingSetDefault()
+        {
+            var analysisSettings = CalculatedFields.GetApplication().SystemPreferences.AnalysisSettings;
+
+            analysisSettings.SpeedSmoothingSeconds = smoothingPace;
+            analysisSettings.ElevationSmoothingSeconds = smoothingElevation;
+            analysisSettings.HeartRateSmoothingSeconds = smoothingHR;
+            analysisSettings.CadenceSmoothingSeconds = smoothingCadence;
+            analysisSettings.PowerSmoothingSeconds = smoothingPower;
+        }
 
         private static object Evaluate(string expression, IActivity activity, string condition, CalculatedFieldsRow calculatedFieldsRow)
         {
@@ -438,6 +496,9 @@
 
         private static List<DataTrackPoint> GetDataTrack(IActivity activity, bool onlyActive, bool includePauses)
         {
+            return CalculateDataTrack(activity, onlyActive, includePauses);
+            //vypnuta cache
+
             if (onlyActive && includePauses)
             {
                 if (dataTrackCache11 != null && activity.StartTime.Ticks == dataTrackCacheStamp11.Ticks && dataTrackCacheResolution == GlobalSettings.dataTrackResolution)
