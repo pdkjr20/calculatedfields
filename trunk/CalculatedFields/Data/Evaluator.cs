@@ -506,7 +506,7 @@
 
             ActivityInfo activityInfoInstance = ActivityInfoCache.Instance.GetInfo(activity);
 
-            uint totalElapsed = 0;
+            float totalElapsed = 0;
             DateTime startTime = DateTime.MaxValue;
 
             if (activityInfoInstance.SmoothedSpeedTrack.TotalElapsedSeconds != 0)
@@ -567,7 +567,7 @@
 
                 foreach (var timer in activityInfoInstance.NonMovingTimes)
                 {
-                    if (adjustedTime.Ticks >= timer.Lower.Ticks && adjustedTime.Ticks <= timer.Upper.Ticks)
+                    if (adjustedTime >= timer.Lower && adjustedTime <= timer.Upper)
                     {
                         paused = true;
                         if (!includePauses)
@@ -761,6 +761,11 @@
 
                 if (fieldValue == "")
                 {
+                    fieldValue = Zones(activity, activityInfoInstance, field);
+                }
+
+                if (fieldValue == "")
+                {
                     fieldValue = LastXDays(activity, activityInfoInstance, condition, field, calculatedFieldsRow);
                 }
 
@@ -799,6 +804,36 @@
         {
             string fieldValue = "";
 
+            if (field.Contains("TRIMPFORMULA"))
+            {
+                double trimp = 0;
+
+                foreach (var zone in activityInfo.HeartRateZoneInfo(CalculatedFields.GetLogBook().HeartRateZones[0]).Zones)
+                {
+                    if (zone.Name.Contains("1"))
+                    {
+                        trimp += zone.TotalTime.TotalSeconds / 60f * 1.1;
+                    }
+                    if (zone.Name.Contains("2"))
+                    {
+                        trimp += zone.TotalTime.TotalSeconds / 60f * 1.6;
+                    }
+                    if (zone.Name.Contains("3"))
+                    {
+                        trimp += zone.TotalTime.TotalSeconds / 60f * 2.2;
+                    }
+                    if (zone.Name.Contains("4"))
+                    {
+                        trimp += zone.TotalTime.TotalSeconds / 60f * 3.0;
+                    }
+                    if (zone.Name.Contains("5"))
+                    {
+                        trimp += zone.TotalTime.TotalSeconds / 60f * 4.1;
+                    }
+                }
+
+                fieldValue = trimp.ToString(CultureInfo.InvariantCulture.NumberFormat);
+            }
             if (field.Contains("HALFSPEEDRATIO"))
             {
                 bool onlyActive = field.Contains("ACTIVE");
@@ -1468,6 +1503,70 @@
             return fieldValue;
         }
 
+        private static string Zones(IActivity activity, ActivityInfo activityInfoInstance, string field)
+        {
+            string fieldValue = "";
+
+            if (field.StartsWith("ZONE"))
+            {
+                field = ParseExpression(field, activity, "", null);
+
+                string zoneType, zoneCategory, zoneName, zoneBound;
+
+                IZoneCategoryList zones = null;
+
+                zoneType = Regex.Match(field, "(?<=ZONE).*(?=\\()").Value;
+                zoneCategory = Regex.Match(field, "(?<=\\()[a-zA-Z0-9 _.]*(?=,)").Value;
+                zoneName = Regex.Match(field, "(?<=,)[a-zA-Z0-9 _.]*(?=,)").Value;
+                zoneBound = Regex.Match(field, "(?<=,)[a-zA-Z ]*(?=\\))").Value;
+
+                if (zoneType != "" && zoneCategory != "" && zoneName != "")
+                {
+                    switch (zoneType)
+                    {
+                        case "HR":
+                            zones = CalculatedFields.GetLogBook().HeartRateZones;
+                            break;
+                        case "CADENCE":
+                            zones = CalculatedFields.GetLogBook().CadenceZones;
+                            break;
+                        case "CLIMB":
+                            zones = CalculatedFields.GetLogBook().ClimbZones;
+                            break;
+                        case "POWER":
+                            zones = CalculatedFields.GetLogBook().PowerZones;
+                            break;
+                        case "SPEED":
+                            zones = CalculatedFields.GetLogBook().SpeedZones;
+                            break;
+                    }
+                }
+
+                foreach (var category in zones)
+                {
+                    if (category.Name.ToUpper() == zoneCategory)
+                    {
+                        foreach (var zone in category.Zones)
+                        {
+                            if (zone.Name.ToUpper() == zoneName)
+                            {
+                                if (zoneBound == "LOW")
+                                {
+                                    fieldValue = zone.Low.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                }
+                                else
+                                {
+                                    fieldValue = zone.High.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return fieldValue;
+        }
+
         private static string AthleteFields(IActivity activity, ActivityInfo activityInfoInstance, string field)
         {
             string fieldValue = "";
@@ -1496,7 +1595,6 @@
                     break;
                 case "ATHLETESYSTOLICBLOODPRESSURE":
                     fieldValue = athleteEntry.SystolicBloodPressure.ToString(CultureInfo.InvariantCulture.NumberFormat);
-
                     break;
                 case "ATHLETEINJURED":
                     fieldValue = athleteEntry.Injured.ToString();
@@ -1536,6 +1634,29 @@
                     break;
                 case "ATHLETEWEIGHT":
                     fieldValue = athleteEntry.WeightKilograms.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                    break;
+
+                case "ATHLETEHEIGHT":
+                    fieldValue = CalculatedFields.GetLogBook().Athlete.HeightCentimeters.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                    break;
+                case "ATHLETESEX":
+                    fieldValue = "\"" + CalculatedFields.GetLogBook().Athlete.Sex.ToString() + "\"";
+                    break;
+                case "ATHLETEBIRTHDATE":
+                    fieldValue = "\"" + CalculatedFields.GetLogBook().Athlete.DateOfBirth.ToShortDateString() + "\"";
+                    break;
+                case "ATHLETEAGE":
+                    DateTime now = activity.StartTime.ToUniversalTime() + activity.TimeZoneUtcOffset;
+                    DateTime birth = CalculatedFields.GetLogBook().Athlete.DateOfBirth;
+                    
+                    int years = now.Year - birth.Year;
+                    
+                    if (now.Month < birth.Month || (now.Month == birth.Month && now.Day < birth.Day))
+                    {
+                        --years;
+                    }
+
+                    fieldValue = years.ToString(CultureInfo.InvariantCulture.NumberFormat);
                     break;
             }
 
@@ -1581,7 +1702,6 @@
 
             switch (field)
             {
-                    //activityInfoInstance.HeartRateZoneInfo(CalculatedFields.GetLogBook().HeartRateZones[0]).Zones[0].Zone.
                 //special
                 case "EQUIPMENT":
                     foreach (IEquipmentItem equipment in activity.EquipmentUsed)
