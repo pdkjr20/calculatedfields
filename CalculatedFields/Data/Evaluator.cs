@@ -333,6 +333,7 @@
         private static object Evaluate(string expression, IActivity activity, string condition, CalculatedFieldsRow calculatedFieldsRow)
         {
             expression = ParseExpression(expression, activity, condition, calculatedFieldsRow);
+            //throw new Exception(expression);
             if (expression == "")
             {
                 return null;
@@ -351,12 +352,18 @@
             if (expression.Contains("DATATRACK"))
             {
                 bool includePauses = false;
+                bool onlyActive = false;
+
                 if (expression.Contains("DATATRACKWITHPAUSES"))
                 {
                     includePauses = true;
                 }
+                if (expression.Contains("DATATRACKACTIVE"))
+                {
+                    onlyActive = true;
+                }
 
-                List<DataTrackPoint> dataTrack = GetDataTrack(activity, false, includePauses);
+                List<DataTrackPoint> dataTrack = GetDataTrack(activity, onlyActive, includePauses);
 
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<DataTrackPoint>));
                 Stream fs = new FileStream(Environment.GetEnvironmentVariable("APPDATA") + "/CalculatedFieldsPlugin/TEMP/DataTrack.xml", FileMode.Create);
@@ -378,6 +385,10 @@
                 {
                     tempModuleSource += "List<DataTrackPoint> DATATRACKWITHPAUSES = (List<DataTrackPoint>) xmlSerializer.Deserialize(xmlReader);";
                 }
+                else if (onlyActive)
+                {
+                    tempModuleSource += "List<DataTrackPoint> DATATRACKACTIVE = (List<DataTrackPoint>) xmlSerializer.Deserialize(xmlReader);";
+                }
                 else
                 {
                     tempModuleSource += "List<DataTrackPoint> DATATRACK = (List<DataTrackPoint>) xmlSerializer.Deserialize(xmlReader);";
@@ -388,6 +399,10 @@
                 if (includePauses)
                 {
                     tempModuleSource += "if (DATATRACKWITHPAUSES";
+                }
+                else if (onlyActive)
+                {
+                    tempModuleSource += "if (DATATRACKACTIVE";
                 }
                 else
                 {
@@ -644,7 +659,7 @@
                     if (adjustedTime >= lap.StartTime && adjustedTime <= lap.EndTime)
                     {
                         lapNumber = lap.LapNumber;
-                        lapNote = "\"" + lap.Notes.Escape() + "\"";
+                        lapNote = lap.Notes.Escape();
 
                         if (lap.Rest)
                         {
@@ -840,7 +855,8 @@
                     fieldValue = VirtualFields(field);
                 }
 
-                if (fieldValue == "" || fieldValue == "NaN" || fieldValue == "Infinity")
+                //if (fieldValue == "" || fieldValue == "NaN" || fieldValue == "Infinity")
+                if (fieldValue == "NaN" || fieldValue == "Infinity")
                 {
                     expression = "";
                 }
@@ -848,7 +864,17 @@
                 //expression = fieldPattern.Replace(expression, fieldValue, 1);
                 if (expression != "")
                 {
-                    expression = expression.Replace(FindField(expression), fieldValue);
+                    if (fieldValue != "")
+                    {
+                        expression = expression.Replace(FindField(expression), fieldValue);
+                    }
+                    else // to enabled {} in formulas
+                    {
+                        fieldValue = FindField(expression).Remove(0, 1);
+                        fieldValue = fieldValue.Remove(fieldValue.Length-1, 1);
+                        fieldValue = "/#/" + fieldValue + "/###/";
+                        expression = expression.Replace(FindField(expression), fieldValue);
+                    }
                 }
 
                 history += expression + "-";
@@ -857,7 +883,8 @@
             }
 
             //throw new Exception(history);
-
+            expression = expression.Replace("/#/", "{");
+            expression = expression.Replace("/###/", "}");
             return expression;
         }
 
@@ -1559,6 +1586,10 @@
             else if (field == "DATATRACKWITHPAUSES")
             {
                 fieldValue = "DATATRACKWITHPAUSES";
+            }
+            else if (field == "DATATRACKACTIVE")
+            {
+                fieldValue = "DATATRACKACTIVE";
             }
 
             return fieldValue;

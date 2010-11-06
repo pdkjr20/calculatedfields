@@ -292,6 +292,18 @@
                 item.Click += fieldItem_Click;
             }
 
+            stripDataTrack.DropDownItems.Add(new ToolStripMenuItem("HR in Pace between 5:00-5:30 (any resolution)"));
+            stripDataTrack.DropDownItems.Add(new ToolStripMenuItem("Time in HR between 150-180 (1000 ms resolution)"));
+            stripDataTrack.DropDownItems.Add(new ToolStripMenuItem("Time in HR between 150-180 (100 ms resolution, only for active parts)"));
+            stripDataTrack.DropDownItems.Add(new ToolStripMenuItem("Distance within first 300 seconds (any resolution)"));
+            stripDataTrack.DropDownItems.Add(new ToolStripMenuItem("Average HR of split with notes First segment"));
+            
+
+            foreach (ToolStripMenuItem item in stripDataTrack.DropDownItems)
+            {
+                item.Click += fieldItem_Click;
+            }
+
             stripFormulas.DropDownItems.Add(new ToolStripMenuItem("RECOVERYHR"));
             stripFormulas.DropDownItems.Add(new ToolStripMenuItem("Decoupling ratio of first half and second half of your activity (Ruskie)"));
             stripFormulas.DropDownItems.Add(new ToolStripMenuItem("Decoupling ratio of first half and second half of your activity (active parts)"));
@@ -392,10 +404,27 @@
                 result = "{Field(" + item.Text + ",7)}";
             }
 
-            if (item.OwnerItem == stripFormulas || item.OwnerItem == stripFormulasPool || item.OwnerItem == stripRange || item.OwnerItem == stripPeak || item.OwnerItem == stripZones)
+            if (item.OwnerItem == stripDataTrack || item.OwnerItem == stripFormulas || item.OwnerItem == stripFormulasPool || item.OwnerItem == stripRange || item.OwnerItem == stripPeak || item.OwnerItem == stripZones)
             {
                 switch (item.Text)
                 {
+                    case "HR in Pace between 5:00-5:30 (any resolution)":
+                        result = "{DATATRACK}.Where(o => o.Pace >= 5 && o.Pace <= 5.5).Average(o => o.HR)";
+                        break;
+                    case "Time in HR between 150-180 (1000 ms resolution)":
+                        result = "{DATATRACK}.Where(o => o.HR >= 150 && o.HR <= 180).Count()";
+                        break;
+                    case "Time in HR between 150-180 (100 ms resolution, only for active parts)":
+                        result = "{DATATRACKACTIVE}.Where(o => o.HR >= 150 && o.HR <= 180).Count() / 10f";
+                        break;
+                    case "Distance within first 300 seconds (any resolution)":
+                        result = "{DATATRACK}.Select((o, index) => new { Field = o.Elapsed, Distance = ({DATATRACK}[((index + 1) < {DATATRACK}.Count) ? index + 1 : index].Distance - o.Distance) }).Where(o => o.Field >= 0 && o.Field <= 300).Sum(o => o.Distance)";
+                        break;
+                    case "Average HR of split with notes First segment":
+                        result = "{DATATRACK}.Where(o => o.LapNote == \"First segment\").Average(o => o.HR)";
+                        break;
+
+
                     case "Fastest 1000 meters":
                         result = "{MINPEAKDISTANCE(Elapsed,1000)}";
                         break;
