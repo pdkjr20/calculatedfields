@@ -589,7 +589,7 @@
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            GlobalSettings.calculatedFieldsRows.Add(new CalculatedFieldsRow(Guid.NewGuid().ToString(), this.comboBoxCustomField.SelectedItem.ToString(), textBoxExpression.Text, textBoxCondition.Text, checkBoxActive.Checked.ToString()));
+            GlobalSettings.calculatedFieldsRows.Add(new CalculatedFieldsRow(Guid.NewGuid().ToString(), this.comboBoxCustomField.SelectedItem.ToString(), textBoxExpression.Text, textBoxCondition.Text, checkBoxActive.Checked.ToString(), (int)(numericUpDownPace.Value), (int)numericUpDownElevation.Value, (int)numericUpDownHR.Value, (int)numericUpDownCadence.Value, (int)numericUpDownPower.Value));
             GlobalSettings.calculatedFieldsRows.Sort();
             treeListCalculatedFields.RowData = GlobalSettings.calculatedFieldsRows;
 
@@ -607,7 +607,7 @@
 
         private void buttonAddVirtual_Click(object sender, EventArgs e)
         {
-            GlobalSettings.virtualFieldsRows.Add(new CalculatedFieldsRow(Guid.NewGuid().ToString(), this.textBoxVirtualField.Text, textBoxVirtualExpression.Text, textBoxVirtualCondition.Text, checkBoxVirtualActive.Checked.ToString()));
+            GlobalSettings.virtualFieldsRows.Add(new CalculatedFieldsRow(Guid.NewGuid().ToString(), this.textBoxVirtualField.Text, textBoxVirtualExpression.Text, textBoxVirtualCondition.Text, checkBoxVirtualActive.Checked.ToString(), (int)numericUpDownPaceVirtual.Value, (int)numericUpDownElevationVirtual.Value, (int)numericUpDownHRVirtual.Value, (int)numericUpDownCadenceVirtual.Value, (int)numericUpDownPowerVirtual.Value));
             GlobalSettings.virtualFieldsRows.Sort();
             treeListVirtualExpressions.RowData = GlobalSettings.virtualFieldsRows;
 
@@ -625,6 +625,12 @@
                     updateRow.CalculatedExpression = textBoxExpression.Text;
                     updateRow.Condition = textBoxCondition.Text;
                     updateRow.Active = (checkBoxActive.Checked) ? "Y" : "N";
+                    
+                    updateRow.SmoothingPace = (int)numericUpDownPace.Value;
+                    updateRow.SmoothingElevation = (int)numericUpDownElevation.Value;
+                    updateRow.SmoothingHR = (int)numericUpDownHR.Value;
+                    updateRow.SmoothingCadence = (int)numericUpDownCadence.Value;
+                    updateRow.SmoothingPower = (int)numericUpDownPower.Value;
 
                     GlobalSettings.calculatedFieldsRows.Sort();
                     treeListCalculatedFields.RowData = GlobalSettings.calculatedFieldsRows;
@@ -669,6 +675,12 @@
                     updateRow.CalculatedExpression = textBoxVirtualExpression.Text;
                     updateRow.Condition = textBoxVirtualCondition.Text;
                     updateRow.Active = (checkBoxVirtualActive.Checked) ? "Y" : "N";
+
+                    updateRow.SmoothingPace = (int)numericUpDownPaceVirtual.Value;
+                    updateRow.SmoothingElevation = (int)numericUpDownElevationVirtual.Value;
+                    updateRow.SmoothingHR = (int)numericUpDownHRVirtual.Value;
+                    updateRow.SmoothingCadence = (int)numericUpDownCadenceVirtual.Value;
+                    updateRow.SmoothingPower = (int)numericUpDownPowerVirtual.Value;
 
                     GlobalSettings.virtualFieldsRows.Sort();
                     treeListVirtualExpressions.RowData = GlobalSettings.virtualFieldsRows;
@@ -841,6 +853,12 @@
                 {
                     this.checkBoxActive.Checked = false;
                 }
+
+                this.numericUpDownPace.Value = row.SmoothingPace;
+                this.numericUpDownElevation.Value = row.SmoothingElevation;
+                this.numericUpDownHR.Value = row.SmoothingHR;
+                this.numericUpDownCadence.Value = row.SmoothingCadence;
+                this.numericUpDownPower.Value = row.SmoothingPower;
             }
         }
 
@@ -891,6 +909,12 @@
                 {
                     this.checkBoxVirtualActive.Checked = false;
                 }
+
+                this.numericUpDownPaceVirtual.Value = row.SmoothingPace;
+                this.numericUpDownElevationVirtual.Value = row.SmoothingElevation;
+                this.numericUpDownHRVirtual.Value = row.SmoothingHR;
+                this.numericUpDownCadenceVirtual.Value = row.SmoothingCadence;
+                this.numericUpDownPowerVirtual.Value = row.SmoothingPower;
             }
         }
 

@@ -33,6 +33,17 @@
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageStandardExpressions = new System.Windows.Forms.TabPage();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.labelSmoothing = new System.Windows.Forms.Label();
+            this.numericUpDownPower = new System.Windows.Forms.NumericUpDown();
+            this.labelPower = new System.Windows.Forms.Label();
+            this.numericUpDownCadence = new System.Windows.Forms.NumericUpDown();
+            this.labelCadence = new System.Windows.Forms.Label();
+            this.numericUpDownHR = new System.Windows.Forms.NumericUpDown();
+            this.labelHeartRate = new System.Windows.Forms.Label();
+            this.numericUpDownElevation = new System.Windows.Forms.NumericUpDown();
+            this.labelElevation = new System.Windows.Forms.Label();
+            this.labelPace = new System.Windows.Forms.Label();
+            this.numericUpDownPace = new System.Windows.Forms.NumericUpDown();
             this.labelCustomField = new System.Windows.Forms.Label();
             this.labelForAllActivities = new System.Windows.Forms.Label();
             this.comboBoxCustomField = new System.Windows.Forms.ComboBox();
@@ -45,11 +56,13 @@
             this.stripSplits = new System.Windows.Forms.ToolStripMenuItem();
             this.stripTrails = new System.Windows.Forms.ToolStripMenuItem();
             this.stripAthlete = new System.Windows.Forms.ToolStripMenuItem();
+            this.stripZones = new System.Windows.Forms.ToolStripMenuItem();
             this.stripRange = new System.Windows.Forms.ToolStripMenuItem();
             this.stripPeak = new System.Windows.Forms.ToolStripMenuItem();
             this.stripAggregate = new System.Windows.Forms.ToolStripMenuItem();
             this.stripCustom = new System.Windows.Forms.ToolStripMenuItem();
             this.stripNested = new System.Windows.Forms.ToolStripMenuItem();
+            this.stripVirtual = new System.Windows.Forms.ToolStripMenuItem();
             this.stripTracks = new System.Windows.Forms.ToolStripMenuItem();
             this.stripExamples = new System.Windows.Forms.ToolStripMenuItem();
             this.stripFormulas = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,6 +89,17 @@
             this.treeListNestedExpressions = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.tabPageVirtualExpressions = new System.Windows.Forms.TabPage();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
+            this.labelSmoothingVirtual = new System.Windows.Forms.Label();
+            this.numericUpDownPowerVirtual = new System.Windows.Forms.NumericUpDown();
+            this.labelPowerVirtual = new System.Windows.Forms.Label();
+            this.numericUpDownCadenceVirtual = new System.Windows.Forms.NumericUpDown();
+            this.labelCadenceVirtual = new System.Windows.Forms.Label();
+            this.numericUpDownHRVirtual = new System.Windows.Forms.NumericUpDown();
+            this.labelHeartRateVirtual = new System.Windows.Forms.Label();
+            this.numericUpDownElevationVirtual = new System.Windows.Forms.NumericUpDown();
+            this.labelElevationVirtual = new System.Windows.Forms.Label();
+            this.labelPaceVirtual = new System.Windows.Forms.Label();
+            this.numericUpDownPaceVirtual = new System.Windows.Forms.NumericUpDown();
             this.checkBoxVirtualActive = new System.Windows.Forms.CheckBox();
             this.labelVirtualCondition = new System.Windows.Forms.Label();
             this.textBoxVirtualCondition = new System.Windows.Forms.TextBox();
@@ -99,17 +123,20 @@
             this.labelDonationText2 = new System.Windows.Forms.Label();
             this.labelDonationsText3 = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.comboBoxDataTrackResolution = new System.Windows.Forms.ComboBox();
-            this.labelDataTrackResolution = new System.Windows.Forms.Label();
             this.labelDataTrackResolution2 = new System.Windows.Forms.Label();
-            this.stripZones = new System.Windows.Forms.ToolStripMenuItem();
-            this.stripVirtual = new System.Windows.Forms.ToolStripMenuItem();
+            this.labelDataTrackResolution = new System.Windows.Forms.Label();
+            this.comboBoxDataTrackResolution = new System.Windows.Forms.ComboBox();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.tabControl.SuspendLayout();
             this.tabPageStandardExpressions.SuspendLayout();
             this.splitContainer3.Panel1.SuspendLayout();
             this.splitContainer3.Panel2.SuspendLayout();
             this.splitContainer3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPower)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCadence)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHR)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownElevation)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPace)).BeginInit();
             this.contextMenuStripFields.SuspendLayout();
             this.tabPageNestedExpressions.SuspendLayout();
             this.splitContainer4.Panel1.SuspendLayout();
@@ -119,6 +146,11 @@
             this.splitContainer5.Panel1.SuspendLayout();
             this.splitContainer5.Panel2.SuspendLayout();
             this.splitContainer5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPowerVirtual)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCadenceVirtual)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHRVirtual)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownElevationVirtual)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPaceVirtual)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -147,7 +179,7 @@
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(803, 544);
+            this.tabControl.Size = new System.Drawing.Size(803, 560);
             this.tabControl.TabIndex = 9;
             this.tabControl.SelectedIndexChanged += new System.EventHandler(this.treeListCalculatedFields_SelectedItemsChanged);
             // 
@@ -157,7 +189,7 @@
             this.tabPageStandardExpressions.Location = new System.Drawing.Point(4, 22);
             this.tabPageStandardExpressions.Name = "tabPageStandardExpressions";
             this.tabPageStandardExpressions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageStandardExpressions.Size = new System.Drawing.Size(795, 518);
+            this.tabPageStandardExpressions.Size = new System.Drawing.Size(795, 534);
             this.tabPageStandardExpressions.TabIndex = 0;
             this.tabPageStandardExpressions.Text = "Standard Expressions";
             this.tabPageStandardExpressions.UseVisualStyleBackColor = true;
@@ -171,6 +203,17 @@
             // 
             // splitContainer3.Panel1
             // 
+            this.splitContainer3.Panel1.Controls.Add(this.labelSmoothing);
+            this.splitContainer3.Panel1.Controls.Add(this.numericUpDownPower);
+            this.splitContainer3.Panel1.Controls.Add(this.labelPower);
+            this.splitContainer3.Panel1.Controls.Add(this.numericUpDownCadence);
+            this.splitContainer3.Panel1.Controls.Add(this.labelCadence);
+            this.splitContainer3.Panel1.Controls.Add(this.numericUpDownHR);
+            this.splitContainer3.Panel1.Controls.Add(this.labelHeartRate);
+            this.splitContainer3.Panel1.Controls.Add(this.numericUpDownElevation);
+            this.splitContainer3.Panel1.Controls.Add(this.labelElevation);
+            this.splitContainer3.Panel1.Controls.Add(this.labelPace);
+            this.splitContainer3.Panel1.Controls.Add(this.numericUpDownPace);
             this.splitContainer3.Panel1.Controls.Add(this.labelCustomField);
             this.splitContainer3.Panel1.Controls.Add(this.labelForAllActivities);
             this.splitContainer3.Panel1.Controls.Add(this.comboBoxCustomField);
@@ -189,9 +232,124 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.treeListCalculatedFields);
-            this.splitContainer3.Size = new System.Drawing.Size(789, 512);
-            this.splitContainer3.SplitterDistance = 118;
+            this.splitContainer3.Size = new System.Drawing.Size(789, 528);
+            this.splitContainer3.SplitterDistance = 162;
             this.splitContainer3.TabIndex = 18;
+            // 
+            // labelSmoothing
+            // 
+            this.labelSmoothing.AutoSize = true;
+            this.labelSmoothing.Location = new System.Drawing.Point(3, 117);
+            this.labelSmoothing.Name = "labelSmoothing";
+            this.labelSmoothing.Size = new System.Drawing.Size(648, 13);
+            this.labelSmoothing.TabIndex = 27;
+            this.labelSmoothing.Text = "Smoothing settings for data of actual calculation (default value is 0, when 0 is " +
+                "set, plugin uses smoothing settings from ST for calculation)";
+            // 
+            // numericUpDownPower
+            // 
+            this.numericUpDownPower.Location = new System.Drawing.Point(522, 141);
+            this.numericUpDownPower.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.numericUpDownPower.Name = "numericUpDownPower";
+            this.numericUpDownPower.Size = new System.Drawing.Size(50, 20);
+            this.numericUpDownPower.TabIndex = 9;
+            // 
+            // labelPower
+            // 
+            this.labelPower.AutoSize = true;
+            this.labelPower.Location = new System.Drawing.Point(479, 143);
+            this.labelPower.Name = "labelPower";
+            this.labelPower.Size = new System.Drawing.Size(37, 13);
+            this.labelPower.TabIndex = 26;
+            this.labelPower.Text = "Power";
+            // 
+            // numericUpDownCadence
+            // 
+            this.numericUpDownCadence.Location = new System.Drawing.Point(423, 141);
+            this.numericUpDownCadence.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.numericUpDownCadence.Name = "numericUpDownCadence";
+            this.numericUpDownCadence.Size = new System.Drawing.Size(50, 20);
+            this.numericUpDownCadence.TabIndex = 8;
+            // 
+            // labelCadence
+            // 
+            this.labelCadence.AutoSize = true;
+            this.labelCadence.Location = new System.Drawing.Point(367, 143);
+            this.labelCadence.Name = "labelCadence";
+            this.labelCadence.Size = new System.Drawing.Size(50, 13);
+            this.labelCadence.TabIndex = 24;
+            this.labelCadence.Text = "Cadence";
+            // 
+            // numericUpDownHR
+            // 
+            this.numericUpDownHR.Location = new System.Drawing.Point(311, 141);
+            this.numericUpDownHR.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.numericUpDownHR.Name = "numericUpDownHR";
+            this.numericUpDownHR.Size = new System.Drawing.Size(50, 20);
+            this.numericUpDownHR.TabIndex = 7;
+            // 
+            // labelHeartRate
+            // 
+            this.labelHeartRate.AutoSize = true;
+            this.labelHeartRate.Location = new System.Drawing.Point(246, 143);
+            this.labelHeartRate.Name = "labelHeartRate";
+            this.labelHeartRate.Size = new System.Drawing.Size(59, 13);
+            this.labelHeartRate.TabIndex = 22;
+            this.labelHeartRate.Text = "Heart Rate";
+            // 
+            // numericUpDownElevation
+            // 
+            this.numericUpDownElevation.Location = new System.Drawing.Point(190, 141);
+            this.numericUpDownElevation.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.numericUpDownElevation.Name = "numericUpDownElevation";
+            this.numericUpDownElevation.Size = new System.Drawing.Size(50, 20);
+            this.numericUpDownElevation.TabIndex = 6;
+            // 
+            // labelElevation
+            // 
+            this.labelElevation.AutoSize = true;
+            this.labelElevation.Location = new System.Drawing.Point(133, 143);
+            this.labelElevation.Name = "labelElevation";
+            this.labelElevation.Size = new System.Drawing.Size(51, 13);
+            this.labelElevation.TabIndex = 20;
+            this.labelElevation.Text = "Elevation";
+            // 
+            // labelPace
+            // 
+            this.labelPace.AutoSize = true;
+            this.labelPace.Location = new System.Drawing.Point(3, 143);
+            this.labelPace.Name = "labelPace";
+            this.labelPace.Size = new System.Drawing.Size(68, 13);
+            this.labelPace.TabIndex = 19;
+            this.labelPace.Text = "Pace/Speed";
+            // 
+            // numericUpDownPace
+            // 
+            this.numericUpDownPace.Location = new System.Drawing.Point(77, 141);
+            this.numericUpDownPace.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.numericUpDownPace.Name = "numericUpDownPace";
+            this.numericUpDownPace.Size = new System.Drawing.Size(50, 20);
+            this.numericUpDownPace.TabIndex = 5;
             // 
             // labelCustomField
             // 
@@ -304,6 +462,12 @@
             this.stripAthlete.Size = new System.Drawing.Size(174, 22);
             this.stripAthlete.Text = "Athlete";
             // 
+            // stripZones
+            // 
+            this.stripZones.Name = "stripZones";
+            this.stripZones.Size = new System.Drawing.Size(174, 22);
+            this.stripZones.Text = "Zones";
+            // 
             // stripRange
             // 
             this.stripRange.Name = "stripRange";
@@ -333,6 +497,12 @@
             this.stripNested.Name = "stripNested";
             this.stripNested.Size = new System.Drawing.Size(174, 22);
             this.stripNested.Text = "Nested Expressions";
+            // 
+            // stripVirtual
+            // 
+            this.stripVirtual.Name = "stripVirtual";
+            this.stripVirtual.Size = new System.Drawing.Size(174, 22);
+            this.stripVirtual.Text = "Virtual Expressions";
             // 
             // stripTracks
             // 
@@ -487,7 +657,7 @@
             this.treeListCalculatedFields.RowSeparatorLines = true;
             this.treeListCalculatedFields.ShowLines = false;
             this.treeListCalculatedFields.ShowPlusMinus = false;
-            this.treeListCalculatedFields.Size = new System.Drawing.Size(789, 390);
+            this.treeListCalculatedFields.Size = new System.Drawing.Size(789, 362);
             this.treeListCalculatedFields.TabIndex = 11;
             this.treeListCalculatedFields.TabStop = false;
             this.treeListCalculatedFields.SelectedItemsChanged += new System.EventHandler(this.treeListCalculatedFields_SelectedItemsChanged);
@@ -498,7 +668,7 @@
             this.tabPageNestedExpressions.Location = new System.Drawing.Point(4, 22);
             this.tabPageNestedExpressions.Name = "tabPageNestedExpressions";
             this.tabPageNestedExpressions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageNestedExpressions.Size = new System.Drawing.Size(795, 518);
+            this.tabPageNestedExpressions.Size = new System.Drawing.Size(795, 534);
             this.tabPageNestedExpressions.TabIndex = 1;
             this.tabPageNestedExpressions.Text = "Nested Expressions";
             this.tabPageNestedExpressions.UseVisualStyleBackColor = true;
@@ -523,8 +693,8 @@
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.treeListNestedExpressions);
-            this.splitContainer4.Size = new System.Drawing.Size(789, 512);
-            this.splitContainer4.SplitterDistance = 87;
+            this.splitContainer4.Size = new System.Drawing.Size(789, 528);
+            this.splitContainer4.SplitterDistance = 89;
             this.splitContainer4.TabIndex = 17;
             // 
             // labelNestedExpressionName
@@ -627,7 +797,7 @@
             this.treeListNestedExpressions.RowSeparatorLines = true;
             this.treeListNestedExpressions.ShowLines = false;
             this.treeListNestedExpressions.ShowPlusMinus = false;
-            this.treeListNestedExpressions.Size = new System.Drawing.Size(789, 421);
+            this.treeListNestedExpressions.Size = new System.Drawing.Size(789, 435);
             this.treeListNestedExpressions.TabIndex = 18;
             this.treeListNestedExpressions.TabStop = false;
             this.treeListNestedExpressions.SelectedItemsChanged += new System.EventHandler(this.treeListNestedExpressions_SelectedItemsChanged);
@@ -638,7 +808,7 @@
             this.tabPageVirtualExpressions.Location = new System.Drawing.Point(4, 22);
             this.tabPageVirtualExpressions.Name = "tabPageVirtualExpressions";
             this.tabPageVirtualExpressions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageVirtualExpressions.Size = new System.Drawing.Size(795, 518);
+            this.tabPageVirtualExpressions.Size = new System.Drawing.Size(795, 534);
             this.tabPageVirtualExpressions.TabIndex = 2;
             this.tabPageVirtualExpressions.Text = "Virtual expressions";
             this.tabPageVirtualExpressions.UseVisualStyleBackColor = true;
@@ -652,6 +822,17 @@
             // 
             // splitContainer5.Panel1
             // 
+            this.splitContainer5.Panel1.Controls.Add(this.labelSmoothingVirtual);
+            this.splitContainer5.Panel1.Controls.Add(this.numericUpDownPowerVirtual);
+            this.splitContainer5.Panel1.Controls.Add(this.labelPowerVirtual);
+            this.splitContainer5.Panel1.Controls.Add(this.numericUpDownCadenceVirtual);
+            this.splitContainer5.Panel1.Controls.Add(this.labelCadenceVirtual);
+            this.splitContainer5.Panel1.Controls.Add(this.numericUpDownHRVirtual);
+            this.splitContainer5.Panel1.Controls.Add(this.labelHeartRateVirtual);
+            this.splitContainer5.Panel1.Controls.Add(this.numericUpDownElevationVirtual);
+            this.splitContainer5.Panel1.Controls.Add(this.labelElevationVirtual);
+            this.splitContainer5.Panel1.Controls.Add(this.labelPaceVirtual);
+            this.splitContainer5.Panel1.Controls.Add(this.numericUpDownPaceVirtual);
             this.splitContainer5.Panel1.Controls.Add(this.checkBoxVirtualActive);
             this.splitContainer5.Panel1.Controls.Add(this.labelVirtualCondition);
             this.splitContainer5.Panel1.Controls.Add(this.textBoxVirtualCondition);
@@ -666,9 +847,124 @@
             // splitContainer5.Panel2
             // 
             this.splitContainer5.Panel2.Controls.Add(this.treeListVirtualExpressions);
-            this.splitContainer5.Size = new System.Drawing.Size(789, 512);
-            this.splitContainer5.SplitterDistance = 118;
+            this.splitContainer5.Size = new System.Drawing.Size(789, 528);
+            this.splitContainer5.SplitterDistance = 162;
             this.splitContainer5.TabIndex = 18;
+            // 
+            // labelSmoothingVirtual
+            // 
+            this.labelSmoothingVirtual.AutoSize = true;
+            this.labelSmoothingVirtual.Location = new System.Drawing.Point(3, 117);
+            this.labelSmoothingVirtual.Name = "labelSmoothingVirtual";
+            this.labelSmoothingVirtual.Size = new System.Drawing.Size(648, 13);
+            this.labelSmoothingVirtual.TabIndex = 38;
+            this.labelSmoothingVirtual.Text = "Smoothing settings for data of actual calculation (default value is 0, when 0 is " +
+                "set, plugin uses smoothing settings from ST for calculation)";
+            // 
+            // numericUpDownPowerVirtual
+            // 
+            this.numericUpDownPowerVirtual.Location = new System.Drawing.Point(522, 141);
+            this.numericUpDownPowerVirtual.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.numericUpDownPowerVirtual.Name = "numericUpDownPowerVirtual";
+            this.numericUpDownPowerVirtual.Size = new System.Drawing.Size(50, 20);
+            this.numericUpDownPowerVirtual.TabIndex = 32;
+            // 
+            // labelPowerVirtual
+            // 
+            this.labelPowerVirtual.AutoSize = true;
+            this.labelPowerVirtual.Location = new System.Drawing.Point(479, 143);
+            this.labelPowerVirtual.Name = "labelPowerVirtual";
+            this.labelPowerVirtual.Size = new System.Drawing.Size(37, 13);
+            this.labelPowerVirtual.TabIndex = 37;
+            this.labelPowerVirtual.Text = "Power";
+            // 
+            // numericUpDownCadenceVirtual
+            // 
+            this.numericUpDownCadenceVirtual.Location = new System.Drawing.Point(423, 141);
+            this.numericUpDownCadenceVirtual.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.numericUpDownCadenceVirtual.Name = "numericUpDownCadenceVirtual";
+            this.numericUpDownCadenceVirtual.Size = new System.Drawing.Size(50, 20);
+            this.numericUpDownCadenceVirtual.TabIndex = 31;
+            // 
+            // labelCadenceVirtual
+            // 
+            this.labelCadenceVirtual.AutoSize = true;
+            this.labelCadenceVirtual.Location = new System.Drawing.Point(367, 143);
+            this.labelCadenceVirtual.Name = "labelCadenceVirtual";
+            this.labelCadenceVirtual.Size = new System.Drawing.Size(50, 13);
+            this.labelCadenceVirtual.TabIndex = 36;
+            this.labelCadenceVirtual.Text = "Cadence";
+            // 
+            // numericUpDownHRVirtual
+            // 
+            this.numericUpDownHRVirtual.Location = new System.Drawing.Point(311, 141);
+            this.numericUpDownHRVirtual.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.numericUpDownHRVirtual.Name = "numericUpDownHRVirtual";
+            this.numericUpDownHRVirtual.Size = new System.Drawing.Size(50, 20);
+            this.numericUpDownHRVirtual.TabIndex = 30;
+            // 
+            // labelHeartRateVirtual
+            // 
+            this.labelHeartRateVirtual.AutoSize = true;
+            this.labelHeartRateVirtual.Location = new System.Drawing.Point(246, 143);
+            this.labelHeartRateVirtual.Name = "labelHeartRateVirtual";
+            this.labelHeartRateVirtual.Size = new System.Drawing.Size(59, 13);
+            this.labelHeartRateVirtual.TabIndex = 35;
+            this.labelHeartRateVirtual.Text = "Heart Rate";
+            // 
+            // numericUpDownElevationVirtual
+            // 
+            this.numericUpDownElevationVirtual.Location = new System.Drawing.Point(190, 141);
+            this.numericUpDownElevationVirtual.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.numericUpDownElevationVirtual.Name = "numericUpDownElevationVirtual";
+            this.numericUpDownElevationVirtual.Size = new System.Drawing.Size(50, 20);
+            this.numericUpDownElevationVirtual.TabIndex = 29;
+            // 
+            // labelElevationVirtual
+            // 
+            this.labelElevationVirtual.AutoSize = true;
+            this.labelElevationVirtual.Location = new System.Drawing.Point(133, 143);
+            this.labelElevationVirtual.Name = "labelElevationVirtual";
+            this.labelElevationVirtual.Size = new System.Drawing.Size(51, 13);
+            this.labelElevationVirtual.TabIndex = 34;
+            this.labelElevationVirtual.Text = "Elevation";
+            // 
+            // labelPaceVirtual
+            // 
+            this.labelPaceVirtual.AutoSize = true;
+            this.labelPaceVirtual.Location = new System.Drawing.Point(3, 143);
+            this.labelPaceVirtual.Name = "labelPaceVirtual";
+            this.labelPaceVirtual.Size = new System.Drawing.Size(68, 13);
+            this.labelPaceVirtual.TabIndex = 33;
+            this.labelPaceVirtual.Text = "Pace/Speed";
+            // 
+            // numericUpDownPaceVirtual
+            // 
+            this.numericUpDownPaceVirtual.Location = new System.Drawing.Point(77, 141);
+            this.numericUpDownPaceVirtual.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.numericUpDownPaceVirtual.Name = "numericUpDownPaceVirtual";
+            this.numericUpDownPaceVirtual.Size = new System.Drawing.Size(50, 20);
+            this.numericUpDownPaceVirtual.TabIndex = 28;
             // 
             // checkBoxVirtualActive
             // 
@@ -799,7 +1095,7 @@
             this.treeListVirtualExpressions.RowSeparatorLines = true;
             this.treeListVirtualExpressions.ShowLines = false;
             this.treeListVirtualExpressions.ShowPlusMinus = false;
-            this.treeListVirtualExpressions.Size = new System.Drawing.Size(789, 390);
+            this.treeListVirtualExpressions.Size = new System.Drawing.Size(789, 362);
             this.treeListVirtualExpressions.TabIndex = 18;
             this.treeListVirtualExpressions.TabStop = false;
             this.treeListVirtualExpressions.SelectedItemsChanged += new System.EventHandler(this.treeListVirtualExpressions_SelectedItemsChanged);
@@ -931,6 +1227,37 @@
             this.splitContainer1.SplitterDistance = 68;
             this.splitContainer1.TabIndex = 27;
             // 
+            // labelDataTrackResolution2
+            // 
+            this.labelDataTrackResolution2.AutoSize = true;
+            this.labelDataTrackResolution2.Location = new System.Drawing.Point(230, 48);
+            this.labelDataTrackResolution2.Name = "labelDataTrackResolution2";
+            this.labelDataTrackResolution2.Size = new System.Drawing.Size(279, 13);
+            this.labelDataTrackResolution2.TabIndex = 21;
+            this.labelDataTrackResolution2.Text = "in milliseconds (smaller value is more accurate, but slower)";
+            // 
+            // labelDataTrackResolution
+            // 
+            this.labelDataTrackResolution.AutoSize = true;
+            this.labelDataTrackResolution.Location = new System.Drawing.Point(3, 48);
+            this.labelDataTrackResolution.Name = "labelDataTrackResolution";
+            this.labelDataTrackResolution.Size = new System.Drawing.Size(142, 13);
+            this.labelDataTrackResolution.TabIndex = 20;
+            this.labelDataTrackResolution.Text = "DataTrack feature resolution";
+            // 
+            // comboBoxDataTrackResolution
+            // 
+            this.comboBoxDataTrackResolution.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxDataTrackResolution.FormattingEnabled = true;
+            this.comboBoxDataTrackResolution.Items.AddRange(new object[] {
+            "100",
+            "1000"});
+            this.comboBoxDataTrackResolution.Location = new System.Drawing.Point(151, 45);
+            this.comboBoxDataTrackResolution.Name = "comboBoxDataTrackResolution";
+            this.comboBoxDataTrackResolution.Size = new System.Drawing.Size(73, 21);
+            this.comboBoxDataTrackResolution.TabIndex = 3;
+            this.comboBoxDataTrackResolution.SelectedValueChanged += new System.EventHandler(this.comboBoxDataTrackResolution_SelectedValueChanged);
+            // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -953,51 +1280,8 @@
             this.splitContainer2.Panel2.Controls.Add(this.labelCopyright4);
             this.splitContainer2.Panel2.Controls.Add(this.labelDonationText);
             this.splitContainer2.Size = new System.Drawing.Size(803, 628);
-            this.splitContainer2.SplitterDistance = 544;
+            this.splitContainer2.SplitterDistance = 560;
             this.splitContainer2.TabIndex = 0;
-            // 
-            // comboBoxDataTrackResolution
-            // 
-            this.comboBoxDataTrackResolution.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxDataTrackResolution.FormattingEnabled = true;
-            this.comboBoxDataTrackResolution.Items.AddRange(new object[] {
-            "100",
-            "1000"});
-            this.comboBoxDataTrackResolution.Location = new System.Drawing.Point(151, 45);
-            this.comboBoxDataTrackResolution.Name = "comboBoxDataTrackResolution";
-            this.comboBoxDataTrackResolution.Size = new System.Drawing.Size(73, 21);
-            this.comboBoxDataTrackResolution.TabIndex = 3;
-            this.comboBoxDataTrackResolution.SelectedValueChanged += new System.EventHandler(this.comboBoxDataTrackResolution_SelectedValueChanged);
-            // 
-            // labelDataTrackResolution
-            // 
-            this.labelDataTrackResolution.AutoSize = true;
-            this.labelDataTrackResolution.Location = new System.Drawing.Point(3, 48);
-            this.labelDataTrackResolution.Name = "labelDataTrackResolution";
-            this.labelDataTrackResolution.Size = new System.Drawing.Size(142, 13);
-            this.labelDataTrackResolution.TabIndex = 20;
-            this.labelDataTrackResolution.Text = "DataTrack feature resolution";
-            // 
-            // labelDataTrackResolution2
-            // 
-            this.labelDataTrackResolution2.AutoSize = true;
-            this.labelDataTrackResolution2.Location = new System.Drawing.Point(230, 48);
-            this.labelDataTrackResolution2.Name = "labelDataTrackResolution2";
-            this.labelDataTrackResolution2.Size = new System.Drawing.Size(279, 13);
-            this.labelDataTrackResolution2.TabIndex = 21;
-            this.labelDataTrackResolution2.Text = "in milliseconds (smaller value is more accurate, but slower)";
-            // 
-            // stripZones
-            // 
-            this.stripZones.Name = "stripZones";
-            this.stripZones.Size = new System.Drawing.Size(174, 22);
-            this.stripZones.Text = "Zones";
-            // 
-            // stripVirtual
-            // 
-            this.stripVirtual.Name = "stripVirtual";
-            this.stripVirtual.Size = new System.Drawing.Size(174, 22);
-            this.stripVirtual.Text = "Virtual Expressions";
             // 
             // CalculatedFieldsSettingsPageControl
             // 
@@ -1013,6 +1297,11 @@
             this.splitContainer3.Panel1.PerformLayout();
             this.splitContainer3.Panel2.ResumeLayout(false);
             this.splitContainer3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPower)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCadence)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHR)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownElevation)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPace)).EndInit();
             this.contextMenuStripFields.ResumeLayout(false);
             this.tabPageNestedExpressions.ResumeLayout(false);
             this.splitContainer4.Panel1.ResumeLayout(false);
@@ -1024,6 +1313,11 @@
             this.splitContainer5.Panel1.PerformLayout();
             this.splitContainer5.Panel2.ResumeLayout(false);
             this.splitContainer5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPowerVirtual)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCadenceVirtual)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHRVirtual)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownElevationVirtual)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPaceVirtual)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -1114,5 +1408,27 @@
         private System.Windows.Forms.Label labelDataTrackResolution;
         private System.Windows.Forms.ToolStripMenuItem stripZones;
         private System.Windows.Forms.ToolStripMenuItem stripVirtual;
+        private System.Windows.Forms.Label labelSmoothing;
+        private System.Windows.Forms.NumericUpDown numericUpDownPower;
+        private System.Windows.Forms.Label labelPower;
+        private System.Windows.Forms.NumericUpDown numericUpDownCadence;
+        private System.Windows.Forms.Label labelCadence;
+        private System.Windows.Forms.NumericUpDown numericUpDownHR;
+        private System.Windows.Forms.Label labelHeartRate;
+        private System.Windows.Forms.NumericUpDown numericUpDownElevation;
+        private System.Windows.Forms.Label labelElevation;
+        private System.Windows.Forms.Label labelPace;
+        private System.Windows.Forms.NumericUpDown numericUpDownPace;
+        private System.Windows.Forms.Label labelSmoothingVirtual;
+        private System.Windows.Forms.NumericUpDown numericUpDownPowerVirtual;
+        private System.Windows.Forms.Label labelPowerVirtual;
+        private System.Windows.Forms.NumericUpDown numericUpDownCadenceVirtual;
+        private System.Windows.Forms.Label labelCadenceVirtual;
+        private System.Windows.Forms.NumericUpDown numericUpDownHRVirtual;
+        private System.Windows.Forms.Label labelHeartRateVirtual;
+        private System.Windows.Forms.NumericUpDown numericUpDownElevationVirtual;
+        private System.Windows.Forms.Label labelElevationVirtual;
+        private System.Windows.Forms.Label labelPaceVirtual;
+        private System.Windows.Forms.NumericUpDown numericUpDownPaceVirtual;
     }
 }

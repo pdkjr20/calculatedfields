@@ -75,19 +75,18 @@
 
         public string Active { get; set; }
 
-        public int CompilationTime { get; set; }
+        public int SmoothingPace { get; set; }
+        public int SmoothingElevation { get; set; }
+        public int SmoothingHR { get; set; }
+        public int SmoothingCadence { get; set; }
+        public int SmoothingPower { get; set; }
 
-        public int ParsingTime { get; set; }
-
-        public CalculatedFieldsRow(string id, string customField, string calculatedExpression, string condition, string active)
+        public CalculatedFieldsRow(string id, string customField, string calculatedExpression, string condition, string active, int smoothingPace, int smoothingElevation, int smoothingHR, int smoothingCadence, int smoothingPower)
         {
             ID = id;
             CustomField = customField;
             CalculatedExpression = calculatedExpression;
             Condition = condition;
-
-            CompilationTime = 0;
-            ParsingTime = 0;
 
             if (active.ToUpper() == "TRUE" || active == "Y")
             {
@@ -97,6 +96,12 @@
             {
                 Active = "N";
             }
+
+            SmoothingPace = smoothingPace;
+            SmoothingElevation = smoothingElevation;
+            SmoothingHR = smoothingHR;
+            SmoothingCadence = smoothingCadence;
+            SmoothingPower = smoothingPower;
         }
 
         #region Implementation of IComparable<CalculatedFieldsRow>
@@ -166,6 +171,7 @@
         public static void LoadSettings()
         {
             string id, active, customField, expression, condition, nestedName, nestedExpression, virtualField;
+            int smoothingPace, smoothingElevation, smoothingHR, smoothingCadence, smoothingPower;
 
             if (!File.Exists(path))
             {
@@ -215,8 +221,13 @@
                         expression = (node.Attributes["Expression"] != null) ? node.Attributes["Expression"].Value : "";
                         condition = (node.Attributes["Condition"] != null) ? node.Attributes["Condition"].Value : "";
                         active = (node.Attributes["Active"] != null) ? node.Attributes["Active"].Value : "Y";
+                        smoothingPace = (node.Attributes["SmoothingPace"] != null) ? int.Parse(node.Attributes["SmoothingPace"].Value) : 0;
+                        smoothingElevation = (node.Attributes["SmoothingElevation"] != null) ? int.Parse(node.Attributes["SmoothingElevation"].Value) : 0;
+                        smoothingHR = (node.Attributes["SmoothingHR"] != null) ? int.Parse(node.Attributes["SmoothingHR"].Value) : 0;
+                        smoothingCadence = (node.Attributes["SmoothingCadence"] != null) ? int.Parse(node.Attributes["SmoothingCadence"].Value) : 0;
+                        smoothingPower = (node.Attributes["SmoothingPower"] != null) ? int.Parse(node.Attributes["SmoothingPower"].Value) : 0;
 
-                        calculatedFieldsRows.Add(new CalculatedFieldsRow(id, customField, expression, condition, active));
+                        calculatedFieldsRows.Add(new CalculatedFieldsRow(id, customField, expression, condition, active, smoothingPace, smoothingElevation, smoothingHR, smoothingCadence, smoothingPower));
                     }
                 }
 
@@ -241,8 +252,13 @@
                         expression = (node.Attributes["Expression"] != null) ? node.Attributes["Expression"].Value : "";
                         condition = (node.Attributes["Condition"] != null) ? node.Attributes["Condition"].Value : "";
                         active = (node.Attributes["Active"] != null) ? node.Attributes["Active"].Value : "Y";
+                        smoothingPace = (node.Attributes["SmoothingPace"] != null) ? int.Parse(node.Attributes["SmoothingPace"].Value) : 0;
+                        smoothingElevation = (node.Attributes["SmoothingElevation"] != null) ? int.Parse(node.Attributes["SmoothingElevation"].Value) : 0;
+                        smoothingHR = (node.Attributes["SmoothingHR"] != null) ? int.Parse(node.Attributes["SmoothingHR"].Value) : 0;
+                        smoothingCadence = (node.Attributes["SmoothingCadence"] != null) ? int.Parse(node.Attributes["SmoothingCadence"].Value) : 0;
+                        smoothingPower = (node.Attributes["SmoothingPower"] != null) ? int.Parse(node.Attributes["SmoothingPower"].Value) : 0;
 
-                        virtualFieldsRows.Add(new CalculatedFieldsRow(id, virtualField, expression, condition, active));
+                        virtualFieldsRows.Add(new CalculatedFieldsRow(id, virtualField, expression, condition, active, smoothingPace, smoothingElevation, smoothingHR, smoothingCadence, smoothingPower));
                     }
                 }
             }
@@ -275,6 +291,12 @@
                 rowElement.SetAttribute("Expression", row.CalculatedExpression);
                 rowElement.SetAttribute("Condition", row.Condition);
                 rowElement.SetAttribute("Active", row.Active);
+
+                rowElement.SetAttribute("SmoothingPace", row.SmoothingPace.ToString());
+                rowElement.SetAttribute("SmoothingElevation", row.SmoothingElevation.ToString());
+                rowElement.SetAttribute("SmoothingHR", row.SmoothingHR.ToString());
+                rowElement.SetAttribute("SmoothingCadence", row.SmoothingCadence.ToString());
+                rowElement.SetAttribute("SmoothingPower", row.SmoothingPower.ToString());
             }
 
             XmlElement nestedRowsElement = document.CreateElement("NestedRows");
@@ -301,6 +323,12 @@
                 rowElement.SetAttribute("Expression", row.CalculatedExpression);
                 rowElement.SetAttribute("Condition", row.Condition);
                 rowElement.SetAttribute("Active", row.Active);
+
+                rowElement.SetAttribute("SmoothingPace", row.SmoothingPace.ToString());
+                rowElement.SetAttribute("SmoothingElevation", row.SmoothingElevation.ToString());
+                rowElement.SetAttribute("SmoothingHR", row.SmoothingHR.ToString());
+                rowElement.SetAttribute("SmoothingCadence", row.SmoothingCadence.ToString());
+                rowElement.SetAttribute("SmoothingPower", row.SmoothingPower.ToString());
             }
 
             var w = new XmlTextWriter(path, Encoding.UTF8);
