@@ -103,6 +103,8 @@
             this.comboBoxDataTrackResolution = new System.Windows.Forms.ComboBox();
             this.labelDataTrackResolution = new System.Windows.Forms.Label();
             this.labelDataTrackResolution2 = new System.Windows.Forms.Label();
+            this.stripZones = new System.Windows.Forms.ToolStripMenuItem();
+            this.stripVirtual = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl.SuspendLayout();
             this.tabPageStandardExpressions.SuspendLayout();
             this.splitContainer3.Panel1.SuspendLayout();
@@ -131,7 +133,7 @@
             this.checkBoxAfterImport.Location = new System.Drawing.Point(3, 3);
             this.checkBoxAfterImport.Name = "checkBoxAfterImport";
             this.checkBoxAfterImport.Size = new System.Drawing.Size(203, 17);
-            this.checkBoxAfterImport.TabIndex = 2;
+            this.checkBoxAfterImport.TabIndex = 1;
             this.checkBoxAfterImport.Text = "Run Calculated Fields plugin at import";
             this.checkBoxAfterImport.UseVisualStyleBackColor = true;
             this.checkBoxAfterImport.CheckedChanged += new System.EventHandler(this.checkBoxAfterImport_CheckedChanged);
@@ -216,7 +218,7 @@
             this.comboBoxCustomField.Location = new System.Drawing.Point(129, 35);
             this.comboBoxCustomField.Name = "comboBoxCustomField";
             this.comboBoxCustomField.Size = new System.Drawing.Size(207, 21);
-            this.comboBoxCustomField.TabIndex = 5;
+            this.comboBoxCustomField.TabIndex = 2;
             this.comboBoxCustomField.SelectedValueChanged += new System.EventHandler(this.comboBoxCustomField_SelectedValueChanged);
             this.comboBoxCustomField.Click += new System.EventHandler(this.comboBoxCustomField_Click);
             // 
@@ -227,6 +229,7 @@
             this.buttonClearSelected.Name = "buttonClearSelected";
             this.buttonClearSelected.Size = new System.Drawing.Size(148, 23);
             this.buttonClearSelected.TabIndex = 16;
+            this.buttonClearSelected.TabStop = false;
             this.buttonClearSelected.Text = "Clear calculated values";
             this.buttonClearSelected.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonClearSelected.UseVisualStyleBackColor = true;
@@ -238,7 +241,7 @@
             this.textBoxExpression.Location = new System.Drawing.Point(67, 62);
             this.textBoxExpression.Name = "textBoxExpression";
             this.textBoxExpression.Size = new System.Drawing.Size(722, 20);
-            this.textBoxExpression.TabIndex = 6;
+            this.textBoxExpression.TabIndex = 3;
             this.textBoxExpression.TextChanged += new System.EventHandler(this.textBoxExpression_TextChanged);
             // 
             // contextMenuStripFields
@@ -250,17 +253,19 @@
             this.stripSplits,
             this.stripTrails,
             this.stripAthlete,
+            this.stripZones,
             this.stripRange,
             this.stripPeak,
             this.stripAggregate,
             this.stripCustom,
             this.stripNested,
+            this.stripVirtual,
             this.stripTracks,
             this.stripExamples,
             this.stripFormulas,
             this.stripFormulasPool});
             this.contextMenuStripFields.Name = "contextMenuStripFields";
-            this.contextMenuStripFields.Size = new System.Drawing.Size(175, 334);
+            this.contextMenuStripFields.Size = new System.Drawing.Size(175, 378);
             this.contextMenuStripFields.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripFields_Opening);
             // 
             // stripActivity
@@ -360,6 +365,7 @@
             this.buttonTestSelected.Name = "buttonTestSelected";
             this.buttonTestSelected.Size = new System.Drawing.Size(118, 23);
             this.buttonTestSelected.TabIndex = 15;
+            this.buttonTestSelected.TabStop = false;
             this.buttonTestSelected.Text = "Test selected rows";
             this.buttonTestSelected.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonTestSelected.UseVisualStyleBackColor = true;
@@ -373,6 +379,7 @@
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(75, 23);
             this.buttonAdd.TabIndex = 4;
+            this.buttonAdd.TabStop = false;
             this.buttonAdd.Text = "Add";
             this.buttonAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonAdd.UseVisualStyleBackColor = true;
@@ -385,6 +392,7 @@
             this.buttonCalculateSelected.Name = "buttonCalculateSelected";
             this.buttonCalculateSelected.Size = new System.Drawing.Size(148, 23);
             this.buttonCalculateSelected.TabIndex = 14;
+            this.buttonCalculateSelected.TabStop = false;
             this.buttonCalculateSelected.Text = "Calculate selected rows";
             this.buttonCalculateSelected.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonCalculateSelected.UseVisualStyleBackColor = true;
@@ -398,6 +406,7 @@
             this.buttonRemove.Name = "buttonRemove";
             this.buttonRemove.Size = new System.Drawing.Size(75, 23);
             this.buttonRemove.TabIndex = 1;
+            this.buttonRemove.TabStop = false;
             this.buttonRemove.Text = "Remove";
             this.buttonRemove.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonRemove.UseVisualStyleBackColor = true;
@@ -427,7 +436,7 @@
             this.textBoxCondition.Location = new System.Drawing.Point(67, 89);
             this.textBoxCondition.Name = "textBoxCondition";
             this.textBoxCondition.Size = new System.Drawing.Size(722, 20);
-            this.textBoxCondition.TabIndex = 12;
+            this.textBoxCondition.TabIndex = 4;
             // 
             // buttonUpdate
             // 
@@ -437,6 +446,7 @@
             this.buttonUpdate.Name = "buttonUpdate";
             this.buttonUpdate.Size = new System.Drawing.Size(75, 23);
             this.buttonUpdate.TabIndex = 9;
+            this.buttonUpdate.TabStop = false;
             this.buttonUpdate.Text = "Update";
             this.buttonUpdate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonUpdate.UseVisualStyleBackColor = true;
@@ -450,7 +460,7 @@
             this.checkBoxActive.Location = new System.Drawing.Point(6, 10);
             this.checkBoxActive.Name = "checkBoxActive";
             this.checkBoxActive.Size = new System.Drawing.Size(110, 17);
-            this.checkBoxActive.TabIndex = 11;
+            this.checkBoxActive.TabIndex = 1;
             this.checkBoxActive.Text = "Calculation active";
             this.checkBoxActive.UseVisualStyleBackColor = true;
             // 
@@ -479,6 +489,7 @@
             this.treeListCalculatedFields.ShowPlusMinus = false;
             this.treeListCalculatedFields.Size = new System.Drawing.Size(789, 390);
             this.treeListCalculatedFields.TabIndex = 11;
+            this.treeListCalculatedFields.TabStop = false;
             this.treeListCalculatedFields.SelectedItemsChanged += new System.EventHandler(this.treeListCalculatedFields_SelectedItemsChanged);
             // 
             // tabPageNestedExpressions
@@ -533,6 +544,7 @@
             this.buttonUpdateNested.Name = "buttonUpdateNested";
             this.buttonUpdateNested.Size = new System.Drawing.Size(75, 23);
             this.buttonUpdateNested.TabIndex = 16;
+            this.buttonUpdateNested.TabStop = false;
             this.buttonUpdateNested.Text = "Update";
             this.buttonUpdateNested.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonUpdateNested.UseVisualStyleBackColor = true;
@@ -544,7 +556,7 @@
             this.textBoxNestedExpression.Location = new System.Drawing.Point(67, 62);
             this.textBoxNestedExpression.Name = "textBoxNestedExpression";
             this.textBoxNestedExpression.Size = new System.Drawing.Size(722, 20);
-            this.textBoxNestedExpression.TabIndex = 12;
+            this.textBoxNestedExpression.TabIndex = 2;
             this.textBoxNestedExpression.TextChanged += new System.EventHandler(this.textBoxNestedExpression_TextChanged);
             // 
             // textBoxNestedExpressionName
@@ -552,7 +564,7 @@
             this.textBoxNestedExpressionName.Location = new System.Drawing.Point(135, 35);
             this.textBoxNestedExpressionName.Name = "textBoxNestedExpressionName";
             this.textBoxNestedExpressionName.Size = new System.Drawing.Size(201, 20);
-            this.textBoxNestedExpressionName.TabIndex = 15;
+            this.textBoxNestedExpressionName.TabIndex = 1;
             this.textBoxNestedExpressionName.TextChanged += new System.EventHandler(this.textBoxNestedExpressionName_TextChanged);
             // 
             // buttonAddNested
@@ -563,6 +575,7 @@
             this.buttonAddNested.Name = "buttonAddNested";
             this.buttonAddNested.Size = new System.Drawing.Size(75, 23);
             this.buttonAddNested.TabIndex = 10;
+            this.buttonAddNested.TabStop = false;
             this.buttonAddNested.Text = "Add";
             this.buttonAddNested.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonAddNested.UseVisualStyleBackColor = true;
@@ -585,6 +598,7 @@
             this.buttonRemoveNested.Name = "buttonRemoveNested";
             this.buttonRemoveNested.Size = new System.Drawing.Size(75, 23);
             this.buttonRemoveNested.TabIndex = 9;
+            this.buttonRemoveNested.TabStop = false;
             this.buttonRemoveNested.Text = "Remove";
             this.buttonRemoveNested.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonRemoveNested.UseVisualStyleBackColor = true;
@@ -615,6 +629,7 @@
             this.treeListNestedExpressions.ShowPlusMinus = false;
             this.treeListNestedExpressions.Size = new System.Drawing.Size(789, 421);
             this.treeListNestedExpressions.TabIndex = 18;
+            this.treeListNestedExpressions.TabStop = false;
             this.treeListNestedExpressions.SelectedItemsChanged += new System.EventHandler(this.treeListNestedExpressions_SelectedItemsChanged);
             // 
             // tabPageVirtualExpressions
@@ -663,7 +678,7 @@
             this.checkBoxVirtualActive.Location = new System.Drawing.Point(6, 10);
             this.checkBoxVirtualActive.Name = "checkBoxVirtualActive";
             this.checkBoxVirtualActive.Size = new System.Drawing.Size(110, 17);
-            this.checkBoxVirtualActive.TabIndex = 19;
+            this.checkBoxVirtualActive.TabIndex = 1;
             this.checkBoxVirtualActive.Text = "Calculation active";
             this.checkBoxVirtualActive.UseVisualStyleBackColor = true;
             // 
@@ -682,7 +697,7 @@
             this.textBoxVirtualCondition.Location = new System.Drawing.Point(67, 89);
             this.textBoxVirtualCondition.Name = "textBoxVirtualCondition";
             this.textBoxVirtualCondition.Size = new System.Drawing.Size(722, 20);
-            this.textBoxVirtualCondition.TabIndex = 17;
+            this.textBoxVirtualCondition.TabIndex = 4;
             // 
             // labelVirtualExpressionName
             // 
@@ -701,6 +716,7 @@
             this.buttonUpdateVirtual.Name = "buttonUpdateVirtual";
             this.buttonUpdateVirtual.Size = new System.Drawing.Size(75, 23);
             this.buttonUpdateVirtual.TabIndex = 16;
+            this.buttonUpdateVirtual.TabStop = false;
             this.buttonUpdateVirtual.Text = "Update";
             this.buttonUpdateVirtual.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonUpdateVirtual.UseVisualStyleBackColor = true;
@@ -712,7 +728,7 @@
             this.textBoxVirtualExpression.Location = new System.Drawing.Point(67, 62);
             this.textBoxVirtualExpression.Name = "textBoxVirtualExpression";
             this.textBoxVirtualExpression.Size = new System.Drawing.Size(722, 20);
-            this.textBoxVirtualExpression.TabIndex = 12;
+            this.textBoxVirtualExpression.TabIndex = 3;
             this.textBoxVirtualExpression.TextChanged += new System.EventHandler(this.textBoxVirtualExpression_TextChanged);
             // 
             // textBoxVirtualField
@@ -720,7 +736,7 @@
             this.textBoxVirtualField.Location = new System.Drawing.Point(67, 35);
             this.textBoxVirtualField.Name = "textBoxVirtualField";
             this.textBoxVirtualField.Size = new System.Drawing.Size(269, 20);
-            this.textBoxVirtualField.TabIndex = 15;
+            this.textBoxVirtualField.TabIndex = 2;
             this.textBoxVirtualField.TextChanged += new System.EventHandler(this.textBoxVirtualField_TextChanged);
             // 
             // buttonAddVirtual
@@ -731,6 +747,7 @@
             this.buttonAddVirtual.Name = "buttonAddVirtual";
             this.buttonAddVirtual.Size = new System.Drawing.Size(75, 23);
             this.buttonAddVirtual.TabIndex = 10;
+            this.buttonAddVirtual.TabStop = false;
             this.buttonAddVirtual.Text = "Add";
             this.buttonAddVirtual.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonAddVirtual.UseVisualStyleBackColor = true;
@@ -753,6 +770,7 @@
             this.buttonRemoveVirtual.Name = "buttonRemoveVirtual";
             this.buttonRemoveVirtual.Size = new System.Drawing.Size(75, 23);
             this.buttonRemoveVirtual.TabIndex = 9;
+            this.buttonRemoveVirtual.TabStop = false;
             this.buttonRemoveVirtual.Text = "Remove";
             this.buttonRemoveVirtual.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonRemoveVirtual.UseVisualStyleBackColor = true;
@@ -783,6 +801,7 @@
             this.treeListVirtualExpressions.ShowPlusMinus = false;
             this.treeListVirtualExpressions.Size = new System.Drawing.Size(789, 390);
             this.treeListVirtualExpressions.TabIndex = 18;
+            this.treeListVirtualExpressions.TabStop = false;
             this.treeListVirtualExpressions.SelectedItemsChanged += new System.EventHandler(this.treeListVirtualExpressions_SelectedItemsChanged);
             // 
             // labelTrailsIntegration
@@ -801,7 +820,7 @@
             this.checkBoxAfterImportFuture.Location = new System.Drawing.Point(3, 24);
             this.checkBoxAfterImportFuture.Name = "checkBoxAfterImportFuture";
             this.checkBoxAfterImportFuture.Size = new System.Drawing.Size(256, 17);
-            this.checkBoxAfterImportFuture.TabIndex = 11;
+            this.checkBoxAfterImportFuture.TabIndex = 2;
             this.checkBoxAfterImportFuture.Text = "Recalculate future planned activities upon import";
             this.checkBoxAfterImportFuture.UseVisualStyleBackColor = true;
             this.checkBoxAfterImportFuture.CheckedChanged += new System.EventHandler(this.checkBoxAfterImportFuture_CheckedChanged);
@@ -947,7 +966,7 @@
             this.comboBoxDataTrackResolution.Location = new System.Drawing.Point(151, 45);
             this.comboBoxDataTrackResolution.Name = "comboBoxDataTrackResolution";
             this.comboBoxDataTrackResolution.Size = new System.Drawing.Size(73, 21);
-            this.comboBoxDataTrackResolution.TabIndex = 19;
+            this.comboBoxDataTrackResolution.TabIndex = 3;
             this.comboBoxDataTrackResolution.SelectedValueChanged += new System.EventHandler(this.comboBoxDataTrackResolution_SelectedValueChanged);
             // 
             // labelDataTrackResolution
@@ -967,6 +986,18 @@
             this.labelDataTrackResolution2.Size = new System.Drawing.Size(279, 13);
             this.labelDataTrackResolution2.TabIndex = 21;
             this.labelDataTrackResolution2.Text = "in milliseconds (smaller value is more accurate, but slower)";
+            // 
+            // stripZones
+            // 
+            this.stripZones.Name = "stripZones";
+            this.stripZones.Size = new System.Drawing.Size(174, 22);
+            this.stripZones.Text = "Zones";
+            // 
+            // stripVirtual
+            // 
+            this.stripVirtual.Name = "stripVirtual";
+            this.stripVirtual.Size = new System.Drawing.Size(174, 22);
+            this.stripVirtual.Text = "Virtual Expressions";
             // 
             // CalculatedFieldsSettingsPageControl
             // 
@@ -1081,5 +1112,7 @@
         private System.Windows.Forms.ComboBox comboBoxDataTrackResolution;
         private System.Windows.Forms.Label labelDataTrackResolution2;
         private System.Windows.Forms.Label labelDataTrackResolution;
+        private System.Windows.Forms.ToolStripMenuItem stripZones;
+        private System.Windows.Forms.ToolStripMenuItem stripVirtual;
     }
 }

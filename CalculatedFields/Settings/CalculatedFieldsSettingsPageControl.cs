@@ -222,8 +222,24 @@
             stripAthlete.DropDownItems.Add(new ToolStripMenuItem("ATHLETESLEEPHOURS"));
             stripAthlete.DropDownItems.Add(new ToolStripMenuItem("ATHLETESLEEPQUALITY"));
             stripAthlete.DropDownItems.Add(new ToolStripMenuItem("ATHLETEWEIGHT"));
+            stripAthlete.DropDownItems.Add(new ToolStripMenuItem("ATHLETEHEIGHT"));
+            stripAthlete.DropDownItems.Add(new ToolStripMenuItem("ATHLETESEX"));
+            stripAthlete.DropDownItems.Add(new ToolStripMenuItem("ATHLETEBIRTHDATE"));
+            stripAthlete.DropDownItems.Add(new ToolStripMenuItem("ATHLETEAGE"));
 
             foreach (ToolStripMenuItem item in stripAthlete.DropDownItems)
+            {
+                item.Click += fieldItem_Click;
+            }
+
+            stripZones.DropDownItems.Add(new ToolStripMenuItem("HR Zone Standard Zone 3 Low bound"));
+            stripZones.DropDownItems.Add(new ToolStripMenuItem("HR Zone Standard Zone 4 High bound"));
+            stripZones.DropDownItems.Add(new ToolStripMenuItem("Cadence Zone Standard Zone 2 Low bound"));
+            stripZones.DropDownItems.Add(new ToolStripMenuItem("Power Zone Standard Strength training High bound"));
+            stripZones.DropDownItems.Add(new ToolStripMenuItem("Speed Zone Running Jogging Low bound"));
+            stripZones.DropDownItems.Add(new ToolStripMenuItem("Climb Zone Standard Flat High bound"));
+
+            foreach (ToolStripMenuItem item in stripZones.DropDownItems)
             {
                 item.Click += fieldItem_Click;
             }
@@ -356,7 +372,7 @@
             ToolStripMenuItem item = sender as ToolStripMenuItem;
 
 
-            if (item.OwnerItem == stripActivity || item.OwnerItem == stripAthlete || item.OwnerItem == stripCustom || item.OwnerItem == stripNested || item.OwnerItem == stripActive || item.OwnerItem == stripRest || item.OwnerItem == stripTracks)
+            if (item.OwnerItem == stripActivity || item.OwnerItem == stripAthlete || item.OwnerItem == stripCustom || item.OwnerItem == stripNested || item.OwnerItem == stripVirtual || item.OwnerItem == stripActive || item.OwnerItem == stripRest || item.OwnerItem == stripTracks)
             {
                 result = "{" + item.Text + "}";
             }
@@ -376,7 +392,7 @@
                 result = "{Field(" + item.Text + ",7)}";
             }
 
-            if (item.OwnerItem == stripFormulas || item.OwnerItem == stripFormulasPool || item.OwnerItem == stripRange || item.OwnerItem == stripPeak)
+            if (item.OwnerItem == stripFormulas || item.OwnerItem == stripFormulasPool || item.OwnerItem == stripRange || item.OwnerItem == stripPeak || item.OwnerItem == stripZones)
             {
                 switch (item.Text)
                 {
@@ -470,6 +486,27 @@
                         break;
                     case "Speed ratio between first half and second half of your activity (active parts)":
                         result = "{HALFSPEEDRATIOACTIVE}";
+                        break;
+
+
+
+                    case "HR Zone Standard Zone 3 Low bound":
+                        result = "{ZONEHR(Standard,Zone 3,LOW)}";
+                        break;
+                    case "HR Zone Standard Zone 4 High bound":
+                        result = "{ZONEHR(Standard,Zone 4,HIGH)}";
+                        break;
+                    case "Cadence Zone Standard Zone 2 Low bound":
+                        result = "{ZONECADENCE(Standard,Zone 2,LOW)}";
+                        break;
+                    case "Power Zone Standard Strength training High bound":
+                        result = "{ZONEPOWER(Standard,Strength training,HIGH)}";
+                        break;
+                    case "Speed Zone Running Jogging Low bound":
+                        result = "{ZONESPEED(Running,Jogging,LOW)}";
+                        break;
+                    case "Climb Zone Standard Flat High bound":
+                        result = "{ZONECLIMB(Standard,Flat,HIGH)}";
                         break;
                 }
             }
@@ -909,6 +946,7 @@
         {
             stripCustom.DropDownItems.Clear();
             stripNested.DropDownItems.Clear();
+            stripVirtual.DropDownItems.Clear();
 
             ICustomDataFieldObjectType typeActivity = CustomDataFieldDefinitions.StandardObjectType(typeof(IActivity));
             ICustomDataFieldObjectType typeAthlete = CustomDataFieldDefinitions.StandardObjectType(typeof(IAthleteInfoEntry));
@@ -926,12 +964,22 @@
                 stripNested.DropDownItems.Add(new ToolStripMenuItem(row.NestedExpression));
             }
 
+            foreach (var row in GlobalSettings.virtualFieldsRows)
+            {
+                stripVirtual.DropDownItems.Add(new ToolStripMenuItem(row.CustomField));
+            }
+
             foreach (ToolStripMenuItem item in stripCustom.DropDownItems)
             {
                 item.Click += fieldItem_Click;
             }
 
             foreach (ToolStripMenuItem item in stripNested.DropDownItems)
+            {
+                item.Click += fieldItem_Click;
+            }
+
+            foreach (ToolStripMenuItem item in stripVirtual.DropDownItems)
             {
                 item.Click += fieldItem_Click;
             }
