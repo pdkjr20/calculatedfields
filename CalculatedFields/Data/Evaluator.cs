@@ -282,54 +282,6 @@
 
         #region Methods
 
-        private static void SmoothingBackup()
-        {
-            var analysisSettings = CalculatedFields.GetApplication().SystemPreferences.AnalysisSettings;
-
-            smoothingPace = analysisSettings.SpeedSmoothingSeconds;
-            smoothingElevation = analysisSettings.ElevationSmoothingSeconds;
-            smoothingHR = analysisSettings.HeartRateSmoothingSeconds;
-            smoothingCadence = analysisSettings.CadenceSmoothingSeconds;
-            smoothingPower = analysisSettings.PowerSmoothingSeconds;
-        }
-
-        private static void SmoothingSetTemporary(CalculatedFieldsRow calculatedFieldsRow)
-        {
-            var analysisSettings = CalculatedFields.GetApplication().SystemPreferences.AnalysisSettings;
-
-            if (calculatedFieldsRow.SmoothingPace != 0)
-            {
-                analysisSettings.SpeedSmoothingSeconds = calculatedFieldsRow.SmoothingPace;
-            }
-            if (calculatedFieldsRow.SmoothingElevation != 0)
-            {
-                analysisSettings.ElevationSmoothingSeconds = calculatedFieldsRow.SmoothingElevation;
-            }
-            if (calculatedFieldsRow.SmoothingHR != 0)
-            {
-                analysisSettings.HeartRateSmoothingSeconds = calculatedFieldsRow.SmoothingHR;
-            }
-            if (calculatedFieldsRow.SmoothingCadence != 0)
-            {
-                analysisSettings.CadenceSmoothingSeconds = calculatedFieldsRow.SmoothingCadence;
-            }
-            if (calculatedFieldsRow.SmoothingPower != 0)
-            {
-                analysisSettings.PowerSmoothingSeconds = calculatedFieldsRow.SmoothingPower;
-            }
-        }
-
-        private static void SmoothingSetDefault()
-        {
-            var analysisSettings = CalculatedFields.GetApplication().SystemPreferences.AnalysisSettings;
-
-            analysisSettings.SpeedSmoothingSeconds = smoothingPace;
-            analysisSettings.ElevationSmoothingSeconds = smoothingElevation;
-            analysisSettings.HeartRateSmoothingSeconds = smoothingHR;
-            analysisSettings.CadenceSmoothingSeconds = smoothingCadence;
-            analysisSettings.PowerSmoothingSeconds = smoothingPower;
-        }
-
         private static object Evaluate(string expression, IActivity activity, string condition, CalculatedFieldsRow calculatedFieldsRow)
         {
             expression = ParseExpression(expression, activity, condition, calculatedFieldsRow);
@@ -395,6 +347,7 @@
                 }
 
                 tempModuleSource += "fsRead.Close();";
+
 
                 if (includePauses)
                 {
@@ -507,6 +460,54 @@
             }
 
             return returnValue;
+        }
+
+        private static void SmoothingBackup()
+        {
+            var analysisSettings = CalculatedFields.GetApplication().SystemPreferences.AnalysisSettings;
+
+            smoothingPace = analysisSettings.SpeedSmoothingSeconds;
+            smoothingElevation = analysisSettings.ElevationSmoothingSeconds;
+            smoothingHR = analysisSettings.HeartRateSmoothingSeconds;
+            smoothingCadence = analysisSettings.CadenceSmoothingSeconds;
+            smoothingPower = analysisSettings.PowerSmoothingSeconds;
+        }
+
+        private static void SmoothingSetTemporary(CalculatedFieldsRow calculatedFieldsRow)
+        {
+            var analysisSettings = CalculatedFields.GetApplication().SystemPreferences.AnalysisSettings;
+
+            if (calculatedFieldsRow.SmoothingPace != 0)
+            {
+                analysisSettings.SpeedSmoothingSeconds = calculatedFieldsRow.SmoothingPace;
+            }
+            if (calculatedFieldsRow.SmoothingElevation != 0)
+            {
+                analysisSettings.ElevationSmoothingSeconds = calculatedFieldsRow.SmoothingElevation;
+            }
+            if (calculatedFieldsRow.SmoothingHR != 0)
+            {
+                analysisSettings.HeartRateSmoothingSeconds = calculatedFieldsRow.SmoothingHR;
+            }
+            if (calculatedFieldsRow.SmoothingCadence != 0)
+            {
+                analysisSettings.CadenceSmoothingSeconds = calculatedFieldsRow.SmoothingCadence;
+            }
+            if (calculatedFieldsRow.SmoothingPower != 0)
+            {
+                analysisSettings.PowerSmoothingSeconds = calculatedFieldsRow.SmoothingPower;
+            }
+        }
+
+        private static void SmoothingSetDefault()
+        {
+            var analysisSettings = CalculatedFields.GetApplication().SystemPreferences.AnalysisSettings;
+
+            analysisSettings.SpeedSmoothingSeconds = smoothingPace;
+            analysisSettings.ElevationSmoothingSeconds = smoothingElevation;
+            analysisSettings.HeartRateSmoothingSeconds = smoothingHR;
+            analysisSettings.CadenceSmoothingSeconds = smoothingCadence;
+            analysisSettings.PowerSmoothingSeconds = smoothingPower;
         }
 
         private static List<DataTrackPoint> GetDataTrack(IActivity activity, bool onlyActive, bool includePauses)
@@ -844,7 +845,7 @@
                 {
                     fieldValue = LastXDays(activity, activityInfoInstance, condition, field, calculatedFieldsRow);
                 }
-
+                
                 if (fieldValue == "")
                 {
                     fieldValue = DataTrack(activity, activityInfoInstance, field);
@@ -858,6 +859,7 @@
                 //if (fieldValue == "" || fieldValue == "NaN" || fieldValue == "Infinity")
                 if (fieldValue == "NaN" || fieldValue == "Infinity")
                 {
+                    //throw new Exception(expression);
                     expression = "";
                 }
 
@@ -885,6 +887,8 @@
             //throw new Exception(history);
             expression = expression.Replace("/#/", "{");
             expression = expression.Replace("/###/", "}");
+
+            //throw new Exception(expression);
             return expression;
         }
 
@@ -1078,6 +1082,8 @@
                         {
                             peakValue = float.MaxValue;
                         }
+
+                        //dataTrack.Select((o, index) => new { RollingAvg = dataTrack.Where((a, aindex) => aindex < index && aindex >= (((index - 30) >= 0) ? index - 30 : 0)).Average(a => a.Power) }).Average(r => r.RollingAvg);
 
                         for (int i = 0; i < dataTrack.Count; i++)
                         {
@@ -1367,7 +1373,7 @@
                 aggField = Regex.Match(field, ".*(?=\\()").Value;
                 aggOperation = Regex.Match(field, "(?<=\\().*(?=,)").Value;
 
-                if (aggOperation != "")
+                if (aggOperation == "SUM" || aggOperation == "AVG" || aggOperation == "MIN" || aggOperation == "MAX" || aggOperation == "GET" || aggOperation == "COUNT")
                 {
                     field = ParseExpression(field, activity, "", null);
 
@@ -1632,27 +1638,32 @@
                             zones = CalculatedFields.GetLogBook().SpeedZones;
                             break;
                     }
-                }
 
-                foreach (var category in zones)
-                {
-                    if (category.Name.ToUpper() == zoneCategory)
+
+                    foreach (var category in zones)
                     {
-                        foreach (var zone in category.Zones)
+                        if (category.Name.ToUpper() == zoneCategory)
                         {
-                            if (zone.Name.ToUpper() == zoneName)
+                            foreach (var zone in category.Zones)
                             {
-                                if (zoneBound == "LOW")
+                                if (zone.Name.ToUpper() == zoneName)
                                 {
-                                    fieldValue = zone.Low.ToString(CultureInfo.InvariantCulture.NumberFormat);
-                                }
-                                else
-                                {
-                                    fieldValue = zone.High.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                    if (zoneBound == "LOW")
+                                    {
+                                        fieldValue = zone.Low.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                    }
+                                    else
+                                    {
+                                        fieldValue = zone.High.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                    }
                                 }
                             }
                         }
                     }
+                }
+                else
+                {
+                    fieldValue = "NaN";
                 }
             }
 
@@ -2075,6 +2086,10 @@
                             break;
                     }
                 }
+                else
+                {
+                    fieldValue = "NaN";
+                }
             }
 
             return fieldValue;
@@ -2088,7 +2103,7 @@
             {
                 if (!Trails.TestIntegration())
                 {
-                    return "";
+                    return "NaN";
                 }
 
                 field = ParseExpression(field, activity, "", null);
@@ -2164,6 +2179,14 @@
                                 break;
                         }
                     }
+                    else
+                    {
+                        fieldValue = "NaN";
+                    }
+                }
+                else
+                {
+                    fieldValue = "NaN";
                 }
             }
 
