@@ -17,7 +17,7 @@ Peak feature is here for help.<br>
 <br>
 *Important*:<br>
 Results returned by Range and Peak feature are dependant on your smoothing settings of used datatracks in ST settings.
-And you can influence accuracy of results by settings smaller resolution of DataTrack.
+And you can influence accuracy of results by settings smaller resolution of DataTrack
 So 1000 milliseconds is for example fast standard with relative accurate results for DataTrack feature. But with big activities with many pauses result will be few seconds out.<br>
 But with 100 milliseconds resolution it will be much more accurate. Of course the calculation will be slower. So it's up to you what you will choose. Just experiment with resolution settings and choose what you want.<br>
 
