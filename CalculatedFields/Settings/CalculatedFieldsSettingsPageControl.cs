@@ -115,6 +115,7 @@
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("INTENSITY"));
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("TIME"));
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("HALFTIME"));
+            stripActivity.DropDownItems.Add(new ToolStripMenuItem("TIMESTOPPED"));
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("DISTANCE"));
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("HALFDISTANCE"));
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("AVGPACE"));

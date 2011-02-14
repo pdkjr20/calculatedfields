@@ -156,16 +156,23 @@
                                         activity,
                                         virtualFieldsRow.Condition,
                                         virtualFieldsRow);
+
+                                    if (result == "")
+                                    {
+                                        result = "NaN";
+                                    }
                                 }
                                 else
                                 {
-                                    result = null;
+                                    result = "NaN";
                                 }
                             }
                             else
                             {
                                 result = Evaluate(virtualFieldsRow.CalculatedExpression, activity, "", virtualFieldsRow);
                             }
+
+                            //throw new Exception(result.ToString());
 
                             if (result != null)
                             {
@@ -348,22 +355,31 @@
 
                 tempModuleSource += "fsRead.Close();";
 
-
-                if (includePauses)
+                if (expression.Contains("@@DIRECT@@"))
                 {
-                    tempModuleSource += "if (DATATRACKWITHPAUSES";
-                }
-                else if (onlyActive)
-                {
-                    tempModuleSource += "if (DATATRACKACTIVE";
+                    tempModuleSource += expression.Replace("@@DIRECT@@", "");
                 }
                 else
                 {
-                    tempModuleSource += "if (DATATRACK";
+                    if (includePauses)
+                    {
+                        tempModuleSource += "if (DATATRACKWITHPAUSES";
+                    }
+                    else if (onlyActive)
+                    {
+                        tempModuleSource += "if (DATATRACKACTIVE";
+                    }
+                    else
+                    {
+                        tempModuleSource += "if (DATATRACK";
+                    }
+
+                    tempModuleSource += ".Count() != 0) return " + expression + "; else return null;";
                 }
 
-                tempModuleSource += ".Count() != 0) return " + expression + "; else return null;} }" +
-                                    "public class DataTrackPoint {" +
+                tempModuleSource += "} }";
+
+                tempModuleSource += "public class DataTrackPoint {" +
                                     "int lapNumber;string lapNote;bool lapActive;float hr;float pace;float speed;float elevation;float grade;float cadence;float power;float elapsed;float distance;float climbSpeed;bool pause;" +
                                     "public int LapNumber { get { return lapNumber; } set { lapNumber = value; } }" +
                                     "public string LapNote { get { return lapNote; } set { lapNote = value; } }" +
@@ -385,8 +401,18 @@
             {
                 tempModuleSource = "namespace ns{" + "using System;" + "using System.Text.RegularExpressions;" +
                                    "class CF{" +
-                                   "public static object Evaluate(){return " + expression + ";}}" +
-                                   "}";
+                                   "public static object Evaluate(){";
+
+                if (expression.Contains("@@DIRECT@@"))
+                {
+                    tempModuleSource += expression.Replace("@@DIRECT@@", "");
+                }
+                else
+                {
+                    tempModuleSource += "return " + expression + ";"; 
+                }
+
+                tempModuleSource += "}} }";
             }
 
             cp.OutputAssembly = Environment.GetEnvironmentVariable("APPDATA") + "/CalculatedFieldsPlugin/TEMP/" + Guid.NewGuid() + ".dll";
@@ -1038,7 +1064,7 @@
                     }
                     else
                     {
-                        fieldValue = "null";
+                        fieldValue = "NaN";
                     }
                 }
             }
@@ -1212,6 +1238,10 @@
                                 fieldValue = peakValue.ToString(CultureInfo.InvariantCulture.NumberFormat);
                             }
                         }
+                        else
+                        {
+                            fieldValue = "NaN";
+                        }
                     }
 
                     if (peakType == "DISTANCE")
@@ -1351,6 +1381,10 @@
                             {
                                 fieldValue = peakValue.ToString(CultureInfo.InvariantCulture.NumberFormat);
                             }
+                        }
+                        else
+                        {
+                            fieldValue = "NaN";
                         }
                     }
                 }
@@ -1514,6 +1548,8 @@
                         {
                             fieldValue = result.ToString(CultureInfo.InvariantCulture.NumberFormat);
                         }
+
+                        //throw new Exception(fieldValue);
                     }
                 }
             }
@@ -1892,8 +1928,10 @@
                     break;
 
 
-
                 //totals)
+                case "TIMESTOPPED":
+                    fieldValue = activityInfoInstance.StoppedTime.TotalSeconds.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                    break;
                 case "TIME":
                     fieldValue = activityInfoInstance.Time.TotalSeconds.ToString(CultureInfo.InvariantCulture.NumberFormat);
                     break;
