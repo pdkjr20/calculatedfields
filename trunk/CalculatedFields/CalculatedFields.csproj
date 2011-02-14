@@ -208,9 +208,7 @@
     <Content Include="plugin.xml" />
     <None Include="Resources\btn_donateCC_LG.gif" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controller\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
