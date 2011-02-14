@@ -1926,9 +1926,12 @@
                 case "HASPOWERTRACK":
                     fieldValue = (activity.PowerWattsTrack == null) ? "false" : "true";
                     break;
-
+                
 
                 //totals)
+                case "CALORIES":
+                    fieldValue = activity.TotalCalories.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                    break;
                 case "TIMESTOPPED":
                     fieldValue = activityInfoInstance.StoppedTime.TotalSeconds.ToString(CultureInfo.InvariantCulture.NumberFormat);
                     break;

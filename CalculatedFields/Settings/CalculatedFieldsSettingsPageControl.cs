@@ -130,6 +130,7 @@
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("MAXPOWER"));
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("ASCENDING"));
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("DESCENDING"));
+            stripActivity.DropDownItems.Add(new ToolStripMenuItem("CALORIES"));
 
             foreach (ToolStripMenuItem item in stripActivity.DropDownItems)
             {
