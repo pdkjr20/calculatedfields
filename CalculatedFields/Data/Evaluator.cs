@@ -1584,7 +1584,7 @@
                         }
                         else if (definition.DataType.Id == CustomDataFieldDefinitions.StandardDataTypes.TimeSpanDataTypeId)
                         {
-                            fieldValue = Double.Parse(activity.GetCustomDataValue(definition).ToString()).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                            fieldValue = TimeSpan.Parse(activity.GetCustomDataValue(definition).ToString()).TotalSeconds.ToString(CultureInfo.InvariantCulture.NumberFormat);
                         }
                     }
                 }
@@ -1824,7 +1824,7 @@
                             }
                             else if (definition.DataType.Id == CustomDataFieldDefinitions.StandardDataTypes.TimeSpanDataTypeId)
                             {
-                                fieldValue = Double.Parse(athleteEntry.GetCustomDataValue(definition).ToString()).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                fieldValue = TimeSpan.Parse(activity.GetCustomDataValue(definition).ToString()).TotalSeconds.ToString(CultureInfo.InvariantCulture.NumberFormat);
                             }
                         }
                     }
