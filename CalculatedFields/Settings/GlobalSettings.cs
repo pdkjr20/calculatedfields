@@ -149,7 +149,7 @@
 
         public static bool runAfterImport;
         public static bool calculateFutureAfterImport;
-        public static int dataTrackResolution;
+        public static int dataTrackResolution = 1000;
 
         private static readonly string path;
 
