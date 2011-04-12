@@ -1201,6 +1201,18 @@
                             {
                                 switch (returnType)
                                 {
+                                    case "ABSSTARTTIME":
+                                        fieldValue = dataTrack[peakStart].Elapsed.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                        break;
+                                    case "ABSENDTIME":
+                                        fieldValue = dataTrack[peakEnd].Elapsed.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                        break;
+                                    case "STARTTIME":
+                                        fieldValue = (dataTrack[peakStart].Elapsed - dataTrack.Where((o, index) => index < peakStart && o.Pause).Count() / (1000f / GlobalSettings.dataTrackResolution)).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                        break;
+                                    case "ENDTIME":
+                                        fieldValue = (dataTrack[peakEnd].Elapsed - dataTrack.Where((o, index) => index < peakEnd && o.Pause).Count() / (1000f / GlobalSettings.dataTrackResolution)).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                        break;
                                     case "ELAPSED":
                                         fieldValue = (dataTrack[peakEnd].Elapsed - dataTrack[peakStart].Elapsed).ToString(CultureInfo.InvariantCulture.NumberFormat);
                                         break;
@@ -1345,6 +1357,18 @@
                             {
                                 switch (returnType)
                                 {
+                                    case "ABSSTARTTIME":
+                                        fieldValue = dataTrack[peakStart].Elapsed.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                        break;
+                                    case "ABSENDTIME":
+                                        fieldValue = dataTrack[peakEnd].Elapsed.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                        break;
+                                    case "STARTTIME":
+                                        fieldValue = (dataTrack[peakStart].Elapsed - dataTrack.Where((o, index) => index < peakStart && o.Pause).Count() / (1000f / GlobalSettings.dataTrackResolution)).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                        break;
+                                    case "ENDTIME":
+                                        fieldValue = (dataTrack[peakEnd].Elapsed - dataTrack.Where((o, index) => index < peakEnd && o.Pause).Count() / (1000f / GlobalSettings.dataTrackResolution)).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                        break;
                                     case "ELAPSED":
                                         fieldValue = (dataTrack[peakEnd].Elapsed - dataTrack[peakStart].Elapsed).ToString(CultureInfo.InvariantCulture.NumberFormat);
                                         break;

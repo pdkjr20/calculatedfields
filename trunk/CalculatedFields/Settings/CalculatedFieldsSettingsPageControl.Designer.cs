@@ -63,6 +63,7 @@
             this.stripCustom = new System.Windows.Forms.ToolStripMenuItem();
             this.stripNested = new System.Windows.Forms.ToolStripMenuItem();
             this.stripVirtual = new System.Windows.Forms.ToolStripMenuItem();
+            this.stripDataTrack = new System.Windows.Forms.ToolStripMenuItem();
             this.stripTracks = new System.Windows.Forms.ToolStripMenuItem();
             this.stripExamples = new System.Windows.Forms.ToolStripMenuItem();
             this.stripFormulas = new System.Windows.Forms.ToolStripMenuItem();
@@ -127,7 +128,6 @@
             this.labelDataTrackResolution = new System.Windows.Forms.Label();
             this.comboBoxDataTrackResolution = new System.Windows.Forms.ComboBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.stripDataTrack = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl.SuspendLayout();
             this.tabPageStandardExpressions.SuspendLayout();
             this.splitContainer3.Panel1.SuspendLayout();
@@ -505,6 +505,12 @@
             this.stripVirtual.Name = "stripVirtual";
             this.stripVirtual.Size = new System.Drawing.Size(174, 22);
             this.stripVirtual.Text = "Virtual Expressions";
+            // 
+            // stripDataTrack
+            // 
+            this.stripDataTrack.Name = "stripDataTrack";
+            this.stripDataTrack.Size = new System.Drawing.Size(174, 22);
+            this.stripDataTrack.Text = "DataTrack";
             // 
             // stripTracks
             // 
@@ -1284,12 +1290,6 @@
             this.splitContainer2.Size = new System.Drawing.Size(803, 628);
             this.splitContainer2.SplitterDistance = 560;
             this.splitContainer2.TabIndex = 0;
-            // 
-            // stripDataTrack
-            // 
-            this.stripDataTrack.Name = "stripDataTrack";
-            this.stripDataTrack.Size = new System.Drawing.Size(174, 22);
-            this.stripDataTrack.Text = "DataTrack";
             // 
             // CalculatedFieldsSettingsPageControl
             // 

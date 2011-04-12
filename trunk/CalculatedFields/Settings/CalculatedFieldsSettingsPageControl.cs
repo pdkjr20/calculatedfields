@@ -53,7 +53,7 @@
             this.checkBoxAfterImport.Checked = GlobalSettings.runAfterImport;
             this.checkBoxAfterImportFuture.Checked = GlobalSettings.calculateFutureAfterImport;
             this.comboBoxDataTrackResolution.SelectedItem = GlobalSettings.dataTrackResolution.ToString();
-
+            
             ITheme visualTheme = CalculatedFields.GetApplication().VisualTheme;
 
             var active = new TreeList.Column("Active", "Active", 50, StringAlignment.Center);
@@ -282,6 +282,9 @@
             }
 
             stripPeak.DropDownItems.Add(new ToolStripMenuItem("Fastest 1000 meters"));
+            stripPeak.DropDownItems.Add(new ToolStripMenuItem("Start Time of fastest 1000 meters without pauses"));
+            stripPeak.DropDownItems.Add(new ToolStripMenuItem("End Time of fastest 1000 meters without pauses"));
+            stripPeak.DropDownItems.Add(new ToolStripMenuItem("Start Time of fastest 1000 meters with pauses"));
             stripPeak.DropDownItems.Add(new ToolStripMenuItem("Return average HR of your fastest 1000 meters"));
             stripPeak.DropDownItems.Add(new ToolStripMenuItem("Fastest 300 seconds"));
             stripPeak.DropDownItems.Add(new ToolStripMenuItem("HR peak for 30 seconds"));
@@ -430,6 +433,15 @@
 
                     case "Fastest 1000 meters":
                         result = "{MINPEAKDISTANCE(Elapsed,1000)}";
+                        break;
+                    case "Start Time of fastest 1000 meters without pauses":
+                        result = "{MINPEAKDISTANCE(Elapsed,StartTime,1000)}";
+                        break;
+                    case "End Time of fastest 1000 meters without pauses":
+                        result = "{MINPEAKDISTANCE(Elapsed,EndTime,1000)}";
+                        break;
+                    case "Start Time of fastest 1000 meters with pauses":
+                        result = "{MINPEAKDISTANCE(Elapsed,AbsStartTime,1000)}";
                         break;
                     case "Return average HR of your fastest 1000 meters":
                         result = "{MINPEAKDISTANCE(Elapsed,HR,1000)}";
