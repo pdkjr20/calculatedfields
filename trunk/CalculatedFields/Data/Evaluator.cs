@@ -1064,7 +1064,7 @@
                     }
                     else
                     {
-                        fieldValue = "NaN";
+                        fieldValue = 0.ToString(CultureInfo.InvariantCulture.NumberFormat);
                     }
                 }
             }
