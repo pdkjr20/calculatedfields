@@ -115,13 +115,10 @@
             this.labelTrailsIntegration = new System.Windows.Forms.Label();
             this.checkBoxAfterImportFuture = new System.Windows.Forms.CheckBox();
             this.labelTrailsIntegration2 = new System.Windows.Forms.Label();
-            this.labelDonationImage = new System.Windows.Forms.Label();
             this.labelCopyright = new System.Windows.Forms.Label();
             this.labelCopyright2 = new System.Windows.Forms.Label();
             this.labelCopyright3 = new System.Windows.Forms.Label();
             this.labelCopyright4 = new System.Windows.Forms.Label();
-            this.labelDonationText = new System.Windows.Forms.Label();
-            this.labelDonationText2 = new System.Windows.Forms.Label();
             this.labelDonationsText3 = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.labelDataTrackResolution2 = new System.Windows.Forms.Label();
@@ -245,7 +242,7 @@
             this.labelSmoothing.Size = new System.Drawing.Size(648, 13);
             this.labelSmoothing.TabIndex = 27;
             this.labelSmoothing.Text = "Smoothing settings for data of actual calculation (default value is 0, when 0 is " +
-                "set, plugin uses smoothing settings from ST for calculation)";
+    "set, plugin uses smoothing settings from ST for calculation)";
             // 
             // numericUpDownPower
             // 
@@ -425,7 +422,7 @@
             this.stripFormulas,
             this.stripFormulasPool});
             this.contextMenuStripFields.Name = "contextMenuStripFields";
-            this.contextMenuStripFields.Size = new System.Drawing.Size(175, 422);
+            this.contextMenuStripFields.Size = new System.Drawing.Size(175, 400);
             this.contextMenuStripFields.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripFields_Opening);
             // 
             // stripActivity
@@ -867,7 +864,7 @@
             this.labelSmoothingVirtual.Size = new System.Drawing.Size(648, 13);
             this.labelSmoothingVirtual.TabIndex = 38;
             this.labelSmoothingVirtual.Text = "Smoothing settings for data of actual calculation (default value is 0, when 0 is " +
-                "set, plugin uses smoothing settings from ST for calculation)";
+    "set, plugin uses smoothing settings from ST for calculation)";
             // 
             // numericUpDownPowerVirtual
             // 
@@ -1138,16 +1135,6 @@
             this.labelTrailsIntegration2.TabIndex = 18;
             this.labelTrailsIntegration2.Text = "Thanks to Brandon Doherty and Gerhard";
             // 
-            // labelDonationImage
-            // 
-            this.labelDonationImage.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.labelDonationImage.Image = global::CalculatedFields.Properties.Resources.btn_donateCC_LG;
-            this.labelDonationImage.Location = new System.Drawing.Point(414, 7);
-            this.labelDonationImage.Name = "labelDonationImage";
-            this.labelDonationImage.Size = new System.Drawing.Size(91, 47);
-            this.labelDonationImage.TabIndex = 19;
-            this.labelDonationImage.Click += new System.EventHandler(this.labelDonationImage_Click);
-            // 
             // labelCopyright
             // 
             this.labelCopyright.AutoSize = true;
@@ -1165,7 +1152,7 @@
             this.labelCopyright2.Size = new System.Drawing.Size(401, 13);
             this.labelCopyright2.TabIndex = 21;
             this.labelCopyright2.Text = "Calculated Fields Plugin is distributed under the GNU Lesser General Public Licen" +
-                "se";
+    "se";
             // 
             // labelCopyright3
             // 
@@ -1184,24 +1171,6 @@
             this.labelCopyright4.Size = new System.Drawing.Size(187, 13);
             this.labelCopyright4.TabIndex = 23;
             this.labelCopyright4.Text = "http://www.gnu.org/licenses/lgpl.html";
-            // 
-            // labelDonationText
-            // 
-            this.labelDonationText.AutoSize = true;
-            this.labelDonationText.Location = new System.Drawing.Point(521, 7);
-            this.labelDonationText.Name = "labelDonationText";
-            this.labelDonationText.Size = new System.Drawing.Size(229, 13);
-            this.labelDonationText.TabIndex = 24;
-            this.labelDonationText.Text = "If you like this plugin, please consider donating.";
-            // 
-            // labelDonationText2
-            // 
-            this.labelDonationText2.AutoSize = true;
-            this.labelDonationText2.Location = new System.Drawing.Point(521, 20);
-            this.labelDonationText2.Name = "labelDonationText2";
-            this.labelDonationText2.Size = new System.Drawing.Size(264, 13);
-            this.labelDonationText2.TabIndex = 25;
-            this.labelDonationText2.Text = "You will get special care for your requests and support.";
             // 
             // labelDonationsText3
             // 
@@ -1279,14 +1248,11 @@
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.labelDonationText2);
             this.splitContainer2.Panel2.Controls.Add(this.labelCopyright3);
             this.splitContainer2.Panel2.Controls.Add(this.labelDonationsText3);
             this.splitContainer2.Panel2.Controls.Add(this.labelCopyright);
             this.splitContainer2.Panel2.Controls.Add(this.labelCopyright2);
-            this.splitContainer2.Panel2.Controls.Add(this.labelDonationImage);
             this.splitContainer2.Panel2.Controls.Add(this.labelCopyright4);
-            this.splitContainer2.Panel2.Controls.Add(this.labelDonationText);
             this.splitContainer2.Size = new System.Drawing.Size(803, 628);
             this.splitContainer2.SplitterDistance = 560;
             this.splitContainer2.TabIndex = 0;
@@ -1383,13 +1349,10 @@
         private System.Windows.Forms.Label labelTrailsIntegration2;
         private System.Windows.Forms.ToolStripMenuItem stripRange;
         private System.Windows.Forms.ToolStripMenuItem stripPeak;
-        private System.Windows.Forms.Label labelDonationImage;
         private System.Windows.Forms.Label labelCopyright;
         private System.Windows.Forms.Label labelCopyright2;
         private System.Windows.Forms.Label labelCopyright3;
         private System.Windows.Forms.Label labelCopyright4;
-        private System.Windows.Forms.Label labelDonationText;
-        private System.Windows.Forms.Label labelDonationText2;
         private System.Windows.Forms.Label labelDonationsText3;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.SplitContainer splitContainer2;

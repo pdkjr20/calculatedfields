@@ -124,6 +124,8 @@
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("AVGHR"));
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("AVGPOWER"));
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("AVGSPEED"));
+            stripActivity.DropDownItems.Add(new ToolStripMenuItem("AVGVERTICALOSCILLATION"));
+            stripActivity.DropDownItems.Add(new ToolStripMenuItem("AVGGROUNDCONTACT"));
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("MAXCADENCE"));
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("MAXGRADE"));
             stripActivity.DropDownItems.Add(new ToolStripMenuItem("MAXHR"));
@@ -263,6 +265,8 @@
             stripTracks.DropDownItems.Add(new ToolStripMenuItem("HASELEVATIONTRACK"));
             stripTracks.DropDownItems.Add(new ToolStripMenuItem("HASCADENCETRACK"));
             stripTracks.DropDownItems.Add(new ToolStripMenuItem("HASPOWERTRACK"));
+            stripTracks.DropDownItems.Add(new ToolStripMenuItem("HASVERTICALOSCILLATIONTRACK"));
+            stripTracks.DropDownItems.Add(new ToolStripMenuItem("HASGROUNDCONTACTTRACK"));
 
             foreach (ToolStripMenuItem item in stripTracks.DropDownItems)
             {
