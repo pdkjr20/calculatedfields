@@ -7,6 +7,8 @@
     using System.Windows.Forms;
     using System.Xml;
 
+    using ZoneFiveSoftware.Common.Data.Fitness;
+
     [Serializable]
     public class DataTrackPoint
     {
@@ -23,6 +25,8 @@
         float elapsed;
         float distance;
         float climbSpeed;
+        float verticalOscillation;
+        float groundContact;
         bool pause;
 
         public float Distance { get { return distance; } set { distance = value; } }
@@ -35,6 +39,8 @@
         public float Power { get { return power; } set { power = value; } }
         public float Elapsed { get { return elapsed; } set { elapsed = value; } }
         public float ClimbSpeed { get { return climbSpeed; } set { climbSpeed = value; } }
+        public float VerticalOscillation { get { return verticalOscillation; } set { verticalOscillation = value; } }
+        public float GroundContact { get { return groundContact; } set { groundContact = value; } }
         public bool Pause { get { return pause; } set { pause = value; } }
         public int LapNumber { get { return lapNumber; } set { lapNumber = value; } }
         public string LapNote { get { return lapNote; } set { lapNote = value; } }
@@ -44,7 +50,23 @@
         {
         }
 
-        public DataTrackPoint(int lapNumber, string lapNote, bool lapActive, float distance, float hr, float pace, float speed, float elevation, float grade, float cadence, float power, float elapsed, float climbSpeed, bool pause)
+        public DataTrackPoint(
+            int lapNumber,
+            string lapNote,
+            bool lapActive,
+            float distance,
+            float hr,
+            float pace,
+            float speed,
+            float elevation,
+            float grade,
+            float cadence,
+            float power,
+            float elapsed,
+            float climbSpeed,
+            float verticalOscillation,
+            float groundContact,
+            bool pause)
         {
             LapNumber = lapNumber;
             LapNote = lapNote;
@@ -59,6 +81,8 @@
             Power = power;
             Elapsed = elapsed;
             ClimbSpeed = climbSpeed;
+            VerticalOscillation = verticalOscillation;
+            GroundContact = groundContact;
             Pause = pause;
         }
     }

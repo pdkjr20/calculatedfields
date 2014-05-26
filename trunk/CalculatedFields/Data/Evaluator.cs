@@ -380,7 +380,7 @@
                 tempModuleSource += "} }";
 
                 tempModuleSource += "public class DataTrackPoint {" +
-                                    "int lapNumber;string lapNote;bool lapActive;float hr;float pace;float speed;float elevation;float grade;float cadence;float power;float elapsed;float distance;float climbSpeed;bool pause;" +
+                                    "int lapNumber;string lapNote;bool lapActive;float hr;float pace;float speed;float elevation;float grade;float cadence;float power;float elapsed;float distance;float climbSpeed;float verticalOscillation;float groundContact;bool pause;" +
                                     "public int LapNumber { get { return lapNumber; } set { lapNumber = value; } }" +
                                     "public string LapNote { get { return lapNote; } set { lapNote = value; } }" +
                                     "public bool LapActive { get { return lapActive; } set { lapActive = value; } }" +
@@ -394,6 +394,8 @@
                                     "public float Power { get { return power; } set { power = value; } }" +
                                     "public float Elapsed { get { return elapsed; } set { elapsed = value; } }" +
                                     "public float ClimbSpeed { get { return climbSpeed; } set { climbSpeed = value; } }" +
+                                    "public float VerticalOscillation { get { return verticalOscillation; } set { verticalOscillation = value; } }" + 
+                                    "public float GroundContact { get { return groundContact; } set { groundContact = value; } }" + 
                                     "public bool Pause { get { return pause; } set { pause = value; } }" +
                                     "public DataTrackPoint(){} }" + "}";
             }
@@ -705,9 +707,20 @@
 
                 if ((!paused || includePauses) && (!rest || !onlyActive))
                 {
-                    float hr = 0, pace = 0, speed = 0, elevation = 0, grade = 0, cadence = 0, power = 0, distance = 0, climbSpeed = 0;
-                    ITimeValueEntry<float> interpolatedValue;
+                    float hr = 0,
+                          pace = 0,
+                          speed = 0,
+                          elevation = 0,
+                          grade = 0,
+                          cadence = 0,
+                          power = 0,
+                          distance = 0,
+                          climbSpeed = 0,
+                          verticalOscillation = 0,
+                          groundContact = 0;
 
+                    ITimeValueEntry<float> interpolatedValue;
+                    
                     interpolatedValue = activityInfoInstance.SmoothedHeartRateTrack.GetInterpolatedValue(adjustedTime);
                     if (interpolatedValue != null)
                     {
@@ -795,7 +808,49 @@
                         }
                     }
 
-                    dataTrack.Add(new DataTrackPoint(lapNumber, lapNote, lapActive, distance, hr, pace, speed, elevation, grade, cadence, power, (i - pauseShift) / 1000, climbSpeed, paused));
+                    interpolatedValue = activity.VerticalOscillationMillimetersTrack.GetInterpolatedValue(adjustedTime);
+                    if (interpolatedValue != null)
+                    {
+                        if (paused)
+                        {
+                            verticalOscillation = 0;
+                        }
+                        else
+                        {
+                            verticalOscillation = interpolatedValue.Value;
+                        }
+                    }
+                    interpolatedValue = activity.GroundContactTimeMillisecondsTrack.GetInterpolatedValue(adjustedTime);
+                    if (interpolatedValue != null)
+                    {
+                        if (paused)
+                        {
+                            groundContact = 0;
+                        }
+                        else
+                        {
+                            groundContact = interpolatedValue.Value;
+                        }
+                    }
+
+                    dataTrack.Add(
+                        new DataTrackPoint(
+                            lapNumber,
+                            lapNote,
+                            lapActive,
+                            distance,
+                            hr,
+                            pace,
+                            speed,
+                            elevation,
+                            grade,
+                            cadence,
+                            power,
+                            (i - pauseShift) / 1000,
+                            climbSpeed,
+                            verticalOscillation,
+                            groundContact,
+                            paused));
                 }
             }
 
@@ -1012,8 +1067,8 @@
 
                 string returnType = Regex.Match(field, "(?<=RANGE).*(?=\\()").Value;
                 string dataField = Regex.Match(field, "(?<=\\()[a-zA-Z]*(?=,)").Value.ToUpper();
-                float lowerBound = Single.Parse(Regex.Match(field, "(?<=,)[0-9.]*(?=,)").Value, CultureInfo.InvariantCulture.NumberFormat);
-                float upperBound = Single.Parse(Regex.Match(field, "(?<=,)[0-9.]*(?=\\))").Value, CultureInfo.InvariantCulture.NumberFormat);
+                float lowerBound = Single.Parse(Regex.Match(field, "(?<=,)[0-9.-]*(?=,)").Value, CultureInfo.InvariantCulture.NumberFormat);
+                float upperBound = Single.Parse(Regex.Match(field, "(?<=,)[0-9.-]*(?=\\))").Value, CultureInfo.InvariantCulture.NumberFormat);
 
                 if (dataField == "ELAPSED")
                 {
@@ -1024,7 +1079,67 @@
                 if (dataField != "" && returnType != "")
                 {
                     var dataTrack = GetDataTrack(activity, active, false);
-                    var query = dataTrack.Where(o => (dataField == "CLIMBSPEED" ? o.ClimbSpeed : (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power)))))))))) >= lowerBound && (dataField == "CLIMBSPEED" ? o.ClimbSpeed : (dataField == "ELAPSED" ? o.Elapsed : (dataField == "DISTANCE" ? o.Distance : (dataField == "HR" ? o.HR : (dataField == "PACE" ? o.Pace : (dataField == "SPEED" ? o.Speed : (dataField == "ELEVATION" ? o.Elevation : (dataField == "GRADE" ? o.Grade : (dataField == "CADENCE" ? o.Cadence : (dataField == "POWER" ? o.Power : o.Power)))))))))) <= upperBound);
+                    var query =
+                        dataTrack.Where(
+                            o =>
+                            (dataField == "GROUNDCONTACT"
+                                 ? o.GroundContact
+                                 : (dataField == "VERTICALOSCILLATION"
+                                        ? o.VerticalOscillation
+                                        : (dataField == "CLIMBSPEED"
+                                               ? o.ClimbSpeed
+                                               : (dataField == "ELAPSED"
+                                                      ? o.Elapsed
+                                                      : (dataField == "DISTANCE"
+                                                             ? o.Distance
+                                                             : (dataField == "HR"
+                                                                    ? o.HR
+                                                                    : (dataField == "PACE"
+                                                                           ? o.Pace
+                                                                           : (dataField == "SPEED"
+                                                                                  ? o.Speed
+                                                                                  : (dataField == "ELEVATION"
+                                                                                         ? o.Elevation
+                                                                                         : (dataField == "GRADE"
+                                                                                                ? o.Grade
+                                                                                                : (dataField
+                                                                                                   == "CADENCE"
+                                                                                                       ? o.Cadence
+                                                                                                       : (dataField
+                                                                                                          == "POWER"
+                                                                                                              ? o.Power
+                                                                                                              : o.Power))))))))))))
+                            >= lowerBound
+                            && (dataField == "GROUNDCONTACT"
+                                    ? o.GroundContact
+                                    : (dataField == "VERTICALOSCILLATION"
+                                           ? o.VerticalOscillation
+                                           : (dataField == "CLIMBSPEED"
+                                                  ? o.ClimbSpeed
+                                                  : (dataField == "ELAPSED"
+                                                         ? o.Elapsed
+                                                         : (dataField == "DISTANCE"
+                                                                ? o.Distance
+                                                                : (dataField == "HR"
+                                                                       ? o.HR
+                                                                       : (dataField == "PACE"
+                                                                              ? o.Pace
+                                                                              : (dataField == "SPEED"
+                                                                                     ? o.Speed
+                                                                                     : (dataField == "ELEVATION"
+                                                                                            ? o.Elevation
+                                                                                            : (dataField == "GRADE"
+                                                                                                   ? o.Grade
+                                                                                                   : (dataField
+                                                                                                      == "CADENCE"
+                                                                                                          ? o.Cadence
+                                                                                                          : (dataField
+                                                                                                             == "POWER"
+                                                                                                                 ? o
+                                                                                                                       .Power
+                                                                                                                 : o
+                                                                                                                       .Power))))))))))))
+                            <= upperBound);
 
                     if (query.Count() != 0)
                     {
@@ -1059,6 +1174,12 @@
                                 break;
                             case "CLIMBSPEED":
                                 fieldValue = query.Average(o => o.ClimbSpeed).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                break;
+                            case "VERTICALOSCILLATION":
+                                fieldValue = query.Average(o => o.VerticalOscillation).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                break;
+                            case "GROUNDCONTACT":
+                                fieldValue = query.Average(o => o.GroundContact).ToString(CultureInfo.InvariantCulture.NumberFormat);
                                 break;
                         }
                     }
@@ -1108,7 +1229,7 @@
                         {
                             peakValue = float.MaxValue;
                         }
-
+                        
                         //dataTrack.Select((o, index) => new { RollingAvg = dataTrack.Where((a, aindex) => aindex < index && aindex >= (((index - 30) >= 0) ? index - 30 : 0)).Average(a => a.Power) }).Average(r => r.RollingAvg);
 
                         for (int i = 0; i < dataTrack.Count; i++)
@@ -1160,6 +1281,12 @@
                                             break;
                                         case "CLIMBSPEED":
                                             temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.ClimbSpeed);
+                                            break;
+                                        case "VERTICALOSCILLATION":
+                                            temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.VerticalOscillation);
+                                            break;
+                                        case "GROUNDCONTACT":
+                                            temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.GroundContact);
                                             break;
                                     }
 
@@ -1243,6 +1370,12 @@
                                     case "CLIMBSPEED":
                                         fieldValue = dataTrack.Where((o, index) => index >= peakStart && index <= peakEnd).Average(o => o.ClimbSpeed).ToString(CultureInfo.InvariantCulture.NumberFormat);
                                         break;
+                                    case "VERTICALOSCILLATION":
+                                        fieldValue = dataTrack.Where((o, index) => index >= peakStart && index <= peakEnd).Average(o => o.VerticalOscillation).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                        break;
+                                    case "GROUNDCONTACT":
+                                        fieldValue = dataTrack.Where((o, index) => index >= peakStart && index <= peakEnd).Average(o => o.GroundContact).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                        break;
                                 }
                             }
                             else
@@ -1317,6 +1450,13 @@
                                         case "CLIMBSPEED":
                                             temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.ClimbSpeed);
                                             break;
+                                        case "VERTICALOSCILLATION":
+                                            temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.VerticalOscillation);
+                                            break;
+                                        case "GROUNDCONTACT":
+                                            temp = dataTrack.Where((o, index) => index >= i && index <= j).Average(o => o.GroundContact);
+                                            break;
+
                                     }
 
                                     for (int index = i; index <= j; index++)
@@ -1398,6 +1538,12 @@
                                         break;
                                     case "CLIMBSPEED":
                                         fieldValue = dataTrack.Where((o, index) => index >= peakStart && index <= peakEnd).Average(o => o.ClimbSpeed).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                        break;
+                                    case "VERTICALOSCILLATION":
+                                        fieldValue = dataTrack.Where((o, index) => index >= peakStart && index <= peakEnd).Average(o => o.VerticalOscillation).ToString(CultureInfo.InvariantCulture.NumberFormat);
+                                        break;
+                                    case "GROUNDCONTACT":
+                                        fieldValue = dataTrack.Where((o, index) => index >= peakStart && index <= peakEnd).Average(o => o.GroundContact).ToString(CultureInfo.InvariantCulture.NumberFormat);
                                         break;
                                 }
                             }
@@ -1862,7 +2008,7 @@
         {
             string fieldValue = "";
             double pace;
-
+            
             switch (field)
             {
                 //special
@@ -1950,8 +2096,13 @@
                 case "HASPOWERTRACK":
                     fieldValue = (activity.PowerWattsTrack == null) ? "false" : "true";
                     break;
-                
-
+                case "HASVERTICALOSCILLATIONTRACK":
+                    fieldValue = (activity.VerticalOscillationMillimetersTrack == null) ? "false" : "true";
+                    break;
+                case "HASGROUNDCONTACTTRACK":
+                    fieldValue = (activity.GroundContactTimeMillisecondsTrack == null) ? "false" : "true";
+                    break;
+                    
                 //totals)
                 case "CALORIES":
                     fieldValue = activity.TotalCalories.ToString(CultureInfo.InvariantCulture.NumberFormat);
@@ -1990,6 +2141,12 @@
                 case "AVGSPEED":
                     fieldValue = activityInfoInstance.AverageSpeedMetersPerSecond.ToString(CultureInfo.InvariantCulture.NumberFormat);
                     break;
+                case "AVGVERTICALOSCILLATION":
+                    fieldValue = activity.VerticalOscillationMillimetersTrack.Avg.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                    break;
+                case "AVGGROUNDCONTACT":
+                    fieldValue = activity.GroundContactTimeMillisecondsTrack.Avg.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                    break;
                 case "MAXCADENCE":
                     fieldValue = activityInfoInstance.MaximumCadence.ToString(CultureInfo.InvariantCulture.NumberFormat);
                     break;
@@ -2008,7 +2165,7 @@
                 case "DESCENDING":
                     fieldValue = activityInfoInstance.TotalDescendingMeters(CalculatedFields.GetLogBook().ClimbZones[0]).ToString(CultureInfo.InvariantCulture.NumberFormat);
                     break;
-
+                    
                 // active
                 case "ACTIVETIME":
                     fieldValue = activityInfoInstance.ActiveLapsTotalDetail.LapElapsed.TotalSeconds.ToString(CultureInfo.InvariantCulture.NumberFormat);
